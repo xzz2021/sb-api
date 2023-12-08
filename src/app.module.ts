@@ -18,6 +18,8 @@ import { APP_GUARD } from '@nestjs/core';
 // import { ProfilesModule } from './profiles/profiles.module';
 // import { MenusModule } from './menus/menus.module';
 import { UserinfoModule } from './userinfo/userinfo.module';
+import { RoleModule } from './role/role.module';
+import { PermissionsModule } from './permissions/permissions.module';
 // import * as Joi from 'joi'  // 引入字段校验,可以检验变量类型是否合法
 
 
@@ -55,7 +57,7 @@ import { UserinfoModule } from './userinfo/userinfo.module';
 
     // LoggerModule,   //打印日志模块
      
-    OrmConfig,  // typeorm配置
+    OrmConfig, RoleModule, PermissionsModule,  // typeorm配置
   
     
     // AuthModule, RolesModule, UsersModule, ProfilesModule, MenusModule,

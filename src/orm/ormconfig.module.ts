@@ -11,12 +11,15 @@ import { Users } from '../userinfo/entities/userinfo.entity'
 // import { Profile } from '../profiles/profile.entity';
 // import { Roles } from '../roles/roles.entity';
 import { DataSource, DataSourceOptions } from 'typeorm';
+import { Roles } from 'src/role/entities/role.entity';
+import { Permissions } from 'src/permissions/entities/permission.entity';
 
-let allEntities = [ Users ]
+
+let allEntities = [ Users, Roles, Permissions ]
 // let allEntities = [Users, Profile, Roles ]
 
 // 引入.env文件的变量合并到node环境中
-// require('dotenv').config();
+require('dotenv').config();
 
 
 
@@ -29,10 +32,10 @@ let allEntities = [ Users ]
             inject: [ConfigService],
             useFactory: (configService: ConfigService) =>({
               type: 'mysql',
-              host: 'xzz2022.top',
+              host: configService.get('DBHOST'),
               port: 3306,
-              username: 'root',
-              password: 'zzzxxxccc',
+              username: configService.get('DBUSER'),
+              password: configService.get('DBPWD'),
               database: 'shengbai',
               entities: allEntities,
               // [  // 定义生成表格
@@ -57,10 +60,10 @@ export class OrmConfig {}
 export default new DataSource ({
   // migrationsTableName: 'migrations',
   type: 'mysql',
-  host: 'xzz2022.top',
+  host: process.env.DBHOST,
   port: 3306,
-  username: 'root',
-  password: 'zzzxxxccc',
+  username: process.env.DBUSER,
+  password: process.env.DBPWD,
   database: 'shengbai',
   entities: allEntities,
   // migrations: ['src/migrations/*{.ts,.js}'],
