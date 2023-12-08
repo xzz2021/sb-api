@@ -26,7 +26,6 @@ export class UserinfoService {
         createUsersDto.password = await bcrypt.hash(createUsersDto.password, saltOrRounds);
     
         // const salt = await bcrypt.genSalt() // 用于生成salt
-    
         
         // 创建注册用户信息
         const userSave:any = this.userinfoRepository.create(createUsersDto)

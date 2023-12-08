@@ -22,12 +22,10 @@ export class UserinfoController {
     //  body后的dto定义传递过来的请求体数据格式
     // 如果前端数据体传递了其他未在dto定义的数据，将会被自动剔除
     test(@Body() userinfo: any, @Req() req: Request) {
-      // createUsersDto.createtime = new Date().toLocaleString();
-      console.log("🚀 ~ file: userinfo.controller.ts:22 ~ UserinfoController ~ test ~ userinfo:", userinfo)
       return userinfo
     }
   
-  @Post('/findone')
+  @Post('findone')
   findOne(@Body('username') username: string) {
     return this.userinfoService.findOne(username);
   }
