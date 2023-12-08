@@ -35,10 +35,8 @@ export class Users {
     deletetime: string;
 
     //  第一个参数是关联的类， 也即被关联的表格名
-   //  cascade 代表可以直接对关联表单进行操作
-   //  onDelete  代表主表项删除时也对关联表单进行删除
-   @ManyToOne(() => Roles, role => role.role)   //关联表单，需要在关联的两张表的entity里都声明OneToOne， 实现映射
-   @JoinColumn({ name: 'userInfo_role'})
+   @ManyToOne(() => Roles, role => role.role,)   //关联表单
+   @JoinColumn({ name: 'user_roleInfo'})
    roleInfo: Roles; 
 
 }

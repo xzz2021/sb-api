@@ -8,6 +8,9 @@ import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './entities/userinfo.entity';
 import { Repository } from 'typeorm';
+import { Roles } from 'src/role/entities/role.entity';
+import { Permissions } from 'src/permissions/entities/permission.entity';
+
 
 @Injectable()
 export class UserinfoService {
@@ -15,6 +18,10 @@ export class UserinfoService {
       constructor(
         @InjectRepository(Users) private readonly userinfoRepository:  //  调用数据库必须进行注入
         Repository<Users>,
+        @InjectRepository(Roles) private readonly rolesRepository:  //  调用数据库必须进行注入
+        Repository<Roles>,
+        @InjectRepository(Permissions) private readonly permissionsRepository:  //  调用数据库必须进行注入
+        Repository<Permissions>,
         private jwtService: JwtService
       ){}
     
@@ -27,8 +34,15 @@ export class UserinfoService {
     
         // const salt = await bcrypt.genSalt() // 用于生成salt
         
-        // 创建注册用户信息
+        // 创建注册用户信息  存储
         const userSave:any = this.userinfoRepository.create(createUsersDto)
+
+        // 查询角色表 存储映射关系
+        // 获取  用户 角色  数据库对应的   实例 
+        let curUserrole = await this.rolesRepository.findOne({where:{role: createUsersDto.userInfo_role}})
+
+        // 给用户角色赋值  //  必须对应存入实例对象{}  否则没有映射 关系
+        userSave.roleInfo = curUserrole
     
         //  存储新用户  //  使用save时,若保存的实体有id且存在于数据库,则会自动执行update,没有则insert
         return await this.userinfoRepository.save(userSave)
@@ -37,11 +51,21 @@ export class UserinfoService {
       }
     
     
-      // 获取单个用户
+      // 通过用户名获取用户信息
       async findOne(username: string) {
-        let res = await this.userinfoRepository.findOne({where: {username}})
-        // console.log("🚀 ~ file: userinfo.service.ts:85 ~ UserinfoService ~ findOne ~ res:", res)
-        return res 
+        let res = await this.userinfoRepository.findOne({where: {username}, relations: ['roleInfo']})  // 获取基础信息及角色信息
+        let { roleId, role } = res.roleInfo
+        let resInfo = await this.rolesRepository.findOne({where: {roleId},  relations: ['permissions']})  // 根据获取路由权限信息
+        // let res2 = await this.rolesRepository.createQueryBuilder('roles')
+        //                   .leftJoinAndMapMany('roles.permissions', Permissions, 'permissions', 'roles.permissions3 = permissions.routeLink ')
+        //                   .where("roles.roleId = :roleId", { roleId })
+        //                   .getMany()
+        let permissions = resInfo.permissions.map(item => item.routeLink)
+        
+        let userinfo= { username: res.username, password: res.password, roleId, role, permissions }
+        
+
+        return userinfo
       }
     
        findByID(id: number) {
@@ -94,11 +118,17 @@ export class UserinfoService {
 
     async login(userinfo) {
       const user = await this.findOne(userinfo.username)
-      const { username } = user
-      const payload = { username };
-      //登录后只要返回token即可
-      return {
-        access_token: this.jwtService.sign(payload),
-      };
+      return user
+      //登录后直接返回数据
+      /* { password: "admin"
+           permissions: ['*.*.*']
+           role: "admin"
+           roleId: "1"
+           username: "admin"
+    }
+      */ 
+      // return {
+      //   access_token: this.jwtService.sign(payload),
+      // };
     }
 }
