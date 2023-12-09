@@ -63,7 +63,6 @@ export class UserinfoService {
         let permissions = resInfo.permissions.map(item => item.routeLink)
         
         let userinfo= { username: res.username, password: res.password, roleId, role, permissions }
-        
 
         return userinfo
       }
@@ -118,17 +117,12 @@ export class UserinfoService {
 
     async login(userinfo) {
       const user = await this.findOne(userinfo.username)
-      return user
-      //登录后直接返回数据
-      /* { password: "admin"
-           permissions: ['*.*.*']
-           role: "admin"
-           roleId: "1"
-           username: "admin"
-    }
-      */ 
-      // return {
-      //   access_token: this.jwtService.sign(payload),
-      // };
+      const payload = { username: user.username, role: user.role }
+      return {
+        data: {
+          userInfo: user,
+          tokenKey: this.jwtService.sign(payload),
+        }
+      }
     }
 }

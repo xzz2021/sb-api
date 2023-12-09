@@ -7,6 +7,9 @@ import { UpdatePermissionDto } from './dto/update-permission.dto';
 export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}
 
+
+  
+
   @Post()
   create(@Body() createPermissionDto: CreatePermissionDto) {
     return this.permissionsService.create(createPermissionDto);
@@ -31,4 +34,6 @@ export class PermissionsController {
   remove(@Param('id') id: string) {
     return this.permissionsService.remove(+id);
   }
+
+
 }
