@@ -8,11 +8,32 @@ import { JwtAuthGuard } from 'src/allProcessor/guard/auth.guard';
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
-  @Get('getMenu')
+  @Get('getMenu') //  获取用户的菜单
   @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
   //  这里使用Query  获取get请求的查询参数
   getMenu(@Query() query: any) {
     return this.roleService.getMenu(query.roleName);
+  }
+
+  // 获取所有角色信息
+  @Get('getRoletable')
+  getRoletable(){
+    return this.roleService.findAllRoles();
+  }
+
+
+  //  添加角色
+  @Post('addRole')
+  addRole(@Body() createRoleDto: CreateRoleDto) {
+    return this.roleService.addRole(createRoleDto);
+  }
+
+
+  //  删除角色
+  @Delete(':id')
+  removeRole(@Param('id') id: number) {
+    console.log('🚀 ~ file: role.controller.ts:35 ~ RoleController ~ remove ~ id:', id)
+    return this.roleService.removeRole( id )
   }
 
   @Post()

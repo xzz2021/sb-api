@@ -1,8 +1,53 @@
  const adminList = [
+  {
+    path: '/authorization-xzz',
+    component: '#',
+    redirect: '/authorization-xzz/user',
+    name: 'Authorization-xzz',
+    meta: {
+      title: 'router.authorization',
+      icon: 'eos-icons:role-binding',
+      alwaysShow: true
+    },
+    children: [
+      {
+        path: 'department-xzz',
+        component: 'views/Authorization-xzz/Department/Department',
+        name: 'Department-xzz',
+        meta: {
+          title: 'router.department'
+        }
+      },
+      {
+        path: 'user-xzz',
+        component: 'views/Authorization-xzz/User/User',
+        name: 'User-xzz',
+        meta: {
+          title: 'router.user'
+        }
+      },
+      {
+        path: 'menu-xzz',
+        component: 'views/Authorization-xzz/Menu/Menu',
+        name: 'Menu-xzz',
+        meta: {
+          title: 'router.menuManagement'
+        }
+      },
+      {
+        path: 'role-xzz',
+        component: 'views/Authorization-xzz/Role/Role',
+        name: 'Role-xzz',
+        meta: {
+          title: 'router.role'
+        }
+      }
+    ]
+  },
     {
       path: '/dashboard',
       component: '#',
-      redirect: '/dashboard/analysis',
+      redirect: '/dashboard/Workplace',
       name: 'Dashboard',
       meta: {
         title: 'router.dashboard',

@@ -39,7 +39,7 @@ export class UserinfoService {
 
         // 查询角色表 存储映射关系
         // 获取  用户 角色  数据库对应的   实例 
-        let curUserrole = await this.rolesRepository.findOne({where:{role: createUsersDto.userInfo_role}})
+        let curUserrole = await this.rolesRepository.findOne({where:{roleName: createUsersDto.userInfo_role}})
 
         // 给用户角色赋值  //  必须对应存入实例对象{}  否则没有映射 关系
         userSave.roleInfo = curUserrole
@@ -54,7 +54,7 @@ export class UserinfoService {
       // 通过用户名获取用户信息
       async findOne(username: string) {
         let res = await this.userinfoRepository.findOne({where: {username}, relations: ['roleInfo']})  // 获取基础信息及角色信息
-        let { roleId, role } = res.roleInfo
+        let { roleId, roleName } = res.roleInfo
         let resInfo = await this.rolesRepository.findOne({where: {roleId},  relations: ['permissions']})  // 根据获取路由权限信息
         // let res2 = await this.rolesRepository.createQueryBuilder('roles')
         //                   .leftJoinAndMapMany('roles.permissions', Permissions, 'permissions', 'roles.permissions3 = permissions.routeLink ')
@@ -62,7 +62,7 @@ export class UserinfoService {
         //                   .getMany()
         let permissions = resInfo.permissions.map(item => item.routeLink)
         
-        let userinfo= { username: res.username, password: res.password, roleId, role, permissions }
+        let userinfo= { username: res.username, password: res.password, roleId, roleName, permissions }
 
         return userinfo
       }
@@ -117,12 +117,10 @@ export class UserinfoService {
 
     async login(userinfo) {
       const user = await this.findOne(userinfo.username)
-      const payload = { username: user.username, role: user.role }
-      return {
-        data: {
+      const payload = { username: user.username, role: user.roleName }
+      return  {
           userInfo: user,
           tokenKey: this.jwtService.sign(payload),
         }
-      }
     }
 }

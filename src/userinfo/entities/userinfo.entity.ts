@@ -35,7 +35,7 @@ export class Users {
     deletetime: string;
 
     //  第一个参数是关联的类， 也即被关联的表格名
-   @ManyToOne(() => Roles, role => role.role,)   //关联表单
+   @ManyToOne(() => Roles, role => role.roleName,)   //关联表单
    @JoinColumn({ name: 'user_roleInfo'})
    roleInfo: Roles; 
 
