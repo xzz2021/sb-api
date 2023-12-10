@@ -25,9 +25,8 @@ export class Departments {
     @Column()
     remark: string;
 
-    @Column('boolean', {default: true})
-    // @Column()
-    status: boolean; 
+    @Column( {default: 1})
+    status: number; 
 
     @CreateDateColumn()  //创建时自动插入日期时间
     createTime: string;

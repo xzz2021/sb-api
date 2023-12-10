@@ -7,6 +7,30 @@ import { UpdateDepartmentDto } from './dto/update-department.dto';
 export class DepartmentController {
   constructor(private readonly departmentService: DepartmentService) {}
 
+  // 获取所有角色信息
+  @Get('getDepartmentTable')
+  getDepartmentTable(){
+    // return this.departmentService.findAllDepartments();
+    let list = [{
+      departmentName: '泉州总公司',
+      remark: '泉州9999',
+      status: 1,
+      id: '908798676786',
+      createTime: '2020-01-01 00:00:00',
+      children: [
+        {
+          departmentName: '开发部',
+          remark: '开发89798798789',
+          status: 1,
+          id: '908798676786',
+          createTime: '2020-01-01 00:00:00',
+          children: []
+        }
+      ]
+    }]
+    return { list, total: list.length  }
+  }
+
   @Post()
   create(@Body() createDepartmentDto: CreateDepartmentDto) {
     return this.departmentService.create(createDepartmentDto);

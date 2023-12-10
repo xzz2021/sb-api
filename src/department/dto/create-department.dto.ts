@@ -1,1 +1,6 @@
-export class CreateDepartmentDto {}
+export class CreateDepartmentDto {
+
+    departmentName: string; 
+    remark: string; 
+    status?: number;
+}

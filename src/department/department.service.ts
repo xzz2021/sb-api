@@ -4,6 +4,11 @@ import { UpdateDepartmentDto } from './dto/update-department.dto';
 
 @Injectable()
 export class DepartmentService {
+
+
+  findAllDepartments(){
+    
+  }
   create(createDepartmentDto: CreateDepartmentDto) {
     return 'This action adds a new department';
   }
