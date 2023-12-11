@@ -32,7 +32,6 @@ export class RoleController {
   //  删除角色
   @Delete(':id')
   removeRole(@Param('id') id: number) {
-    console.log('🚀 ~ file: role.controller.ts:35 ~ RoleController ~ remove ~ id:', id)
     return this.roleService.removeRole( id )
   }
 

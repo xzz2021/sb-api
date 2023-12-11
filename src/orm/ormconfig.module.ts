@@ -12,10 +12,11 @@ import { Users } from '../userinfo/entities/userinfo.entity'
 // import { Roles } from '../roles/roles.entity';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { Roles } from 'src/role/entities/role.entity';
+import { Departments } from 'src/department/entities/department.entity';
 import { Permissions } from 'src/permissions/entities/permission.entity';
 
 
-let allEntities = [ Users, Roles, Permissions ]
+let allEntities = [ Users, Roles, Permissions, Departments ]
 // let allEntities = [Users, Profile, Roles ]
 
 // 引入.env文件的变量合并到node环境中

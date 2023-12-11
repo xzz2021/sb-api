@@ -24,11 +24,39 @@ export class DepartmentController {
           status: 1,
           id: '908798676786',
           createTime: '2020-01-01 00:00:00',
-          children: []
+          // children: []
+          // children: [
+          //   {
+          //     departmentName: '组长',
+          //     remark: '组长89798798789',
+          //     status: 1,
+          //     id: '908798676786',
+          //     createTime: '2020-01-01 00:00:00',
+          //     // children: []
+          //   }
+          // ]
         }
       ]
     }]
-    return { list, total: list.length  }
+    // return { list, total: list.length  }
+    return this.departmentService.getList(); 
+  }
+
+  @Post('add')
+  add(@Body() createDepartmentDto: CreateDepartmentDto) {
+    return this.departmentService.add(createDepartmentDto);
+  }
+
+  //  删除部门
+  @Delete(':id')
+  removeDepartment(@Param('id') id: number) {
+    return this.departmentService.removeDepartment( id )
+  }
+
+  //  批量删除部门
+  @Post('batchDelete')
+  batchRemoveDepartment(@Body() list:  any[]) {
+    return this.departmentService.batchRemoveDepartment( list )
   }
 
   @Post()

@@ -15,10 +15,7 @@ export class RoleService {
   
   getMenu(roleName: string) {
     if(roleName === '超级管理员') {
-      return { 
-        list: adminList,
-        total: adminList.length
-       }
+      return adminList
     }else {
        let testList = [{
             path: '/dashboard',
@@ -44,10 +41,7 @@ export class RoleService {
         ]
       }]
 
-      return { 
-        list: testList,
-        total: testList.length
-       }
+      return testList
     
   }
   };
@@ -55,7 +49,7 @@ export class RoleService {
   async findAllRoles(){
     const res = await this.rolesRepository.find();
     // console.log('🚀 ~ file: role.service.ts:52 ~ RoleService ~ findAllRoles ~ res:', res)
-    return { data: res}
+    return res
   }
 
   async addRole(createRoleDto: CreateRoleDto){

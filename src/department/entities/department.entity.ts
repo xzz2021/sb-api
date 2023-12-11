@@ -15,14 +15,17 @@ export class Departments {
     departmentId: number;
 
     @Column()
-    @Generated("uuid")
+    @Generated("uuid")  // 因为uuid有-符号  所以必须设定成字符串
     id: string;
 
     @ApiProperty()
     @Column()
-    departmentName: string;   //  角色  admin/superadmin/guest 
+    departmentName: string;   //  角色  admin/superadmin/guest
 
     @Column()
+    pid: string;
+
+    @Column({default: ''})
     remark: string;
 
     @Column( {default: 1})
