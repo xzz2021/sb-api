@@ -13,6 +13,17 @@ export class MenuController {
     return this.menuService.getAllMenu();
   }
 
+  @Post('add')
+  addMenu(@Body() createMenuDto: CreateMenuDto) {
+    return this.menuService.addMenu(createMenuDto);
+  }
+
+
+  @Post()
+  createMenu(@Body() createMenuDto: CreateMenuDto) {
+    return this.menuService.create(createMenuDto);
+  }
+
   @Post()
   create(@Body() createPermissionDto: CreateMenuDto) {
     return this.menuService.create(createPermissionDto);

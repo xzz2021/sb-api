@@ -47,7 +47,7 @@ require('dotenv').config();
               // ],
               //此处定义为是否同步代码,,,,,,生产模式需关闭,  引入迁移模式
               // 千万慎重开启，
-              synchronize: false,  // 同步本地的schema与数据库   自动同步代码和数据库
+              synchronize: !false,  // 同步本地的schema与数据库   自动同步代码和数据库
               // timezone: "08:00", // 纠正时区偏差8小时
               timezone: "Z", //  
               logging: ['error'],  //日志记录类型  数据库操作记录
@@ -70,7 +70,7 @@ export default new DataSource ({
   database: 'shengbai',
   entities: allEntities,
   // migrations: ['src/migrations/*{.ts,.js}'],
-  synchronize: false,
+  synchronize: !false,
   timezone: "Z", //  
   logging: ['error'], 
 

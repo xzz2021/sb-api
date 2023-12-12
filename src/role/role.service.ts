@@ -5,15 +5,20 @@ import adminList from './list'
 import { InjectRepository } from '@nestjs/typeorm';
 import { Roles } from './entities/role.entity';
 import { Repository } from 'typeorm';
+// import { MenuService } from 'src/menu/menu.service';
 @Injectable()
 export class RoleService {
 
   constructor(
     @InjectRepository(Roles) private readonly rolesRepository:  //  调用数据库必须进行注入
     Repository<Roles>,
+    // private readonly menuService: MenuService
   ){}
   
-  getMenu(roleName: string) {
+  async getMenu(roleName: string) {
+
+    // const result = await this.menuService.getAllMenu()
+    // console.log('🚀 ~ file: role.service.ts:21 ~ RoleService ~ getMenu ~ result:', result)
     if(roleName === '超级管理员') {
       return adminList
     }else {

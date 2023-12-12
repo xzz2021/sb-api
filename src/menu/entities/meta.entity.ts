@@ -15,34 +15,36 @@ export class Metas {
     // @Exclude()
     id: number;
 
-    @Column()
-    activeMenu: boolean;
+    @Column({default: 'false'})
+    activeMenu: string;
 
-    @Column()
-    affix: boolean;
+    @Column({default: 'false'})
+    affix: string;
 
-    @Column()
-    alwaysShow: boolean;
+    @Column({default: 'false'})
+    alwaysShow: string;
 
-    @Column()
-    breadcrumb: boolean;
+    @Column({default: 'false'})
+    breadcrumb: string;
 
-    @Column()
-    canTo: boolean;
+    @Column({default: 'false'})
+    canTo: string;
 
-    @Column()
-    hidden: boolean;
+    @Column({default: 'false'})
+    hidden: string;
 
-    @Column()
-    noTagsView: boolean;
+    @Column({default: 'false'})
+    noCache: string;
 
-    @Column()
+    @Column({default: 'false'})
+    noTagsView: string;
+
+    @Column({default: ''})
     icon: string;
 
     @Column()
     title: string;
 
-    @Column()
-    noCache: string;
+    
 
 }
