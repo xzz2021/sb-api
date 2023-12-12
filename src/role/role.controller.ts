@@ -15,6 +15,10 @@ export class RoleController {
     return this.roleService.getMenu(query.roleName);
   }
 
+
+
+  
+
   // 获取所有角色信息
   @Get('getRoletable')
   getRoletable(){

@@ -9,7 +9,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './entities/userinfo.entity';
 import { Repository } from 'typeorm';
 import { Roles } from 'src/role/entities/role.entity';
-import { Permissions } from 'src/permissions/entities/permission.entity';
+import { Menus } from 'src/menu/entities/menu.entity';
+
 
 
 @Injectable()
@@ -20,8 +21,8 @@ export class UserinfoService {
         Repository<Users>,
         @InjectRepository(Roles) private readonly rolesRepository:  //  调用数据库必须进行注入
         Repository<Roles>,
-        @InjectRepository(Permissions) private readonly permissionsRepository:  //  调用数据库必须进行注入
-        Repository<Permissions>,
+        @InjectRepository(Menus) private readonly menuRepository:  //  调用数据库必须进行注入
+        Repository<Menus>,
         private jwtService: JwtService
       ){}
     
@@ -33,16 +34,32 @@ export class UserinfoService {
         createUsersDto.password = await bcrypt.hash(createUsersDto.password, saltOrRounds);
     
         // const salt = await bcrypt.genSalt() // 用于生成salt
+
+        // 应该要先查询下用户名是否存在,  存在 抛出异常提示
+
         
         // 创建注册用户信息  存储
         const userSave:any = this.userinfoRepository.create(createUsersDto)
 
+        if(!createUsersDto.rolesArr || createUsersDto.rolesArr.length == 0){
+          createUsersDto.rolesArr = ['游客']
+        }
         // 查询角色表 存储映射关系
         // 获取  用户 角色  数据库对应的   实例 
-        let curUserrole = await this.rolesRepository.findOne({where:{roleName: createUsersDto.userInfo_role}})
+        const { rolesArr } = createUsersDto
+        const res = await Promise.all(
+        rolesArr.map(item => {
+          return async () => {
+            const role = await this.rolesRepository.findOne({
+              where: { roleName: item }
+            })
+            userSave.rolesArr.push(role)
+          }
+        }))
+        console.log('🚀 ~ file: userinfo.service.ts:58 ~ UserinfoService ~ create ~ res:', res)
 
-        // 给用户角色赋值  //  必须对应存入实例对象{}  否则没有映射 关系
-        userSave.roleInfo = curUserrole
+
+        return 'test'
     
         //  存储新用户  //  使用save时,若保存的实体有id且存在于数据库,则会自动执行update,没有则insert
         return await this.userinfoRepository.save(userSave)
@@ -54,17 +71,17 @@ export class UserinfoService {
       // 通过用户名获取用户信息
       async findOne(username: string) {
         let res = await this.userinfoRepository.findOne({where: {username}, relations: ['roleInfo']})  // 获取基础信息及角色信息
-        let { roleId, roleName } = res.roleInfo
-        let resInfo = await this.rolesRepository.findOne({where: {roleId},  relations: ['permissions']})  // 根据获取路由权限信息
-        // let res2 = await this.rolesRepository.createQueryBuilder('roles')
-        //                   .leftJoinAndMapMany('roles.permissions', Permissions, 'permissions', 'roles.permissions3 = permissions.routeLink ')
-        //                   .where("roles.roleId = :roleId", { roleId })
-        //                   .getMany()
-        let permissions = resInfo.permissions.map(item => item.routeLink)
+        // let { roleId, roleName } = res.rolesArr
+        // let resInfo = await this.rolesRepository.findOne({where: {roleId},  relations: ['permissions']})  // 根据获取路由权限信息
+        // // let res2 = await this.rolesRepository.createQueryBuilder('roles')
+        // //                   .leftJoinAndMapMany('roles.permissions', Permissions, 'permissions', 'roles.permissions3 = permissions.routeLink ')
+        // //                   .where("roles.roleId = :roleId", { roleId })
+        // //                   .getMany()
+        // // let permissions = resInfo.permissions.map(item => item.routeLink)
         
-        let userinfo= { username: res.username, password: res.password, roleId, roleName, permissions }
-
-        return userinfo
+        // let userinfo= { username: res.username, password: res.password, roleId, roleName }
+        return { username: 'test', rolesArr: [] }
+        // return userinfo
       }
     
        findByID(id: number) {
@@ -117,7 +134,7 @@ export class UserinfoService {
 
     async login(userinfo) {
       const user = await this.findOne(userinfo.username)
-      const payload = { username: user.username, role: user.roleName }
+      const payload = { username: user.username, role: user.rolesArr }
       return  {
           userInfo: user,
           tokenKey: this.jwtService.sign(payload),

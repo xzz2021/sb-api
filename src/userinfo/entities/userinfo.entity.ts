@@ -34,9 +34,9 @@ export class Users {
     @Exclude()
     deletetime: string;
 
-    //  第一个参数是关联的类， 也即被关联的表格名
-   @ManyToOne(() => Roles, role => role.roleName,)   //关联表单
-   @JoinColumn({ name: 'user_roleInfo'})
-   roleInfo: Roles; 
+    //  多对多关联用户 一个用户可能有多个角色
+   @ManyToMany(() => Roles, role => role.usersArr,)   //关联表单
+   @JoinTable()  // 因为是多对多   这里是要关联整张表格
+   rolesArr: Roles[]; 
 
 }

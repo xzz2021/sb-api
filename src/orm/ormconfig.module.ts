@@ -13,10 +13,11 @@ import { Users } from '../userinfo/entities/userinfo.entity'
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { Roles } from 'src/role/entities/role.entity';
 import { Departments } from 'src/department/entities/department.entity';
-import { Permissions } from 'src/permissions/entities/permission.entity';
+import { Menus } from 'src/menu/entities/menu.entity';
+import { Metas } from 'src/menu/entities/meta.entity';
 
 
-let allEntities = [ Users, Roles, Permissions, Departments ]
+let allEntities = [ Users, Roles, Menus, Departments, Metas ]
 // let allEntities = [Users, Profile, Roles ]
 
 // 引入.env文件的变量合并到node环境中
@@ -46,7 +47,7 @@ require('dotenv').config();
               // ],
               //此处定义为是否同步代码,,,,,,生产模式需关闭,  引入迁移模式
               // 千万慎重开启，
-              synchronize: !false,  // 同步本地的schema与数据库   自动同步代码和数据库
+              synchronize: false,  // 同步本地的schema与数据库   自动同步代码和数据库
               // timezone: "08:00", // 纠正时区偏差8小时
               timezone: "Z", //  
               logging: ['error'],  //日志记录类型  数据库操作记录
@@ -69,7 +70,7 @@ export default new DataSource ({
   database: 'shengbai',
   entities: allEntities,
   // migrations: ['src/migrations/*{.ts,.js}'],
-  synchronize: !false,
+  synchronize: false,
   timezone: "Z", //  
   logging: ['error'], 
 

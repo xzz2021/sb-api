@@ -23,7 +23,7 @@ export class DepartmentService {
     createDepartmentDto.pid === undefined && (createDepartmentDto.pid = '1000')
     const departmentSave:any = this.departmentsRepository.create(createDepartmentDto)
     const res = await this.departmentsRepository.save(departmentSave)
-    // console.log('🚀 ~ file: role.service.ts:59 ~ RoleService ~ addRole ~ res:', res)
+    console.log('🚀 ~ file: role.service.ts:59 ~ RoleService ~ addRole ~ res:', res)
     return res
   }
 

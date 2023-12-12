@@ -46,6 +46,8 @@ export class RoleService {
   }
   };
 
+
+
   async findAllRoles(){
     const res = await this.rolesRepository.find();
     // console.log('🚀 ~ file: role.service.ts:52 ~ RoleService ~ findAllRoles ~ res:', res)
