@@ -6,7 +6,6 @@ import { Menus } from 'src/menu/entities/menu.entity';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from 'src/userinfo/entities/userinfo.entity';
-import { MenuModule } from 'src/menu/menu.module';
 
 @Module({
   imports: [

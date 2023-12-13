@@ -8,6 +8,7 @@ import { Users } from 'src/userinfo/entities/userinfo.entity';
 import { Menus } from 'src/menu/entities/menu.entity';
 
 import { Exclude } from 'class-transformer';
+import { PermissionLists } from 'src/permission-list/entities/permission-list.entity';
 // import { UsersRole } from './usersrole.entity';
 
 
@@ -42,6 +43,11 @@ export class Roles {
     @ManyToMany(() => Menus, menu => menu.rolesArr, { cascade: true})   // 如果设置 eagger: true 查询时会自动加载关联表信息  不需要配置relations
     @JoinTable()  // 因为是多对多   这里是要关联整张表格
     permissionsArr: Relation<Menus[]>;// ESM中   双向关系   定义relation 避免循环依赖
+
+
+
+    @OneToMany(() => PermissionLists, permissionList => permissionList.permissionRole)  
+    permissions: PermissionLists[];
 
     @CreateDateColumn()  //创建时自动插入日期时间
     createTime: string;
