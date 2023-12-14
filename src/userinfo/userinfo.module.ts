@@ -18,7 +18,7 @@ import { Menus } from 'src/menu/entities/menu.entity';
     PassportModule,
     JwtModule.register({
       secret: 'TEMPsecret',
-      signOptions: { expiresIn: '3600s' }   //  设定token的有效期
+      signOptions: { expiresIn: '30d' }   //  设定token的有效期
     })
   ], //
   controllers: [UserinfoController],

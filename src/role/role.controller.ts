@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete, Query, Req } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
@@ -8,16 +8,17 @@ import { JwtAuthGuard } from 'src/allProcessor/guard/auth.guard';
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
-  @Get('getMenu') //  获取用户的菜单
-  @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
-  //  这里使用Query  获取get请求的查询参数
-  getMenu(@Query() query: any) {
-    return this.roleService.getMenu(query.roleName);
-  }
+  // @Get('getMenu') //  获取用户的菜单
+  // @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
+  // //  这里使用Query  获取get请求的查询参数
+  // // getMenu(@Query() query: any) {
+  // //   return this.roleService.getMenu(query.rolesArr);
+  // // }
+  // getMenu(@Req() req: any) {
+  //   const { username, rolesArr } = req.user;
+  //   return this.roleService.getMenu(rolesArr);
+  // }
 
-
-
-  
 
   // 获取所有角色信息
   @Get('getRoletable')

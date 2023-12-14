@@ -7,7 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './entities/userinfo.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Roles } from 'src/role/entities/role.entity';
 import { Menus } from 'src/menu/entities/menu.entity';
 
@@ -40,37 +40,79 @@ export class UserinfoService {
         
         // 创建注册用户信息  存储
         const userSave:any = this.userinfoRepository.create(createUsersDto)
-
-        if(!createUsersDto.rolesArr || createUsersDto.rolesArr.length == 0){
-          createUsersDto.rolesArr = ['游客']
+        try{
+          // 创建时 要先存储这个新生成的用户到数据库里
+          await this.userinfoRepository.save(userSave)
+          // return res 
+        }catch(err) {
+          //  错误不用返回  直接抛出异常
+        const { code, sqlMessage } = err
+        console.log('🚀 ~ file: userinfo.service.ts:71 ~ UserinfoService ~ create ~ sqlMessage:', sqlMessage)
+        // return  { code, sqlMessage } 
         }
-        // 查询角色表 存储映射关系
-        // 获取  用户 角色  数据库对应的   实例 
-        const { rolesArr } = createUsersDto
-        const res = await Promise.all(
-        rolesArr.map(item => {
-          return async () => {
-            const role = await this.rolesRepository.findOne({
-              where: { roleName: item }
-            })
-            userSave.rolesArr.push(role)
-          }
-        }))
-        console.log('🚀 ~ file: userinfo.service.ts:58 ~ UserinfoService ~ create ~ res:', res)
 
+        const {  username } = createUsersDto
 
-        return 'test'
-    
-        //  存储新用户  //  使用save时,若保存的实体有id且存在于数据库,则会自动执行update,没有则insert
-        return await this.userinfoRepository.save(userSave)
+        // 然后找到此用户实体
+        const currentUser = await this.userinfoRepository.findOne({where: {username}})
+        //  如果是新注册用户  必定是游客身份   直接存储此身份
+        if(!createUsersDto.rolesArr || createUsersDto.rolesArr.length == 0){
+          createUsersDto.rolesArr = [{
+            "id": 2,
+            "roleName": "游客",
+            "remark": "",
+            "status": 1,
+            "createTime": "2023-12-14T01:27:25.059Z",
+            "updateTime": "2023-12-14T01:27:25.059Z",
+            "deleteTime": null
+        }]
+        }
+
+        //  超级管理员临时注册-------------------
+        //   createUsersDto.rolesArr = [{
+        //     "id": 1,
+        //     "roleName": "超级管理员",
+        //     "remark": "",
+        //     "status": 1,
+        //     "createTime": "2023-12-14T01:27:09.471Z",
+        //     "updateTime": "2023-12-14T01:27:09.471Z",
+        //     "deleteTime": null
+        // }]
+        //--------------------------------------
+
+        //  以下是 对角色信息的新增   或修改 同一套代码
+        const {  rolesArr } = createUsersDto
+        //  直接批量存入多个对应关系的项目
+        // const resArr = await this.rolesRepository.find({where: {roleName: In(rolesArr)}})
+        //     console.log('🚀 ~ file: userinfo.service.ts:76 ~ UserinfoService ~ create ~ resArr:', resArr)
+            currentUser.rolesArr = rolesArr
+        try{
+          const  res =  await this.userinfoRepository.save(currentUser)
+          return res 
+        }catch(err) {
+          //  错误不用返回  直接抛出异常
+        const { code, sqlMessage } = err
+        console.log('🚀 ~ file: userinfo.service.ts:71 ~ UserinfoService ~ create ~ sqlMessage:', sqlMessage)
+        // return  { code, sqlMessage } 
+
+        }
         // return await this.userinfoRepository.insert([userSave1,userSave2,userSave3,userSave4])  //批量存储 插入
     
       }
+
+
+      //  此处为新增用户操作
+      addUser(createUsersDto: any) {
+
+      }
+
+      
     
     
       // 通过用户名获取用户信息
       async findOne(username: string) {
-        let res = await this.userinfoRepository.findOne({where: {username}, relations: ['roleInfo']})  // 获取基础信息及角色信息
+        let res = await this.userinfoRepository.findOne({where: {username}})  // 获取基础信息及角色信息
+        return res
         // let { roleId, roleName } = res.rolesArr
         // let resInfo = await this.rolesRepository.findOne({where: {roleId},  relations: ['permissions']})  // 根据获取路由权限信息
         // // let res2 = await this.rolesRepository.createQueryBuilder('roles')
@@ -80,7 +122,7 @@ export class UserinfoService {
         // // let permissions = resInfo.permissions.map(item => item.routeLink)
         
         // let userinfo= { username: res.username, password: res.password, roleId, roleName }
-        return { username: 'test', rolesArr: [] }
+        // return { username: 'test', rolesArr: [] }
         // return userinfo
       }
     
@@ -99,7 +141,7 @@ export class UserinfoService {
     
       async remove(body) {
         let res = await this.userinfoRepository.delete(body)
-        if(res.affected == 1) return { msg: `已删除用户: ${body.username}！`}
+        if(res.affected == 1) return { msg: `已删除用户: ${body.username}`}
         // return await this.userinfoRepository.delete(body)
       }
     
@@ -134,7 +176,8 @@ export class UserinfoService {
 
     async login(userinfo) {
       const user = await this.findOne(userinfo.username)
-      const payload = { username: user.username, role: user.rolesArr }
+      // 数据库中用户角色信息是包含多个列信息组成的对象 集合的数组, 所以需要提取出roleName
+      const payload = { username: user.username, rolesArr: user.rolesArr }
       return  {
           userInfo: user,
           tokenKey: this.jwtService.sign(payload),

@@ -12,18 +12,18 @@ import { Exclude } from 'class-transformer';
 export class Departments {
     @PrimaryGeneratedColumn()
     // @Exclude()
-    departmentId: number;
+    id: number;
 
-    @Column()
-    @Generated("uuid")  // 因为uuid有-符号  所以必须设定成字符串
-    id: string;
+    // @Column()
+    // @Generated("uuid")  // 因为uuid有-符号  所以必须设定成字符串
+    // id: string;
 
     @ApiProperty()
     @Column()
     departmentName: string;   //  角色  admin/superadmin/guest
 
-    @Column()
-    pid: string;
+    @Column({default: null})
+    parentId: number;
 
     @Column({default: ''})
     remark: string;

@@ -12,11 +12,14 @@ import { Roles } from 'src/role/entities/role.entity';
 @Entity()
 export class Users {
     @PrimaryGeneratedColumn()
-    @Exclude()
+    // @Exclude()
     id: number;
 
     @Column( { unique: true })  // 设定当前键为唯一值
     username: string;
+
+    @Column( { default: '游客' })  // 设定当前键为唯一值
+    nickname: string;
 
     @Column()
     @Exclude()  // 转换数据, 排除此字段  //  结合@UseInterceptors(ClassSerializerInterceptor) 使用
@@ -35,7 +38,7 @@ export class Users {
     deletetime: string;
 
     //  多对多关联用户 一个用户可能有多个角色
-   @ManyToMany(() => Roles, role => role.usersArr,)   //关联表单
+   @ManyToMany(() => Roles, role => role.usersArr, { eager: true, cascade: ['insert', 'update'] })   //关联表单
    @JoinTable()  // 因为是多对多   这里是要关联整张表格
    rolesArr: Roles[]; 
 

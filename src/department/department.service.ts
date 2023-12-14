@@ -20,10 +20,10 @@ export class DepartmentService {
   
   // 此接口可以同时用作新增及修改
   async add(createDepartmentDto: CreateDepartmentDto) {
-    createDepartmentDto.pid === undefined && (createDepartmentDto.pid = '1000')
+    // createDepartmentDto.parentId === null && (createDepartmentDto.parentId = '1000')
     const departmentSave:any = this.departmentsRepository.create(createDepartmentDto)
     const res = await this.departmentsRepository.save(departmentSave)
-    console.log('🚀 ~ file: role.service.ts:59 ~ RoleService ~ addRole ~ res:', res)
+    // console.log('🚀 ~ file: role.service.ts:59 ~ RoleService ~ addRole ~ res:', res)
     return res
   }
 

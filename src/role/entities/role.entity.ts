@@ -14,22 +14,18 @@ import { PermissionLists } from 'src/permission-list/entities/permission-list.en
 
 @Entity()
 export class Roles {
-    @PrimaryGeneratedColumn()
-    // @Exclude()
-    roleId: number;
 
-    @Column()
-    @Generated("uuid")
+    @PrimaryGeneratedColumn()
     id: string;
 
     // @Column()
     // role: string;   //  角色  admin/superadmin/guest 
 
-    @ApiProperty()
-    @Column()
+    // @ApiProperty()
+    @Column({ unique: true })
     roleName: string; 
 
-    @Column()
+    @Column({default: ''})
     remark: string; 
 
     @Column({default: 1})
@@ -39,15 +35,20 @@ export class Roles {
     @ManyToMany(() => Users, user => user.rolesArr)
     usersArr: Users[];
 
-    // // 此处还需要关联一个角色-路由权限关联表
-    @ManyToMany(() => Menus, menu => menu.rolesArr, { cascade: true})   // 如果设置 eagger: true 查询时会自动加载关联表信息  不需要配置relations
+    // // 角色关联  菜单
+    @ManyToMany(() => Menus, menu => menu.rolesArr, { cascade: true})   // 如果设置 eager: true 查询时会自动加载关联表信息  不需要配置relations
     @JoinTable()  // 因为是多对多   这里是要关联整张表格
-    permissionsArr: Relation<Menus[]>;// ESM中   双向关系   定义relation 避免循环依赖
+    menusArr: Relation<Menus[]>;// ESM中   双向关系   定义relation 避免循环依赖
 
 
+    // 角色关联permissionList
+    @OneToMany(() => PermissionLists, permissionList => permissionList.role, )  //如果设置 eager: true 查询时会自动加载关联表信息  不需要配置relations
+     @JoinTable()
+     permissionList: Relation<PermissionLists[]>;  // ESM中   双向关系   定义relation 避免循环依赖
 
-    @OneToMany(() => PermissionLists, permissionList => permissionList.permissionRole)  
-    permissions: PermissionLists[];
+    // @OneToMany(() => PermissionLists, permissionList => permissionList.permissionRole, { eager: true }) //  
+    // @JoinColumn()   // 定义了JoinColumn  代表他是关联表的所有者  
+    // permissions: PermissionLists[];
 
     @CreateDateColumn()  //创建时自动插入日期时间
     createTime: string;

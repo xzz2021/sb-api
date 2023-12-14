@@ -8,24 +8,26 @@ export class PermissionLists {
 
     @PrimaryGeneratedColumn()
     // @Exclude()
-    permissionId: number;
+    id: number;
 
-    @Column()
-    @Generated("uuid")  // 因为uuid有-符号  所以必须设定成字符串
-    id: string;
+    // @Column()
+    // @Generated("uuid")  // 因为uuid有-符号  所以必须设定成字符串
+    // id: string;
 
-    @Column()
+    // @Column({default: null})  //   此处parentId 其实就是关联的菜单id
+    // parentId: number;
+
+    @Column()  //  权限名称  按钮名称
     label: string;
 
     @Column()
     value: string;
 
-    // 每个次级菜单对应一个meta表里一行数据,  被关联表entity不需要定义
-    @ManyToOne(() => Roles, role => role.permissions)  
-    @JoinColumn()   // 定义了JoinColumn  代表他是关联表的所有者  
-    permissionRole: Roles;
 
-     @ManyToMany(() => Menus)
-     @JoinTable()
-     menus: Relation<Menus[]>;  // ESM中   双向关系   定义relation 避免循环依赖
+    @ManyToOne(() => Roles, role => role.permissionList)  
+    role: Roles;
+
+     //   此处  其实就是关联了菜单
+     @ManyToOne(() => Menus, menu => menu.permissionList )  
+     menu: Menus;  // ESM中   双向关系   定义relation 避免循环依赖
 }

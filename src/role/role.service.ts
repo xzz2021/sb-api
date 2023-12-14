@@ -15,47 +15,9 @@ export class RoleService {
     // private readonly menuService: MenuService
   ){}
   
-  async getMenu(roleName: string) {
-
-    // const result = await this.menuService.getAllMenu()
-    // console.log('🚀 ~ file: role.service.ts:21 ~ RoleService ~ getMenu ~ result:', result)
-    if(roleName === '超级管理员') {
-      return adminList
-    }else {
-       let testList = [{
-            path: '/dashboard',
-        component: '#',
-        redirect: '/dashboard/workplace',
-        name: 'Dashboard',
-        meta: {
-          title: 'router.dashboard',
-          icon: 'ant-design:dashboard-filled',
-          alwaysShow: true
-        },
-        children: [
-          {
-            path: 'workplace',
-            component: 'views/Dashboard/Workplace',
-            name: 'Workplace',
-            meta: {
-              title: 'router.workplace',
-              noCache: true,
-              affix: true
-            }
-          }
-        ]
-      }]
-
-      return testList
-    
-  }
-  };
-
-
 
   async findAllRoles(){
     const res = await this.rolesRepository.find();
-    // console.log('🚀 ~ file: role.service.ts:52 ~ RoleService ~ findAllRoles ~ res:', res)
     return res
   }
 
