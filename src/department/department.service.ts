@@ -36,6 +36,7 @@ export class DepartmentService {
 
   //  批量删除部门
   async batchRemoveDepartment(list: any[]){
+    console.log('🚀 ~ file: department.service.ts:39 ~ DepartmentService ~ batchRemoveDepartment ~ list:', list)
     //  delete 默认以自增id作为参数进行删除操作
     // 指定被删除的列名
     const res = await this.departmentsRepository.delete({ id: In(list) })

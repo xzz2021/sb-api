@@ -19,7 +19,7 @@ export class MenuService {
 
 
   async getAllMenu(){
-    const result = await this.menuRepository.find()
+    const result = await this.menuRepository.find({relations: ['permissionList']})
     return result
   }
 
@@ -39,32 +39,7 @@ export class MenuService {
     }
     };
 
-    //  此处即用户菜单  也带权限表  用于分配
-   async getMenuAndPermission(rolesArr: any[]){
-    //  如果是游客
-    if(rolesArr.length == 1 && rolesArr[0].roleName == '游客') {
-      // 如果是游客, 不用返回数据, 因为没有相关页面
-      return []
 
-  }
-    //  要同时拿到 用户菜单 和 角色菜单
-    //  先判断是否是超级管理员
-    const isSuperAdmin = rolesArr.some(item => item.roleName == '超级管理员')
-    if(isSuperAdmin){
-      // 如果是超级管理员, 直接返回 所有菜单 所有按钮权限
-      const supAdminMenusArr = await this.menuRepository.find()
-      console.log('🚀 ~ file: menu.service.ts:50 ~ MenuService ~ getMenuAndPermission ~ supAdminMenusArr:', supAdminMenusArr)
-      return supAdminMenusArr
-    } else {
-      //  如果是其他用户 []
-      // const roleMenusArr = await this.menuRepository.find({where:{rolesArr: In([rolesArr])}})
-      // console.log('🚀 ~ file: menu.service.ts:45 ~ MenuService ~ getMenuAndPermission ~ roleMenusArr:', roleMenusArr)
-      // const permissionList = await this.menuRepository.find({where:{rolesArr: In([rolesArr])}})
-      // console.log('🚀 ~ file: menu.service.ts:47 ~ MenuService ~ getMenuAndPermission ~ permissionList:', permissionList)
-  
-      return 'test'
-    }
-    }
     
 
 
@@ -100,20 +75,8 @@ export class MenuService {
 
   } else {
     // 否则就不是新增  说明是修改  可以直接存储
-    // 先找到原来的菜单
-    if(createMenuDto.permissionList && createMenuDto.permissionList.length > 0) {
-      //  手动管理 超级管理员
-      const permission = createMenuDto.permissionList
-      permission.map((item: any) => {
-      item.roleId = 1
-    })
     const res3 = await this.menuRepository.save(createMenuDto)
     return res3
-  } else {
-
-    const res4 = await this.menuRepository.save(createMenuDto)
-    return res4
-  }
 }
   }
 

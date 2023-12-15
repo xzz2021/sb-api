@@ -9,7 +9,7 @@ export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
 
-  @Get('getAllMenu') //  获取用户的菜单
+  @Get('getAllMenu') //  获取用户的菜单  //  超级管理员测试使用
   getAllMenu() {
     return this.menuService.getAllMenu();
   }
@@ -43,12 +43,12 @@ export class MenuController {
     return this.menuService.getMenu(rolesArr);
   }
 
-  @Get('getMenuAndPermission') //  获取用户的菜单
-  @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
-  getMenuAndPermission(@Req() req: any) {
-    const { username, rolesArr } = req.user;
-    return this.menuService.getMenuAndPermission(rolesArr);
-  }
+  // @Get('getMenuAndPermission') //  获取用户的菜单
+  // @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
+  // getMenuAndPermission(@Req() req: any) {
+  //   const { username, rolesArr } = req.user;
+  //   return this.menuService.getMenuAndPermission(rolesArr);
+  // }
 
   
 

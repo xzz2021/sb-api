@@ -5,8 +5,6 @@ import { Metas } from './entities/meta.entity';
 import { Menus } from './entities/menu.entity';
 import { MenuController } from './menu.controller';
 import { MenuService } from './menu.service';
-import { RoleModule } from 'src/role/role.module';
-
 
 @Module({
   imports: [

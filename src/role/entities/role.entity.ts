@@ -36,13 +36,13 @@ export class Roles {
     usersArr: Users[];
 
     // // 角色关联  菜单
-    @ManyToMany(() => Menus, menu => menu.rolesArr, { cascade: true})   // 如果设置 eager: true 查询时会自动加载关联表信息  不需要配置relations
+    @ManyToMany(() => Menus, menu => menu.rolesArr, { cascade: true, eager: true })   // 如果设置 eager: true 查询时会自动加载关联表信息  不需要配置relations
     @JoinTable()  // 因为是多对多   这里是要关联整张表格
     menusArr: Relation<Menus[]>;// ESM中   双向关系   定义relation 避免循环依赖
 
 
     // 角色关联permissionList
-    @OneToMany(() => PermissionLists, permissionList => permissionList.role, )  //如果设置 eager: true 查询时会自动加载关联表信息  不需要配置relations
+    @OneToMany(() => PermissionLists, permissionList => permissionList.role, { cascade: true})  //如果设置 eager: true 查询时会自动加载关联表信息  不需要配置relations
      @JoinTable()
      permissionList: Relation<PermissionLists[]>;  // ESM中   双向关系   定义relation 避免循环依赖
 

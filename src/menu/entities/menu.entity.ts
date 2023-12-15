@@ -56,7 +56,7 @@ export class Menus {
      rolesArr: Relation<Roles[]>;  // ESM中   双向关系   定义relation 避免循环依赖
 
      // 菜单关联按钮权限
-     @OneToMany(() => PermissionLists, permissionList => permissionList.menu, { cascade: true, eager: true})  //如果设置 eager: true 查询时会自动加载关联表信息  不需要配置relations
+     @OneToMany(() => PermissionLists, permissionList => permissionList.menu, { cascade: true })  //如果设置 eager: true 查询时会自动加载关联表信息  不需要配置relations
      @JoinTable()
      permissionList: Relation<PermissionLists[]>;  // ESM中   双向关系   定义relation 避免循环依赖
 }

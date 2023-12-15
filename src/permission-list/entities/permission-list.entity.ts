@@ -14,8 +14,8 @@ export class PermissionLists {
     // @Generated("uuid")  // 因为uuid有-符号  所以必须设定成字符串
     // id: string;
 
-    // @Column({default: null})  //   此处parentId 其实就是关联的菜单id
-    // parentId: number;
+    // @Column()  //   此处parentId 其实就是关联的菜单id
+    // menuId: number;
 
     @Column()  //  权限名称  按钮名称
     label: string;

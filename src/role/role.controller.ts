@@ -26,6 +26,14 @@ export class RoleController {
     return this.roleService.findAllRoles();
   }
 
+  @Get('list') // 根据角色 获取用户的菜单 以及  权限
+  @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
+  getMenuAndPermission(@Req() req: any) {
+    const { username, rolesArr } = req.user;
+    return this.roleService.getMenuAndPermission(rolesArr);
+  }
+  
+
 
   //  添加角色
   @Post('addRole')
