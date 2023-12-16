@@ -69,4 +69,15 @@ export class UserinfoController {
       return this.userinfoService.create(createUsersDto);
     }
 
+    @Get('findAll')
+    findAll() {
+      return this.userinfoService.findAllUser();
+    }
+
+
+    @Post('modify')  // 修改用户信息接口
+    modifyUser(@Body() createUsersDto: any) {
+      return this.userinfoService.modifyUser(createUsersDto);
+    }
+
 }

@@ -4,4 +4,5 @@ export class CreateDepartmentDto {
     remark?: string; 
     status: number;
     parentId: number
+    usersArr?: any[]
 }

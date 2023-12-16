@@ -9,11 +9,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from './entities/userinfo.entity';
 import { Roles } from 'src/role/entities/role.entity';
 import { Menus } from 'src/menu/entities/menu.entity';
+import { Departments } from 'src/department/entities/department.entity';
 
 @Module({
   imports: [ 
     // 注意子模块被夫模块引用时   如果子模块service有调用数据库表格， 则此处必须进行对数据库表格引入进行枚举， TypeOrmModule.forFeature
-    TypeOrmModule.forFeature([ Users, Roles, Menus ]),
+    TypeOrmModule.forFeature([ Users, Roles, Menus, Departments ]),
     // TypeOrmModule.forRoot({autoLoadEntities: true,}),
     PassportModule,
     JwtModule.register({

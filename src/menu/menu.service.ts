@@ -5,7 +5,6 @@ import { UpdateMenuDto } from './dto/update-menu.dto';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { Menus } from './entities/menu.entity';
 import { Metas } from './entities/meta.entity';
-import adminList from './list';
 
 @Injectable()
 export class MenuService {
@@ -41,7 +40,7 @@ export class MenuService {
       }
       return item
     })
-      console.log('🚀 ~ file: menu.service.ts:43 ~ MenuService ~ newMenus ~ newMenus:', newMenus)
+      // console.log('🚀 ~ file: menu.service.ts:43 ~ MenuService ~ newMenus ~ newMenus:', newMenus)
       // 拿到所有菜单  生成嵌套数据
       let newData = formatToTree(newMenus, undefined)
       return newData
@@ -72,9 +71,9 @@ export class MenuService {
     if(menu.permissionList  && menu.permissionList.length > 0 ) {
       menu.permissionList = JSON.stringify(menu.permissionList)
     }
-    console.log('🚀 ~ file: menu.service.ts:66 ~ MenuService ~ addMenu ~ menu.permissionList:', menu.permissionList)
+    // console.log('🚀 ~ file: menu.service.ts:66 ~ MenuService ~ addMenu ~ menu.permissionList:', menu.permissionList)
   const curMenu: any = await this.menuRepository.findOne({where: { name: menu.name } })
-  console.log('🚀 ~ file: menu.service.ts:68 ~ MenuService ~ addMenu ~ curMenu:', curMenu)
+  // console.log('🚀 ~ file: menu.service.ts:68 ~ MenuService ~ addMenu ~ curMenu:', curMenu)
   if(curMenu == null) {   //  如果不存在 说明是新增
     const newMenuSave = await this.menuRepository.create(menu)
     const res = await this.menuRepository.save(newMenuSave)

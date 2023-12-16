@@ -10,36 +10,9 @@ export class DepartmentController {
   // 获取所有角色信息
   @Get('getDepartmentTable')
   getDepartmentTable(){
-    // return this.departmentService.findAllDepartments();
-    let list = [{
-      departmentName: '泉州总公司',
-      remark: '泉州9999',
-      status: 1,
-      id: '908798676786',
-      createTime: '2020-01-01 00:00:00',
-      children: [
-        {
-          departmentName: '开发部',
-          remark: '开发89798798789',
-          status: 1,
-          id: '908798676786',
-          createTime: '2020-01-01 00:00:00',
-          // children: []
-          // children: [
-          //   {
-          //     departmentName: '组长',
-          //     remark: '组长89798798789',
-          //     status: 1,
-          //     id: '908798676786',
-          //     createTime: '2020-01-01 00:00:00',
-          //     // children: []
-          //   }
-          // ]
-        }
-      ]
-    }]
+
     // return { list, total: list.length  }
-    return this.departmentService.getList(); 
+    return this.departmentService.getDepartmentTable(); 
   }
 
   @Post('add')
@@ -71,14 +44,18 @@ export class DepartmentController {
 
   @Get('users')
   findByDepartment(@Query() joinQueryParams: any) {
-    console.log('🚀 ~ file: department.controller.ts:74 ~ DepartmentController ~ findByDepartment ~ joinQueryParams:', joinQueryParams)
     // 根据部门id参数 查询关联用户  ?id=6&pageIndex=1&pageSize=10  
-    return this.departmentService.findAll();
+    return this.departmentService.findByDepartment(joinQueryParams)
   }
 
   @Get()
   findAll() {
     return this.departmentService.findAll();
+  }
+
+  @Get('tempadd')
+  tempadd(){
+    return this.departmentService.tempadd()
   }
 
 }

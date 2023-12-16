@@ -10,6 +10,7 @@ import { Users } from './entities/userinfo.entity';
 import { In, Repository } from 'typeorm';
 import { Roles } from 'src/role/entities/role.entity';
 import { Menus } from 'src/menu/entities/menu.entity';
+import { Departments } from 'src/department/entities/department.entity';
 
 
 
@@ -19,10 +20,10 @@ export class UserinfoService {
       constructor(
         @InjectRepository(Users) private readonly userinfoRepository:  //  调用数据库必须进行注入
         Repository<Users>,
-        @InjectRepository(Roles) private readonly rolesRepository:  //  调用数据库必须进行注入
-        Repository<Roles>,
         @InjectRepository(Menus) private readonly menuRepository:  //  调用数据库必须进行注入
         Repository<Menus>,
+        @InjectRepository(Departments) private readonly departmentsRepository:  //  调用数据库必须进行注入
+    Repository<Departments>,
         private jwtService: JwtService
       ){}
     
@@ -108,7 +109,7 @@ export class UserinfoService {
     
       // 通过用户名获取用户信息
       async findOne(username: string) {
-        let res = await this.userinfoRepository.findOne({where: {username}})  // 获取基础信息及角色信息
+        let res = await this.userinfoRepository.findOne({where: {username}, relations: ['role']})  // 获取基础信息及角色信息
         return res
         // let { roleId, roleName } = res.rolesArr
         // let resInfo = await this.rolesRepository.findOne({where: {roleId},  relations: ['permissions']})  // 根据获取路由权限信息
@@ -135,9 +136,40 @@ export class UserinfoService {
         // console.log("🚀 ~ file: demo.service.ts:35 ~ DemoService ~ update ~ res:", res)
         return  res.affected ? '修改成功': '修改失败'
       }
+
+      async modifyUser(createUsersDto){
+        //  修改用户信息
+        // const curUser = await this.userinfoRepository.findOne({where: {id: createUsersDto.id}})
+        // if(curUser == null) {   //  如果不存在 说明是新增
+        //   // 先不处理
+        //   return '暂不处理'
+        //   const newUserSave = await this.menuRepository.create(createUsersDto)
+        //   const res = await this.menuRepository.save(newUserSave)
+        //   return res
+        // } else {
+        //   //  存在  直接存储
+        //   const res = await this.menuRepository.save(curUser)
+        //   return res
+        // }
+
+        //模拟修改
+        // const curUser = await this.userinfoRepository.findOne({where: {id: createUsersDto.id}})
+        // console.log('🚀 ~ file: userinfo.service.ts:157 ~ UserinfoService ~ modifyUser ~ curUser:', curUser)
+        // if(curUser){
+        //   const top = await this.departmentsRepository.findOne({where: {id: 1}})
+        //   console.log('🚀 ~ file: userinfo.service.ts:159 ~ UserinfoService ~ modifyUser ~ top:', top)
+        //   // return ''
+        //   curUser.departmentsArr = [top]
+        //   const res = await this.menuRepository.save(curUser)
+        //   console.log('🚀 ~ file: userinfo.service.ts:169 ~ UserinfoService ~ modifyUser ~ res:', res)
+        //   return res
+        // }
+
+      }
     
       async remove(body) {
         let res = await this.userinfoRepository.delete(body)
+        console.log('🚀 ~ file: userinfo.service.ts:172 ~ UserinfoService ~ remove ~ res:', res)
         if(res.affected == 1) return { msg: `已删除用户: ${body.username}`}
         // return await this.userinfoRepository.delete(body)
       }
@@ -179,5 +211,11 @@ export class UserinfoService {
           userInfo: user,
           tokenKey: this.jwtService.sign(payload),
         }
+    }
+
+
+    async findAllUser() {
+      const res = await this.userinfoRepository.find()
+      return res
     }
 }

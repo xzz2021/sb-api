@@ -39,12 +39,11 @@ export class Users {
     deletetime: string;
 
     //   一个用户  对应一个角色
-   @ManyToOne(() => Roles, role => role.usersArr, { eager: true})   //关联表单
+   @ManyToOne(() => Roles, role => role.usersArr, )   //关联表单  ???  { eager: true}
    role: Roles; 
 
     //  一个用户 对应 多个  部门
-   @ManyToMany(() => Departments, department => department.departmentName)  
-    @JoinTable()   // 定义了JoinColumn  代表他是关联表的所有者  
-    DepartmentsArr: Relation<Departments[]>;
+   @ManyToMany(() => Departments, department => department.departmentUsersArr, )  
+    departmentsArr: Departments[];
 
 }

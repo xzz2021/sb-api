@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Roles } from './entities/role.entity';
 import { Repository } from 'typeorm';
 import { MenuService } from 'src/menu/menu.service';
+import adminList from './list'
+
 @Injectable()
 export class RoleService {
 
@@ -92,7 +94,6 @@ export class RoleService {
 
       //  此处即用户菜单  也带权限表  
    async getMenuByRole(role: CreateRoleDto){
-    console.log('🚀 ~ file: role.service.ts:78 ~ RoleService ~ getMenuByRole ~ role:', role)
     //  如果是游客
     if(!role)  return []
     const formatToTree = (ary: any[], pid: number | undefined) => {
@@ -113,11 +114,14 @@ export class RoleService {
     //  先判断是否是超级管理员
     // const isSuperAdmin = rolesArr.some(item => item.roleName == '超级管理员')
     if(role.roleName == '超级管理员'){
+      adminList.map((item) => {
+        item['title'] = item.meta ? item.meta?.title || '' : ''
+      })
       const allMenuAndPermission = await this.menuService.getAllMenu()
       // console.log('🚀 ~ file: role.service.ts:113 ~ RoleService ~ getMenuByRole ~ allMenuAndPermission:', allMenuAndPermission)
       // // 拿到所有菜单  生成嵌套数据
-      // let newData = await formatToTree(allMenuAndPermission, null)
-      return allMenuAndPermission
+      let newData = [...allMenuAndPermission, ...adminList]
+      return newData
     }
       // 其他角色  直接 拿到角色表对应的  菜单  目前角色  只分配一个
       const curRole = await this.rolesRepository.findOne({where: {roleName: role.roleName}})

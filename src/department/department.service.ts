@@ -4,16 +4,21 @@ import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Departments } from './entities/department.entity';
 import { In, Repository } from 'typeorm';
+import { UserinfoService } from 'src/userinfo/userinfo.service';
+import { Users } from 'src/userinfo/entities/userinfo.entity';
 
 @Injectable()
 export class DepartmentService {
   constructor(
     @InjectRepository(Departments) private readonly departmentsRepository:  //  调用数据库必须进行注入
     Repository<Departments>,
+    @InjectRepository(Users) private readonly userinfoRepository:  //  调用数据库必须进行注入
+        Repository<Users>,
+    // private readonly userinfoService: UserinfoService,
   ){}
 
   // 获取所有部门
-  async getList(){
+  async getDepartmentTable(){
     const res = await this.departmentsRepository.find();
     // 需要嵌套
     const formatToTree = (ary: any[], pid: number | undefined) => {
@@ -59,6 +64,16 @@ export class DepartmentService {
     return res
   }
 
+  async findByDepartment(joinQueryParams){
+    // { id: '6', pageIndex: '1', pageSize: '10' }
+    let  {  id , pageIndex, pageSize } = joinQueryParams
+    if(!id) id = 1
+    const res = await this.departmentsRepository.find({where: { id }, relations: ['departmentUsersArr']})
+    // const list = res.usersArr
+    // console.log('🚀 ~ file: department.service.ts:72 ~ DepartmentService ~ findByDepartment ~ res:', res)
+    return res
+  }
+
   create(createDepartmentDto: CreateDepartmentDto) {
     return 'This action adds a new department';
   }
@@ -77,5 +92,16 @@ export class DepartmentService {
 
   remove(id: number) {
     return `This action removes a #${id} department`;
+  }
+  async tempadd(){
+    
+        // 模拟修改
+        // const addUser = await this.userinfoRepository.findOne({where: {id: 3}})
+        // if(addUser){
+        //   const top = await this.departmentsRepository.findOne({where: {id: 1}})
+        //   // top.usersArr = addUser
+        //   const res = await this.departmentsRepository.save(top)
+        //   return res
+        // }
   }
 }
