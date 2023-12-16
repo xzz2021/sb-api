@@ -56,8 +56,8 @@ export class UserinfoService {
         // 然后找到此用户实体
         const currentUser = await this.userinfoRepository.findOne({where: {username}})
         //  如果是新注册用户  必定是游客身份   直接存储此身份
-        if(!createUsersDto.rolesArr || createUsersDto.rolesArr.length == 0){
-          createUsersDto.rolesArr = [{
+        if(!createUsersDto.role){
+          createUsersDto.role = {
             "id": 2,
             "roleName": "游客",
             "remark": "",
@@ -65,7 +65,7 @@ export class UserinfoService {
             "createTime": "2023-12-14T01:27:25.059Z",
             "updateTime": "2023-12-14T01:27:25.059Z",
             "deleteTime": null
-        }]
+        }
         }
 
         //  超级管理员临时注册-------------------
@@ -80,12 +80,9 @@ export class UserinfoService {
         // }]
         //--------------------------------------
 
-        //  以下是 对角色信息的新增   或修改 同一套代码
-        const {  rolesArr } = createUsersDto
-        //  直接批量存入多个对应关系的项目
-        // const resArr = await this.rolesRepository.find({where: {roleName: In(rolesArr)}})
-        //     console.log('🚀 ~ file: userinfo.service.ts:76 ~ UserinfoService ~ create ~ resArr:', resArr)
-            currentUser.rolesArr = rolesArr
+
+
+            currentUser.role = createUsersDto.role
         try{
           const  res =  await this.userinfoRepository.save(currentUser)
           return res 
@@ -177,7 +174,7 @@ export class UserinfoService {
     async login(userinfo) {
       const user = await this.findOne(userinfo.username)
       // 数据库中用户角色信息是包含多个列信息组成的对象 集合的数组, 所以需要提取出roleName
-      const payload = { username: user.username, rolesArr: user.rolesArr }
+      const payload = { username: user.username, role: user.role }
       return  {
           userInfo: user,
           tokenKey: this.jwtService.sign(payload),

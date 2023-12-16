@@ -3,9 +3,10 @@
 
 
 //  此处定义完会直接连接数据库生成表， 新增和移除column也能自动完成
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn, Relation, UpdateDateColumn, VersionColumn } from 'typeorm'
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, Relation, UpdateDateColumn, VersionColumn } from 'typeorm'
 import { Exclude } from 'class-transformer';
 import { Roles } from 'src/role/entities/role.entity';
+import { Departments } from 'src/department/entities/department.entity';
 
 //   如果想在单个数据源中使用多个数据库,直接指定数据库的命名
 //   @Entity({database: 'secondDatabaseName'})
@@ -37,9 +38,13 @@ export class Users {
     @Exclude()
     deletetime: string;
 
-    //  多对多关联用户 一个用户可能有多个角色
-   @ManyToMany(() => Roles, role => role.usersArr, { eager: true, cascade: ['insert', 'update'] })   //关联表单
-   @JoinTable()  // 因为是多对多   这里是要关联整张表格
-   rolesArr: Roles[]; 
+    //   一个用户  对应一个角色
+   @ManyToOne(() => Roles, role => role.usersArr, { eager: true})   //关联表单
+   role: Roles; 
+
+    //  一个用户 对应 多个  部门
+   @ManyToMany(() => Departments, department => department.departmentName)  
+    @JoinTable()   // 定义了JoinColumn  代表他是关联表的所有者  
+    DepartmentsArr: Relation<Departments[]>;
 
 }

@@ -8,7 +8,6 @@ import { Users } from 'src/userinfo/entities/userinfo.entity';
 import { Menus } from 'src/menu/entities/menu.entity';
 
 import { Exclude } from 'class-transformer';
-import { PermissionLists } from 'src/permission-list/entities/permission-list.entity';
 // import { UsersRole } from './usersrole.entity';
 
 
@@ -17,9 +16,6 @@ export class Roles {
 
     @PrimaryGeneratedColumn()
     id: string;
-
-    // @Column()
-    // role: string;   //  角色  admin/superadmin/guest 
 
     // @ApiProperty()
     @Column({ unique: true })
@@ -31,24 +27,28 @@ export class Roles {
     @Column({default: 1})
     status: number; 
 
+
+    // @Column({default: ''})  //  将分配的用户菜单及权限以json形式存储
+    // menusArr: string; 
+
+    @Column({default: null, type: 'longtext'})  //  将分配的用户菜单及权限以json形式存储
+    menusArr: string; 
+
     // 单一角色 可以对应多个用户  用户-角色关联表
-    @ManyToMany(() => Users, user => user.rolesArr)
+    // @ManyToMany(() => Users, user => user.rolesArr)
+    // usersArr: Users[];
+
+    // 每个用户对应一个角色
+    //  一个角色 可以对应多个用户
+    @OneToMany(() => Users, user => user.role)  
+    @JoinColumn()   // 定义了JoinColumn  代表他是关联表的所有者  
     usersArr: Users[];
 
+
     // // 角色关联  菜单
-    @ManyToMany(() => Menus, menu => menu.rolesArr, { cascade: true, eager: true })   // 如果设置 eager: true 查询时会自动加载关联表信息  不需要配置relations
-    @JoinTable()  // 因为是多对多   这里是要关联整张表格
-    menusArr: Relation<Menus[]>;// ESM中   双向关系   定义relation 避免循环依赖
-
-
-    // 角色关联permissionList
-    @OneToMany(() => PermissionLists, permissionList => permissionList.role, { cascade: true})  //如果设置 eager: true 查询时会自动加载关联表信息  不需要配置relations
-     @JoinTable()
-     permissionList: Relation<PermissionLists[]>;  // ESM中   双向关系   定义relation 避免循环依赖
-
-    // @OneToMany(() => PermissionLists, permissionList => permissionList.permissionRole, { eager: true }) //  
-    // @JoinColumn()   // 定义了JoinColumn  代表他是关联表的所有者  
-    // permissions: PermissionLists[];
+    // @ManyToMany(() => Menus, menu => menu.rolesArr, { cascade: true, eager: true })   // 如果设置 eager: true 查询时会自动加载关联表信息  不需要配置relations
+    // @JoinTable()  // 因为是多对多   这里是要关联整张表格
+    // menusArr: Relation<Menus[]>;// ESM中   双向关系   定义relation 避免循环依赖
 
     @CreateDateColumn()  //创建时自动插入日期时间
     createTime: string;

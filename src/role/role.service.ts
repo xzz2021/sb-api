@@ -23,11 +23,28 @@ export class RoleService {
 
   // 添加角色时会添加菜单
   async addRole(createRoleDto: any){
-    console.log('🚀 ~ file: role.service.ts:25 ~ RoleService ~ addRole ~ createRoleDto:', createRoleDto)
+    // console.log('🚀 ~ file: role.service.ts:25 ~ RoleService ~ addRole ~ createRoleDto:', createRoleDto)
 
-    return 'iii'
-
-
+    //  添加  和  修改 会 同时请求  同一个  接口
+    //  先判断  是否存在
+  const curRole: any = await this.rolesRepository.findOne({where: { roleName: createRoleDto.roleName } })
+  console.log('🚀 ~ file: role.service.ts:31 ~ RoleService ~ addRole ~ curRole:', curRole)
+  if(createRoleDto.menusArr && createRoleDto.menusArr.length > 0 ){
+    createRoleDto.menusArr = JSON.stringify(createRoleDto.menusArr)
+    // createRoleDto.menusArr = createRoleDto.menusArr
+  }
+  console.log('🚀 ~ file: role.service.ts:34 ~ RoleService ~ addRole ~ createRoleDto:', createRoleDto)
+  if(curRole == null) {   //  如果不存在 说明是新增
+    const newRoleSave = await this.rolesRepository.create(createRoleDto)
+    const res = await this.rolesRepository.save(newRoleSave)
+    return res
+  } else {
+    //  存在  直接存储
+    curRole.menusArr = createRoleDto.menusArr
+    const res = await this.rolesRepository.save(curRole)
+    console.log('🚀 ~ file: role.service.ts:45 ~ RoleService ~ addRole ~ res:', res)
+    return res
+  }
 
     // 新增角色时  要考虑 分配菜单  及 权限
     // 000 先拿到当前角色自己所拥有的所有菜单及角色 前端会自动请求menu/list接口
@@ -71,39 +88,49 @@ export class RoleService {
     return res
   }
 
+  
 
-
-      //  此处即用户菜单  也带权限表  用于分配
-   async getMenuAndPermission(rolesArr: CreateRoleDto[]){
+      //  此处即用户菜单  也带权限表  
+   async getMenuByRole(role: CreateRoleDto){
+    console.log('🚀 ~ file: role.service.ts:78 ~ RoleService ~ getMenuByRole ~ role:', role)
     //  如果是游客
-    if(rolesArr.length == 0)  return []
-    if(rolesArr.length == 1 && rolesArr[0].roleName == '游客') {
-      // 如果是游客, 不用返回数据, 因为没有相关页面
-      return []
-  }
+    if(!role)  return []
+    const formatToTree = (ary: any[], pid: number | undefined) => {
+      return ary
+        .filter((item) =>
+          // 如果没有父id（第一次递归的时候）将所有父级查询出来
+          // 这里认为 item.parentId === 1 就是最顶层 需要根据业务调整
+          pid === undefined ? item.parentId === null : item.parentId === pid
+        )
+        .map((item2) => {
+          // 通过父节点ID查询所有子节点
+          item2.children = formatToTree(ary, item2.id)
+          return item2
+        })
+    }
+
     //  要同时拿到 用户菜单 和 角色菜单
     //  先判断是否是超级管理员
-    const isSuperAdmin = rolesArr.some(item => item.roleName == '超级管理员')
-    if(isSuperAdmin){
-      // 如果是超级管理员, 直接返回 所有菜单 所有按钮权限
+    // const isSuperAdmin = rolesArr.some(item => item.roleName == '超级管理员')
+    if(role.roleName == '超级管理员'){
       const allMenuAndPermission = await this.menuService.getAllMenu()
-      console.log('🚀 ~ file: role.service.ts:59 ~ RoleService ~ getMenuAndPermission ~ allMenuAndPermission:', allMenuAndPermission)
-      // const supAdminMenusArr = await this.rolesRepository.find({ relations: ['menusArr'] })
+      // console.log('🚀 ~ file: role.service.ts:113 ~ RoleService ~ getMenuByRole ~ allMenuAndPermission:', allMenuAndPermission)
+      // // 拿到所有菜单  生成嵌套数据
+      // let newData = await formatToTree(allMenuAndPermission, null)
       return allMenuAndPermission
-      // return supAdminMenusArr
-    } 
-      //  如果是其他用户 []
-      // 先遍历出id
-      const idArr = rolesArr.map((item: CreateRoleDto) => item.id)
-      console.log('🚀 ~ file: role.service.ts:66 ~ RoleService ~ getMenuAndPermission ~ idArr:', idArr)
-      return 'ttt'
-      // 先找到所有角色的 关联菜单 去重  
-      // const getAllMenu = await this.rolesRepository.find({where:{id: In([rolesArr])}})
-      // const roleMenusArr = await this.menuRepository.find({where:{rolesArr: In([rolesArr])}})
-      // console.log('🚀 ~ file: menu.service.ts:45 ~ MenuService ~ getMenuAndPermission ~ roleMenusArr:', roleMenusArr)
-      // const permissionList = await this.menuRepository.find({where:{rolesArr: In([rolesArr])}})
-      // console.log('🚀 ~ file: menu.service.ts:47 ~ MenuService ~ getMenuAndPermission ~ permissionList:', permissionList)
-  
+    }
+      // 其他角色  直接 拿到角色表对应的  菜单  目前角色  只分配一个
+      const curRole = await this.rolesRepository.findOne({where: {roleName: role.roleName}})
+      // console.log('🚀 ~ file: role.service.ts:100 ~ RoleService ~ getMenuByRole ~ role:', role)
+      //  先拿到  角色对应的  菜单
+      if(!curRole.menusArr || curRole.menusArr  == '') return '角色关联 菜单 数据异常'
+      const roleMenus = JSON.parse(curRole.menusArr)
+      // console.log('🚀 ~ file: role.service.ts:103 ~ RoleService ~ getMenuByRole ~ roleMenus:', roleMenus)
+      //  再拿到  角色对应的  菜单  对应的  按钮
+      
+      // let nestedMenus = formatToTree(roleMenus, undefined)
+
+      return  roleMenus
     }
 
 

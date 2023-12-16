@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { DepartmentService } from './department.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
@@ -64,23 +64,21 @@ export class DepartmentController {
     return this.departmentService.create(createDepartmentDto);
   }
 
+  // @Get('joinquery')  // 联合查询
+  // joinQuery(@Query() joinQueryParams: joinQueryInfo) {
+  //   this.userinfoService.joinQuery(joinQueryParams)
+  // }
+
+  @Get('users')
+  findByDepartment(@Query() joinQueryParams: any) {
+    console.log('🚀 ~ file: department.controller.ts:74 ~ DepartmentController ~ findByDepartment ~ joinQueryParams:', joinQueryParams)
+    // 根据部门id参数 查询关联用户  ?id=6&pageIndex=1&pageSize=10  
+    return this.departmentService.findAll();
+  }
+
   @Get()
   findAll() {
     return this.departmentService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.departmentService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDepartmentDto: UpdateDepartmentDto) {
-    return this.departmentService.update(+id, updateDepartmentDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.departmentService.remove(+id);
-  }
 }

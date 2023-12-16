@@ -5,6 +5,7 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, Generated, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
+import { Users } from 'src/userinfo/entities/userinfo.entity';
 // import { UsersRole } from './usersrole.entity';
 
 
@@ -41,5 +42,9 @@ export class Departments {
     @DeleteDateColumn()
     @Exclude()
     deleteTime: string;
+
+    //  一个部门  对应 多个  用户
+    @ManyToMany(() => Users, user => user.username, { eager: true})   //关联表单
+    usersArr: Relation<Users[]>; 
 
 }

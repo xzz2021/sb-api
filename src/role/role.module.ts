@@ -9,7 +9,6 @@ import { Users } from 'src/userinfo/entities/userinfo.entity';
 
 import { MenuService } from 'src/menu/menu.service';
 import { Metas } from 'src/menu/entities/meta.entity';
-import { PermissionLists } from 'src/permission-list/entities/permission-list.entity';
 
 @Module({
   imports: [

@@ -8,5 +8,5 @@ export class CreateMenuDto {
     redirect: string
     status: number 
     meta?: Metas
-    permissionList?: any[]  
+    permissionList?: string
 }

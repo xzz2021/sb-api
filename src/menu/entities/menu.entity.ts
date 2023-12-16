@@ -6,8 +6,6 @@ import { Column, Entity, Generated, JoinColumn, JoinTable, ManyToMany, OneToMany
 import { ApiProperty } from '@nestjs/swagger';
 import { Roles } from 'src/role/entities/role.entity';
 import { Metas } from './meta.entity';
-import { PermissionLists } from 'src/permission-list/entities/permission-list.entity';
-// import { UsersRole } from './usersrole.entity';
 
 
 @Entity()
@@ -17,14 +15,10 @@ export class Menus {
     // @Exclude()
     id: number;
 
-    // @Column()
-    // @Generated("uuid")  // 因为uuid有-符号  所以必须设定成字符串
-    // id: string;
-
     @Column({default: null})
     parentId: number;
 
-    @Column()
+    @Column({default: ''})
     path: string;
 
     @Column({default: ''})
@@ -37,8 +31,20 @@ export class Menus {
     // @Column({default: ''})
     name: string;
 
-    // @Column()
-    // type: string;
+    @Column({default: ''})  //  权限名称  按钮名称
+    label: string;
+
+    @Column({default: ''})  //  权限名称  按钮名称
+    title: string;
+
+    @Column({default: ''})
+    value: string;
+
+    @Column({default: ''})  // 以json字符串数组形式存储  因为是唯一的
+    permissionList: string;
+
+    @Column({default: 3}) // 类型分三种 0目录/1组件/按钮  没传值时自动设定  它 默认是按钮 3
+    type: number;
 
     @Column({default: 1})
     status: number; 
@@ -48,15 +54,8 @@ export class Menus {
     @JoinColumn()   // 定义了JoinColumn  代表他是关联表的所有者  
     meta: Metas;
 
-    // admin  --->  n+n张菜单    菜单二  联接   add  del  view
-    // normal ---> n张菜单  其中菜单二   联接  add
-
     // 关联角色  被关联
-     @ManyToMany(() => Roles, role => role.menusArr, )  //如果设置 eager: true 查询时会自动加载关联表信息  不需要配置relations
-     rolesArr: Relation<Roles[]>;  // ESM中   双向关系   定义relation 避免循环依赖
+    //  @ManyToMany(() => Roles, role => role.menusArr, )  //如果设置 eager: true 查询时会自动加载关联表信息  不需要配置relations
+    //  rolesArr: Relation<Roles[]>;  // ESM中   双向关系   定义relation 避免循环依赖
 
-     // 菜单关联按钮权限
-     @OneToMany(() => PermissionLists, permissionList => permissionList.menu, { cascade: true })  //如果设置 eager: true 查询时会自动加载关联表信息  不需要配置relations
-     @JoinTable()
-     permissionList: Relation<PermissionLists[]>;  // ESM中   双向关系   定义relation 避免循环依赖
 }

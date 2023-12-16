@@ -8,29 +8,17 @@ import { JwtAuthGuard } from 'src/allProcessor/guard/auth.guard';
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
-  // @Get('getMenu') //  获取用户的菜单
-  // @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
-  // //  这里使用Query  获取get请求的查询参数
-  // // getMenu(@Query() query: any) {
-  // //   return this.roleService.getMenu(query.rolesArr);
-  // // }
-  // getMenu(@Req() req: any) {
-  //   const { username, rolesArr } = req.user;
-  //   return this.roleService.getMenu(rolesArr);
-  // }
-
-
   // 获取所有角色信息
   @Get('getRoletable')
   getRoletable(){
     return this.roleService.findAllRoles();
   }
 
-  @Get('list') // 根据角色 获取用户的菜单 以及  权限
+  @Get('getMenu') // 根据角色 获取用户的菜单 以及  权限
   @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
   getMenuAndPermission(@Req() req: any) {
-    const { username, rolesArr } = req.user;
-    return this.roleService.getMenuAndPermission(rolesArr);
+    const { role } = req.user;
+    return this.roleService.getMenuByRole(role);
   }
   
 

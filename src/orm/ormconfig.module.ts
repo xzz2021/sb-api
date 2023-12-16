@@ -15,10 +15,9 @@ import { Roles } from 'src/role/entities/role.entity';
 import { Departments } from 'src/department/entities/department.entity';
 import { Menus } from 'src/menu/entities/menu.entity';
 import { Metas } from 'src/menu/entities/meta.entity';
-import { PermissionLists } from 'src/permission-list/entities/permission-list.entity';
 
 
-let allEntities = [ Users, Roles, Menus, Departments, Metas, PermissionLists ]
+let allEntities = [ Users, Roles, Menus, Departments, Metas ]
 // let allEntities = [Users, Profile, Roles ]
 
 // 引入.env文件的变量合并到node环境中

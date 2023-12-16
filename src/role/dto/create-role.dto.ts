@@ -1,5 +1,4 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { PermissionLists } from "src/permission-list/entities/permission-list.entity";
 import { Users } from "src/userinfo/entities/userinfo.entity";
 
 export class CreateRoleDto {
@@ -11,5 +10,4 @@ export class CreateRoleDto {
     roleName: string
     menu: string
     usersArr: Users[];
-    permissionList?: PermissionLists[]
 }
