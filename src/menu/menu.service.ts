@@ -154,7 +154,9 @@ export class MenuService {
     return `This action updates a #${id} permission`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} permission`;
+  //删除 菜单
+  async removeMenu(id: number) {
+    const res = await this.menuRepository.delete(id)
+    return res;
   }
 }

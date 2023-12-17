@@ -44,8 +44,7 @@ export class Departments {
     deleteTime: string;
 
     //  一个部门  对应 多个  用户
-    @ManyToMany(() => Users, user => user.departmentsArr, { cascade: true })   //关联表单
-    @JoinTable()   // 定义了JoinColumn  代表他是关联表的所有者  
+    @OneToMany(() => Users, user => user.department,)   //关联表单 
     departmentUsersArr: Users[]; 
 
 }

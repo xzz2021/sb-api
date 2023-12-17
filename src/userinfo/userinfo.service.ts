@@ -218,4 +218,24 @@ export class UserinfoService {
       const res = await this.userinfoRepository.find()
       return res
     }
+
+    //  管理员 新增   或 修改  用户 信息   同一接口
+    async updateUser(createUsersDto) {
+      console.log('🚀 ~ file: userinfo.service.ts:224 ~ UserinfoService ~ updateUser ~ createUsersDto:', createUsersDto)
+      return
+      // if(createUsersDto.id){ //  id不存在  说明是新增
+      //   const newUserSave =  await this.userinfoRepository.create(createUsersDto)
+      //   const res =  await this.userinfoRepository.save(newUserSave)
+      //   return res
+      
+      // }
+      // //  存在  更新
+      // const curUser = await this.userinfoRepository.findOne({where: {id: createUsersDto.roleName}})
+      //  先拿到  角色对应的  菜单
+      const newUserSave =  await this.userinfoRepository.create(createUsersDto)
+
+      const res =  await this.userinfoRepository.save(newUserSave)
+        return res
+
+    }
 }

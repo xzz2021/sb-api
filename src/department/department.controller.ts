@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Req } from '@nestjs/common';
 import { DepartmentService } from './department.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
+import { JwtAuthGuard } from 'src/allProcessor/guard/auth.guard';
 
 @Controller('department')
 export class DepartmentController {
@@ -43,9 +44,11 @@ export class DepartmentController {
   // }
 
   @Get('users')
-  findByDepartment(@Query() joinQueryParams: any) {
+  @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
+  findByDepartment(@Query() joinQueryParams: any, @Req() req: any) {
+    const {  role } = req.user;
     // 根据部门id参数 查询关联用户  ?id=6&pageIndex=1&pageSize=10  
-    return this.departmentService.findByDepartment(joinQueryParams)
+    return this.departmentService.findByDepartment(joinQueryParams, role)
   }
 
   @Get()

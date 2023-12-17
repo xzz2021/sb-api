@@ -64,7 +64,18 @@ export class DepartmentService {
     return res
   }
 
-  async findByDepartment(joinQueryParams){
+
+  //  根据  条件  查询  获取  符合  的  用户
+  async findByDepartment(joinQueryParams, role){
+    if(role.roleName === '超级管理员'){  
+      // 如果是管理员 直接返回  所有用户  作为初始化 管理使用
+      const res = await this.userinfoRepository.find({relations: ['role', 'department']})
+      // console.log('🚀 ~ file: department.service.ts:73 ~ DepartmentService ~ findByDepartment ~ res:', res)
+    return res
+
+    }
+    
+    console.log('🚀 ~ file: department.service.ts:68 ~ DepartmentService ~ findByDepartment ~ joinQueryParams:', joinQueryParams)
     // { id: '6', pageIndex: '1', pageSize: '10' }
     let  {  id , pageIndex, pageSize } = joinQueryParams
     if(!id) id = 1

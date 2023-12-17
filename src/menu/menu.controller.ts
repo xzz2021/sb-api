@@ -34,6 +34,12 @@ export class MenuController {
   }
 
 
+  @Delete('delete:id')
+  remove(@Param('id') id: number) {
+    return this.menuService.removeMenu(id);
+  }
+
+
   // 根据解析到的用户角色信息 获取 菜单
   //  此处只是返回用户菜单  不带权限表
   // @Get('getMenu') //  获取用户的菜单
@@ -77,10 +83,10 @@ export class MenuController {
     return this.menuService.update(+id, updatePermissionDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.menuService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.menuService.remove(+id);
+  // }
 
 
 }

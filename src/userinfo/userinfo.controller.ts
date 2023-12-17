@@ -80,4 +80,12 @@ export class UserinfoController {
       return this.userinfoService.modifyUser(createUsersDto);
     }
 
+
+    //  管理员 新增   或 修改  用户 信息   同一接口
+    @Post('updateUser')
+    @UseGuards(JwtAuthGuard)
+    updateUser(@Body() createUsersDto: any) {
+      return this.userinfoService.updateUser(createUsersDto);
+    }
+
 }
