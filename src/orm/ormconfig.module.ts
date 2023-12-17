@@ -15,6 +15,8 @@ import { Roles } from 'src/role/entities/role.entity';
 import { Departments } from 'src/department/entities/department.entity';
 import { Menus } from 'src/menu/entities/menu.entity';
 import { Metas } from 'src/menu/entities/meta.entity';
+import { Itemlog } from 'src/itemlog/entities/itemlog.entity';
+import { Moneylog } from 'src/moneylog/entities/moneylog.entity';
 
 
 let allEntities = [ Users, Roles, Menus, Departments, Metas ]
@@ -32,7 +34,9 @@ require('dotenv').config();
         TypeOrmModule.forRootAsync({  
             imports: [ConfigModule],
             inject: [ConfigService],
+            name: 'default',
             useFactory: (configService: ConfigService) =>({
+              name: 'default',
               type: 'mysql',
               host: configService.get('DBHOST'),
               port: 3306,
@@ -54,7 +58,31 @@ require('dotenv').config();
               // dataStrings: ['DATE'], //??? 未知作用 强制日期类型    boolean | string[]-TIMESTAMP, DATETIME, DATE
               
             } as TypeOrmModuleOptions ),
-          }),
+          }
+          ),
+          TypeOrmModule.forRootAsync({  
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            name: 'gamelog',
+            useFactory: (configService: ConfigService) =>({
+              name: 'gamelog',
+              type: 'mysql',
+              host: configService.get('DBHOST2'),
+              port: 3306,
+              username: configService.get('DBUSER2'),
+              password: configService.get('DBPWD2'),
+              database: 'pc_202309171442_log',
+              entities: [Itemlog, Moneylog],
+              //此处定义为是否同步代码,,,,,,生产模式需关闭,  引入迁移模式
+              // 千万慎重开启，
+              synchronize: false,  
+              timezone: "Z", //  
+              // logging: ['error'], 
+              
+            } as TypeOrmModuleOptions ),
+          }
+          ),
+          TypeOrmModule.forFeature([Itemlog], 'gamelog')
     ]
 })
 export class OrmConfig {}
@@ -74,6 +102,25 @@ export default new DataSource ({
   timezone: "Z", //  
   logging: ['error'], 
 
+} as DataSourceOptions,
+
+)
+
+ const DataSource2 = new DataSource({
+  // migrationsTableName: 'migrations',
+  type: 'mysql',
+  host: process.env.DBHOST2,
+  port: 3306,
+  username: process.env.DBUSER2,
+  password: process.env.DBPWD2,
+  database: 'pc_202309171442_log',
+  entities: [Itemlog],
+  // migrations: ['src/migrations/*{.ts,.js}'],
+  synchronize: false,
+  timezone: "Z", //  
+  // logging: ['error'], 
+
 } as DataSourceOptions
 )
 
+// export  {DataSource2}

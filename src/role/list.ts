@@ -67,27 +67,27 @@ const adminList = [
   //     }
   //   ]
   // },
-  {
-    path: '/datascan-xzz',
-    component: '#',
-    redirect: '/datascan/tableone-xzz',
-    name: 'Datascan-xzz',
-    meta: {
-      title: '数据面板',
-      icon: 'eos-icons:role-binding',
-      alwaysShow: true
-    },
-    children: [
-      {
-        path: 'tableone-xzz',
-        component: 'views/Datascan-xzz/Tableone/Tableone',
-        name: 'Tableone-xzz',
-        meta: {
-          title: '表格一'
-        }
-      }
-    ]
-  },
+  // {
+  //   path: '/datascan-xzz',
+  //   component: '#',
+  //   redirect: '/datascan/tableone-xzz',
+  //   name: 'Datascan-xzz',
+  //   meta: {
+  //     title: '数据面板',
+  //     icon: 'eos-icons:role-binding',
+  //     alwaysShow: true
+  //   },
+  //   children: [
+  //     {
+  //       path: 'tableone-xzz',
+  //       component: 'views/Datascan-xzz/Tableone/Tableone',
+  //       name: 'Tableone-xzz',
+  //       meta: {
+  //         title: '表格一'
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: '/dashboard',
     component: '#',
@@ -674,52 +674,52 @@ const adminList = [
         }
       }
     ]
+  },
+  {
+    path: '/authorization',
+    component: '#',
+    redirect: '/authorization/user',
+    name: 'Authorization',
+    meta: {
+      title: 'router.authorization',
+      icon: 'eos-icons:role-binding',
+      alwaysShow: true
+    },
+    children: [
+      {
+        path: 'department',
+        component: 'views/Authorization/Department/Department',
+        name: 'Department',
+        meta: {
+          title: 'router.department'
+        }
+      },
+      {
+        path: 'user',
+        component: 'views/Authorization/User/User',
+        name: 'User',
+        meta: {
+          title: 'router.user'
+        }
+      },
+      {
+        path: 'menu',
+        component: 'views/Authorization/Menu/Menu',
+        name: 'Menu',
+        meta: {
+          title: 'router.menuManagement'
+        }
+      },
+      {
+        path: 'role',
+        component: 'views/Authorization/Role/Role',
+        name: 'Role',
+        meta: {
+          title: 'router.role'
+        }
+      }
+    ]
   }
-  // {
-  //   path: '/authorization',
-  //   component: '#',
-  //   redirect: '/authorization/user',
-  //   name: 'Authorization',
-  //   meta: {
-  //     title: 'router.authorization',
-  //     icon: 'eos-icons:role-binding',
-  //     alwaysShow: true
-  //   },
-  //   children: [
-  //     {
-  //       path: 'department',
-  //       component: 'views/Authorization/Department/Department',
-  //       name: 'Department',
-  //       meta: {
-  //         title: 'router.department'
-  //       }
-  //     },
-  //     {
-  //       path: 'user',
-  //       component: 'views/Authorization/User/User',
-  //       name: 'User',
-  //       meta: {
-  //         title: 'router.user'
-  //       }
-  //     },
-  //     {
-  //       path: 'menu',
-  //       component: 'views/Authorization/Menu/Menu',
-  //       name: 'Menu',
-  //       meta: {
-  //         title: 'router.menuManagement'
-  //       }
-  //     },
-  //     {
-  //       path: 'role',
-  //       component: 'views/Authorization/Role/Role',
-  //       name: 'Role',
-  //       meta: {
-  //         title: 'router.role'
-  //       }
-  //     }
-  //   ]
-  // }
 ]
 
 export default adminList

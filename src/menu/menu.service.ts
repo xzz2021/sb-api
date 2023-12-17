@@ -80,9 +80,9 @@ export class MenuService {
     return res
   } else {
     //  存在  直接存储
-    curMenu.permissionList = menu.permissionList
-    curMenu.meta = menu.meta
-    const res = await this.menuRepository.save(curMenu)
+    const modifyMenuSave = await this.menuRepository.create(menu)
+    const res = await this.menuRepository.save(modifyMenuSave)
+    // const res = await this.menuRepository.update(curMenu.id, {permissionList: menu.permissionList})
     return res
   }
 }
