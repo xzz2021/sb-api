@@ -17,9 +17,10 @@ import { Menus } from 'src/menu/entities/menu.entity';
 import { Metas } from 'src/menu/entities/meta.entity';
 import { Itemlog } from 'src/itemlog/entities/itemlog.entity';
 import { Moneylog } from 'src/moneylog/entities/moneylog.entity';
+import { Enumitem } from 'src/enumitem/entities/enumitem.entity';
 
 
-let allEntities = [ Users, Roles, Menus, Departments, Metas ]
+let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem ]
 // let allEntities = [Users, Profile, Roles ]
 
 // 引入.env文件的变量合并到node环境中
