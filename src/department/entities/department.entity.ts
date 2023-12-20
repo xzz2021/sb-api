@@ -44,7 +44,7 @@ export class Departments {
     deleteTime: string;
 
     //  一个部门  对应 多个  用户
-    @OneToMany(() => Users, user => user.department,)   //关联表单 
+    @OneToMany(() => Users, user => user.department)   //关联表单 
     departmentUsersArr: Users[]; 
 
 }

@@ -11,6 +11,8 @@ import { In, Repository } from 'typeorm';
 import { Roles } from 'src/role/entities/role.entity';
 import { Menus } from 'src/menu/entities/menu.entity';
 import { Departments } from 'src/department/entities/department.entity';
+import { RoleService } from 'src/role/role.service';
+import { DepartmentService } from 'src/department/department.service';
 
 
 
@@ -24,7 +26,9 @@ export class UserinfoService {
         Repository<Menus>,
         @InjectRepository(Departments) private readonly departmentsRepository:  //  调用数据库必须进行注入
     Repository<Departments>,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        private readonly roleService: RoleService,
+        private readonly departmentService: DepartmentService
       ){}
     
       // 创建用户的post请求会走向这里
@@ -46,10 +50,9 @@ export class UserinfoService {
           await this.userinfoRepository.save(userSave)
           // return res 
         }catch(err) {
-          //  错误不用返回  直接抛出异常
+          //  错误  抛出异常
         const { code, sqlMessage } = err
-        console.log('🚀 ~ file: userinfo.service.ts:71 ~ UserinfoService ~ create ~ sqlMessage:', sqlMessage)
-        // return  { code, sqlMessage } 
+        return  { code, message: sqlMessage } 
         }
 
         const {  username } = createUsersDto
@@ -221,21 +224,35 @@ export class UserinfoService {
 
     //  管理员 新增   或 修改  用户 信息   同一接口
     async updateUser(createUsersDto) {
-      console.log('🚀 ~ file: userinfo.service.ts:224 ~ UserinfoService ~ updateUser ~ createUsersDto:', createUsersDto)
-      return
-      // if(createUsersDto.id){ //  id不存在  说明是新增
-      //   const newUserSave =  await this.userinfoRepository.create(createUsersDto)
-      //   const res =  await this.userinfoRepository.save(newUserSave)
-      //   return res
-      
-      // }
-      // //  存在  更新
-      // const curUser = await this.userinfoRepository.findOne({where: {id: createUsersDto.roleName}})
-      //  先拿到  角色对应的  菜单
-      const newUserSave =  await this.userinfoRepository.create(createUsersDto)
+    //  剔除  新 发来 的  角色 和  部门  id 信息   返回  用户 原有对应信息
+    const { roleId, departmentId, ...curUser } = createUsersDto
+      // 先找到对应 id的  角色
+      const  curRole = await this.roleService.findRoleById(roleId)
+      //  再找到对应的  部门 id
+      const  curDepartment = await this.departmentService.findDepartmentById(departmentId)
 
-      const res =  await this.userinfoRepository.save(newUserSave)
+      curUser.role = curRole
+      curUser.department = curDepartment
+
+      if(!curUser.id){ //  id不存在  说明是新增
+        //   注意 新增还需要  进行 密码  加密  所以 暂时屏蔽 新增功能
+        const newUserSave =  await this.userinfoRepository.create(curUser)
+        const res =  await this.userinfoRepository.save(newUserSave)
+        return res
+      
+      } else {
+        const res =  await this.userinfoRepository.save(curUser)
         return res
 
+      }
+
+      
+
+    }
+
+    async deleteUser(ids: number[]){
+      //  批量删除用户  理论  会自动 删除关联数据
+      const res = await this.userinfoRepository.delete({id: In(ids)})
+      return res
     }
 }

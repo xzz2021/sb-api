@@ -88,4 +88,10 @@ export class UserinfoController {
       return this.userinfoService.updateUser(createUsersDto);
     }
 
+
+    @Post('delete')  // 修改用户信息接口
+    deleteUser(@Body() data: {ids: number[]}) {
+      return this.userinfoService.deleteUser(data.ids);
+    }
+
 }

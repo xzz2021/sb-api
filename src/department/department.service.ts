@@ -67,21 +67,25 @@ export class DepartmentService {
 
   //  根据  条件  查询  获取  符合  的  用户
   async findByDepartment(joinQueryParams, role){
+    let  {  id, pageIndex, pageSize } = joinQueryParams
+
     if(role.roleName === '超级管理员'){  
       // 如果是管理员 直接返回  所有用户  作为初始化 管理使用
-      const res = await this.userinfoRepository.find({relations: ['role', 'department']})
-      // console.log('🚀 ~ file: department.service.ts:73 ~ DepartmentService ~ findByDepartment ~ res:', res)
+      const res = await this.userinfoRepository.find()
     return res
-
     }
-    
-    console.log('🚀 ~ file: department.service.ts:68 ~ DepartmentService ~ findByDepartment ~ joinQueryParams:', joinQueryParams)
-    // { id: '6', pageIndex: '1', pageSize: '10' }
-    let  {  id , pageIndex, pageSize } = joinQueryParams
-    if(!id) id = 1
-    const res = await this.departmentsRepository.find({where: { id }, relations: ['departmentUsersArr']})
-    // const list = res.usersArr
-    // console.log('🚀 ~ file: department.service.ts:72 ~ DepartmentService ~ findByDepartment ~ res:', res)
+    if( id == 1){  
+      // 如果是管理员 直接返回  所有用户  作为初始化 管理使用
+      const res = await this.userinfoRepository.find()
+    return res.slice(1)
+    }
+    if(!id) return []
+    const res = await this.departmentsRepository.findOne({where: { id }, relations: ['departmentUsersArr']})
+    return res.departmentUsersArr
+  }
+
+  async findDepartmentById(id: number){
+    const res = await this.departmentsRepository.findOne({where: {id}})
     return res
   }
 

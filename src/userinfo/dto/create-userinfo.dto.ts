@@ -1,8 +1,9 @@
+import { Departments } from "src/department/entities/department.entity";
 import { Roles } from "src/role/entities/role.entity";
 
 export class CreateUserinfoDto {
     username: string;
     password: string;
-    userInfo_role?: string
-    role: Roles; 
+    department?: Departments
+    role?: Roles; 
 }

@@ -22,6 +22,11 @@ export class RoleService {
     return res
   }
 
+  async findRoleById(id: number){
+    const res = await this.rolesRepository.findOne({where: { id }});
+    return res
+  }
+
   async findAllRolesId(){
     // 只返回 角色 id 和 roleName 字段   其他 字段 会 返回默认值
     const res = await this.rolesRepository.find({ select: ['id', 'roleName']});
@@ -41,7 +46,7 @@ export class RoleService {
     createRoleDto.menusArr = JSON.stringify(createRoleDto.menusArr)
     // createRoleDto.menusArr = createRoleDto.menusArr
   }
-  console.log('🚀 ~ file: role.service.ts:34 ~ RoleService ~ addRole ~ createRoleDto:', createRoleDto)
+  // console.log('🚀 ~ file: role.service.ts:34 ~ RoleService ~ addRole ~ createRoleDto:', createRoleDto)
   if(curRole == null) {   //  如果不存在 说明是新增
     const newRoleSave = await this.rolesRepository.create(createRoleDto)
     const res = await this.rolesRepository.save(newRoleSave)
@@ -50,7 +55,6 @@ export class RoleService {
     //  存在  直接存储
     curRole.menusArr = createRoleDto.menusArr
     const res = await this.rolesRepository.save(curRole)
-    console.log('🚀 ~ file: role.service.ts:45 ~ RoleService ~ addRole ~ res:', res)
     return res
   }
 

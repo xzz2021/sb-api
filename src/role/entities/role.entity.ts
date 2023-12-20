@@ -15,7 +15,7 @@ import { Exclude } from 'class-transformer';
 export class Roles {
 
     @PrimaryGeneratedColumn()
-    id: string;
+    id: number;
 
     // @ApiProperty()
     @Column({ unique: true })

@@ -39,11 +39,11 @@ export class Users {
     deletetime: string;
 
     //   一个用户  对应一个角色
-   @ManyToOne(() => Roles, role => role.usersArr, { cascade: true})   //关联表单  ???  { eager: true}
+   @ManyToOne(() => Roles, role => role.usersArr, { cascade: true, eager: true})   //关联表单  ???  { eager: true}
    role: Roles; 
 
     //  一个用户 对应 一个  部门
-   @ManyToOne(() => Departments, department => department.departmentUsersArr, { cascade: true})  
+   @ManyToOne(() => Departments, department => department.departmentUsersArr, { cascade: true, eager: true})  
    department: Departments;
 
 }

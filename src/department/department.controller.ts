@@ -33,10 +33,10 @@ export class DepartmentController {
     return this.departmentService.batchRemoveDepartment( list )
   }
 
-  @Post()
-  create(@Body() createDepartmentDto: CreateDepartmentDto) {
-    return this.departmentService.create(createDepartmentDto);
-  }
+  // @Post()
+  // create(@Body() createDepartmentDto: CreateDepartmentDto) {
+  //   return this.departmentService.create(createDepartmentDto);
+  // }
 
   // @Get('joinquery')  // 联合查询
   // joinQuery(@Query() joinQueryParams: joinQueryInfo) {
@@ -49,16 +49,6 @@ export class DepartmentController {
     const {  role } = req.user;
     // 根据部门id参数 查询关联用户  ?id=6&pageIndex=1&pageSize=10  
     return this.departmentService.findByDepartment(joinQueryParams, role)
-  }
-
-  @Get()
-  findAll() {
-    return this.departmentService.findAll();
-  }
-
-  @Get('tempadd')
-  tempadd(){
-    return this.departmentService.tempadd()
   }
 
 }
