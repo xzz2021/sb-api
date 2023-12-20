@@ -106,7 +106,6 @@ const adminList = [
         meta: {
           title: 'router.analysis',
           noCache: true,
-          affix: true
         }
       },
       {
@@ -116,7 +115,6 @@ const adminList = [
         meta: {
           title: 'router.workplace',
           noCache: true,
-          affix: true
         }
       }
     ]

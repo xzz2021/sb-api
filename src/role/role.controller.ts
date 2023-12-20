@@ -14,6 +14,12 @@ export class RoleController {
     return this.roleService.findAllRoles();
   }
 
+//  此处 只获取角色 id 及 角色  名称  用于 下拉  并返回  id用于更新用户信息
+  @Get('getRoleListId')
+  getRoleListId(){
+    return this.roleService.findAllRolesId();
+  }
+
   @Get('getMenu') // 根据角色 获取用户的菜单 以及  权限
   @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
   getMenuAndPermission(@Req() req: any) {

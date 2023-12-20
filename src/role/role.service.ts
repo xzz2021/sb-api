@@ -22,6 +22,12 @@ export class RoleService {
     return res
   }
 
+  async findAllRolesId(){
+    // 只返回 角色 id 和 roleName 字段   其他 字段 会 返回默认值
+    const res = await this.rolesRepository.find({ select: ['id', 'roleName']});
+    return res
+  }
+
 
   // 添加角色时会添加菜单
   async addRole(createRoleDto: any){
