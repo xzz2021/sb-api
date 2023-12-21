@@ -52,8 +52,8 @@ import { EnumitemModule } from './enumitem/enumitem.module';
 
     // 请求限流
     ThrottlerModule.forRoot({
-      ttl: 60,  // 请求限制时间
-      limit: 30, // 请求限制次数
+      ttl: 10,  // 请求限制时间
+      limit: 60, // 请求限制次数
     }),
 
 

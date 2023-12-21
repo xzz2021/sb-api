@@ -41,7 +41,6 @@ export class RoleService {
     //  添加  和  修改 会 同时请求  同一个  接口
     //  先判断  是否存在
   const curRole: any = await this.rolesRepository.findOne({where: { roleName: createRoleDto.roleName } })
-  console.log('🚀 ~ file: role.service.ts:31 ~ RoleService ~ addRole ~ curRole:', curRole)
   if(createRoleDto.menusArr && createRoleDto.menusArr.length > 0 ){
     createRoleDto.menusArr = JSON.stringify(createRoleDto.menusArr)
     // createRoleDto.menusArr = createRoleDto.menusArr

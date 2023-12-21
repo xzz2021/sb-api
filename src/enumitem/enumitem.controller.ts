@@ -13,9 +13,10 @@ export class EnumitemController {
     return this.enumitemService.create(createEnumitemDto);
   }
 
-  @Get('search')
+  @Post('search')
   // @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
-  findByDepartment(@Query() joinQueryParams: any, ) {
+  findByDepartment(@Body() joinQueryParams: string[], ) {
+    // console.log('🚀 ~ file: enumitem.controller.ts:19 ~ EnumitemController ~ findByDepartment ~ joinQueryParams:', joinQueryParams)
     // 根据部门id参数 查询关联用户  ?id=6&pageIndex=1&pageSize=10 
     return this.enumitemService.joinQuery(joinQueryParams)
   }
@@ -23,8 +24,8 @@ export class EnumitemController {
 
    //  添加  或者  修改 已有 枚举 项目
    @Post('update')
-   updateEnumitem(@Body() createEnumitemDto: CreateEnumitemDto) {
-     return this.enumitemService.updateEnumitem(createEnumitemDto);
+   updateEnumitem(@Body() updateEnumite: updateEnumitem[]) {
+     return this.enumitemService.updateEnumitem(updateEnumite);
    }
 
 }
