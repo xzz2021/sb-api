@@ -14,6 +14,7 @@ import { Itemlog } from './entities/itemlog.entity';
   password: process.env.DBPWD2,
   database: 'pc_202309171442_log',
   entities: [Itemlog],
+  // dateStrings: true,
   // migrations: ['src/migrations/*{.ts,.js}'],
   synchronize: false,
   timezone: "Z", //  

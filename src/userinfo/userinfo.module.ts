@@ -23,7 +23,7 @@ import { Metas } from 'src/menu/entities/meta.entity';
     PassportModule,
     JwtModule.register({
       secret: 'TEMPsecret',
-      signOptions: { expiresIn: '30d' }   //  设定token的有效期
+      signOptions: { expiresIn: '3d' }   //  设定token的有效期
     })
   ], //
   controllers: [UserinfoController],

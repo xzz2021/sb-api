@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ItemlogService } from './itemlog.service';
 import { CreateItemlogDto } from './dto/create-itemlog.dto';
 import { UpdateItemlogDto } from './dto/update-itemlog.dto';
@@ -12,11 +12,16 @@ export class ItemlogController {
     return this.itemlogService.create(createItemlogDto);
   }
 
+  // @Get()
+  // findAll() {
+  //   return this.itemlogService.findAll();
+  // }
   @Get()
-  findAll() {
-    return this.itemlogService.findAll();
+  findByCondition(@Query() joinQueryParams: {[string: string]: any}) {
+    // Query 不传值 可以拿到 所有 查询 参数
+    const { pageSize = 10, pageIndex= 1, ...searchParams } = joinQueryParams
+    return this.itemlogService.findByCondition(pageSize,pageIndex, searchParams);
   }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.itemlogService.findOne(+id);
