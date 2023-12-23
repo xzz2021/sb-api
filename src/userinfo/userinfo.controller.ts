@@ -3,6 +3,7 @@ import { UserinfoService } from './userinfo.service';
 import { CreateUserinfoDto } from './dto/create-userinfo.dto';
 import { UpdateUserinfoDto } from './dto/update-userinfo.dto';
 import { JwtAuthGuard, LocalAuthGuard } from 'src/allProcessor/guard/auth.guard';
+import { Public } from 'src/allProcessor/guard/public';
 
 @Controller('userinfo')
 export class UserinfoController {
@@ -53,6 +54,7 @@ export class UserinfoController {
     // -----------------
     // 以下为注册登录认证代码
     @UseGuards(LocalAuthGuard)
+    @Public()
     @Post('login')
     signIn(@Body() userinfo: any, @Req() req: Request){
       // 经过守卫返回的信息会自动放在req.user中
@@ -61,7 +63,7 @@ export class UserinfoController {
     }
 
     // 使用nest内置的序列化拦截器,, 可以将返回数据的字段 进行过滤排除等(在数据的entity文件里定义)
-    
+    @Public()
     @Post('register')  // 新增表格数据接口
     //  body后的dto定义传递过来的请求体数据格式
     // 如果前端数据体传递了其他未在dto定义的数据，将会被自动剔除

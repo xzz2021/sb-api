@@ -28,7 +28,7 @@ import { Metas } from 'src/menu/entities/meta.entity';
   ], //
   controllers: [UserinfoController],
   //  引用外部  service  时  需要 在 此处定义  且 对应的数据库 定义  entity 也需要一起拿来
-  providers: [UserinfoService, RoleService, DepartmentService,MenuService, LocalStrategy, JwtStrategy],  // 引入自身service的同时引入local及jwt认证策略
+  providers: [UserinfoService, RoleService, DepartmentService,MenuService, LocalStrategy, JwtStrategy, ],  // 引入自身service的同时引入local及jwt认证策略
 })
 export class UserinfoModule {}
 

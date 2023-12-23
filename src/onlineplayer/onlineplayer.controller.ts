@@ -6,6 +6,7 @@ import { JwtAuthGuard } from 'src/allProcessor/guard/auth.guard';
 import { RolesGuard } from 'src/allProcessor/guard/role.guard';
 import { Role } from 'src/allProcessor/guard/roles.enum';
 import { Roles } from 'src/allProcessor/guard/roles';
+import { Public } from 'src/allProcessor/guard/public';
 
 // @Roles(Role.Admin)  //  注明允许的身份
 // @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
@@ -18,8 +19,9 @@ export class OnlineplayerController {
     return this.onlineplayerService.create(createOnlineplayerDto);
   }
 
+  @Public()
+  @UseGuards(JwtAuthGuard)
   @Get()
-
   findAll() {
     return this.onlineplayerService.findAll();
   }
