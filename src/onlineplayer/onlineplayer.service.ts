@@ -79,7 +79,7 @@ return 'ooo'
       try {
         const onlineplayerRepository = await this.dataSource.getRepository(Onlineplayer)
             const res = await onlineplayerRepository.find({where: {SaveTime: Between(start, end)}})
-            console.log('🚀 ~ file: onlineplayer.service.ts:82 ~ OnlineplayerService ~ specifyDate ~ res:', res)
+            // console.log('🚀 ~ file: onlineplayer.service.ts:82 ~ OnlineplayerService ~ specifyDate ~ res:', res)
             // 如果 没有数据 会 返回 空数组
             return res
           
