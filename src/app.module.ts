@@ -25,6 +25,7 @@ import { ItemlogModule } from './itemlog/itemlog.module';
 import { MoneylogModule } from './moneylog/moneylog.module';
 import { EnumitemModule } from './enumitem/enumitem.module';
 import { OnlineplayerModule } from './onlineplayer/onlineplayer.module';
+import { RolesGuard } from './allProcessor/guard/role.guard';
 // import * as Joi from 'joi'  // 引入字段校验,可以检验变量类型是否合法
 
 
@@ -69,6 +70,16 @@ import { OnlineplayerModule } from './onlineplayer/onlineplayer.module';
     
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+  // 添加全局  限流 守卫
+  {
+    provide: APP_GUARD,
+    useClass: ThrottlerGuard
+  },
+  { //  全局注册RBAC角色守卫
+    provide: APP_GUARD,
+    useClass: RolesGuard
+  }
+],
 })
 export class AppModule {}

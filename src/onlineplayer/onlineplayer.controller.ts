@@ -7,6 +7,8 @@ import { RolesGuard } from 'src/allProcessor/guard/role.guard';
 import { Role } from 'src/allProcessor/guard/roles.enum';
 import { Roles } from 'src/allProcessor/guard/roles';
 
+// @Roles(Role.Admin)  //  注明允许的身份
+// @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
 @Controller('onlineplayer')
 export class OnlineplayerController {
   constructor(private readonly onlineplayerService: OnlineplayerService) {}
@@ -17,9 +19,7 @@ export class OnlineplayerController {
   }
 
   @Get()
-  @Roles(Role.Admin, Role.SuperAdmin)  //  注明允许的身份
-  @UseGuards(RolesGuard) // 引入角色守卫
-  @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
+
   findAll() {
     return this.onlineplayerService.findAll();
   }

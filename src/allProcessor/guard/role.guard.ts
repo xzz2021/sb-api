@@ -20,8 +20,11 @@ export class RolesGuard implements CanActivate {
     if (!requiredRoles) {
       return true;
     }
-    const { user } = context.switchToHttp().getRequest()
-    let userRole = user.role.roleName
+    // const data = context.switchToHttp().getRequest()
+    const { user, route } = context.switchToHttp().getRequest()
+    // if(route.path )
+    if(!user) return true   // user 不存在  说明 没有加  jwt 解析   直接  放行
+    let userRole = user?.role?.roleName
     if(userRole == '超级管理员') return true
     return requiredRoles.some((role) => role == userRole);
   }
