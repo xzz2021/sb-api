@@ -2,7 +2,6 @@ import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete, Query, Re
 import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
-import { JwtAuthGuard } from 'src/allProcessor/guard/auth.guard';
 
 @Controller('role')
 export class RoleController {
@@ -21,7 +20,6 @@ export class RoleController {
   }
 
   @Get('getMenu') // 根据角色 获取用户的菜单 以及  权限
-  @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
   getMenuAndPermission(@Req() req: any) {
     const { role } = req.user;
     return this.roleService.getMenuByRole(role);

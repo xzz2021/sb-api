@@ -22,7 +22,8 @@ export class RolesGuard implements CanActivate {
     }
     // const data = context.switchToHttp().getRequest()
     const { user, route } = context.switchToHttp().getRequest()
-    // if(route.path )
+    console.log('🚀 ~ file: role.guard.ts:25 ~ RolesGuard ~ canActivate ~ user:', user)
+    // if(route.path )   //  公共接口 没有走 jwt 解析   最好 设定  路由白名单
     if(!user) return true   // user 不存在  说明 没有加  jwt 解析   直接  放行
     let userRole = user?.role?.roleName
     if(userRole == '超级管理员') return true

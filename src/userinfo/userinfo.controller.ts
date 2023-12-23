@@ -1,8 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
 import { UserinfoService } from './userinfo.service';
-import { CreateUserinfoDto } from './dto/create-userinfo.dto';
-import { UpdateUserinfoDto } from './dto/update-userinfo.dto';
-import { JwtAuthGuard, LocalAuthGuard } from 'src/allProcessor/guard/auth.guard';
+import { LocalAuthGuard } from 'src/allProcessor/guard/auth.guard';
 import { Public } from 'src/allProcessor/guard/public';
 
 @Controller('userinfo')
@@ -10,7 +8,6 @@ export class UserinfoController {
    // 通过构造器传入 详细业务处理函数service
    constructor(
     private readonly userinfoService: UserinfoService,
-    // private readonly logger: Logger,
     ) {
   }
 
@@ -32,17 +29,6 @@ export class UserinfoController {
   }
   
 
-
-  // @UseGuards(JwtAuthGuard)
-  // @Get('/getprofile/:id')
-  // getprofile(@Param('id', ParseIntPipe) id: number, @Req() req: Request) {
-  // // console.log("🚀 ~ file: userinfo.controller.ts:80 ~ UserinfoController ~ getprofile ~ id:", id)
-
-  //   return this.userinfoService.getprofile(id);
-  // }
-
-
-  @UseGuards(JwtAuthGuard)
     @Get('getinfo')
     getInfo(@Req() req: any){
       // token解析出来的数据会在@Req中返回
@@ -85,7 +71,6 @@ export class UserinfoController {
 
     //  管理员 新增   或 修改  用户 信息   同一接口
     @Post('updateUser')
-    @UseGuards(JwtAuthGuard)
     updateUser(@Body() createUsersDto: any) {
       return this.userinfoService.updateUser(createUsersDto);
     }

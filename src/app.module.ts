@@ -1,22 +1,12 @@
 //module相当于某一总逻辑接口的入口
 
-import {  MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config'
-
-// import { HttpMiddleware } from './allProcessor/middleware/http';
-// import { LoggerModule } from './logger/logger.module';
 import { OrmConfig } from './orm/ormconfig.module';
-// import { AuthModule } from './auth/auth.module';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
-// import { RolesModule } from './roles/roles.module';
-// import { UsersModule } from './users/users.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-// import { ProfilesModule } from './profiles/profiles.module';
-// import { MenusModule } from './menus/menus.module';
 import { UserinfoModule } from './userinfo/userinfo.module';
 import { RoleModule } from './role/role.module';
 import { DepartmentModule } from './department/department.module';
@@ -26,6 +16,7 @@ import { MoneylogModule } from './moneylog/moneylog.module';
 import { EnumitemModule } from './enumitem/enumitem.module';
 import { OnlineplayerModule } from './onlineplayer/onlineplayer.module';
 import { RolesGuard } from './allProcessor/guard/role.guard';
+import { JwtAuthGuard } from './allProcessor/guard/auth.guard';
 // import * as Joi from 'joi'  // 引入字段校验,可以检验变量类型是否合法
 
 
@@ -57,13 +48,18 @@ import { RolesGuard } from './allProcessor/guard/role.guard';
       ttl: 10,  // 请求限制时间
       limit: 60, // 请求限制次数
     }),
+    // PassportModule,
+    // JwtModule.register({
+    //   secret: 'TEMPsecret',
+    //   signOptions: { expiresIn: '3d' }   //  设定token的有效期
+    // }),
 
 
     UserinfoModule, // 引入用户信息处理模块   链接相关功能
 
     // LoggerModule,   //打印日志模块
      
-    OrmConfig, RoleModule, DepartmentModule, MenuModule, ItemlogModule, MoneylogModule, EnumitemModule, OnlineplayerModule,  // typeorm配置
+    OrmConfig, RoleModule, DepartmentModule, MenuModule, ItemlogModule, MoneylogModule, EnumitemModule, OnlineplayerModule // typeorm配置
   
     
     // AuthModule, RolesModule, UsersModule, ProfilesModule, MenusModule,
@@ -79,7 +75,11 @@ import { RolesGuard } from './allProcessor/guard/role.guard';
   { //  全局注册RBAC角色守卫
     provide: APP_GUARD,
     useClass: RolesGuard
-  }
+  },
+  {  //  全局注册 JWT token守卫
+    provide: APP_GUARD,
+    useClass: JwtAuthGuard,
+  },
 ],
 })
 export class AppModule {}

@@ -1,8 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { EnumitemService } from './enumitem.service';
 import { CreateEnumitemDto } from './dto/create-enumitem.dto';
-import { UpdateEnumitemDto } from './dto/update-enumitem.dto';
-import { JwtAuthGuard } from 'src/allProcessor/guard/auth.guard';
 
 @Controller('enumitem')
 export class EnumitemController {
@@ -14,9 +12,7 @@ export class EnumitemController {
   }
 
   @Post('search')
-  // @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
   findByDepartment(@Body() joinQueryParams: string[], ) {
-    // console.log('🚀 ~ file: enumitem.controller.ts:19 ~ EnumitemController ~ findByDepartment ~ joinQueryParams:', joinQueryParams)
     // 根据部门id参数 查询关联用户  ?id=6&pageIndex=1&pageSize=10 
     return this.enumitemService.joinQuery(joinQueryParams)
   }

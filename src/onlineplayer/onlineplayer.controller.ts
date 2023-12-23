@@ -1,15 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { OnlineplayerService } from './onlineplayer.service';
 import { CreateOnlineplayerDto } from './dto/create-onlineplayer.dto';
-import { UpdateOnlineplayerDto } from './dto/update-onlineplayer.dto';
-import { JwtAuthGuard } from 'src/allProcessor/guard/auth.guard';
-import { RolesGuard } from 'src/allProcessor/guard/role.guard';
 import { Role } from 'src/allProcessor/guard/roles.enum';
 import { Roles } from 'src/allProcessor/guard/roles';
 import { Public } from 'src/allProcessor/guard/public';
 
-// @Roles(Role.Admin)  //  注明允许的身份
-// @UseGuards(JwtAuthGuard) // 引入jwt解析req.user
+@Roles(Role.Admin)  //  注明允许的身份
 @Controller('onlineplayer')
 export class OnlineplayerController {
   constructor(private readonly onlineplayerService: OnlineplayerService) {}
@@ -19,8 +15,8 @@ export class OnlineplayerController {
     return this.onlineplayerService.create(createOnlineplayerDto);
   }
 
-  @Public()
-  @UseGuards(JwtAuthGuard)
+  @Public()  //  因为添加了 全局 jwt 守卫, 此处 定义为公共接口  无需 认证
+  // @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.onlineplayerService.findAll();
