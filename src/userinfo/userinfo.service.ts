@@ -1,14 +1,11 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';  
-// import { CreateUserinfoDto } from './dto/create-userinfo.dto';
 import { UpdateUserinfoDto } from './dto/update-userinfo.dto';
 import { JwtService } from '@nestjs/jwt';
-// import { UserinfoService } from 'src/userinfo/userinfo.service';
 
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './entities/userinfo.entity';
 import { In, Repository } from 'typeorm';
-import { Roles } from 'src/role/entities/role.entity';
 import { Menus } from 'src/menu/entities/menu.entity';
 import { Departments } from 'src/department/entities/department.entity';
 import { RoleService } from 'src/role/role.service';
@@ -101,15 +98,6 @@ export class UserinfoService {
     
       }
 
-
-      //  此处为新增用户操作
-      addUser(createUsersDto: any) {
-
-      }
-
-      
-    
-    
       // 通过用户名获取用户信息
       async findOne(username: string) {
         let res = await this.userinfoRepository.findOne({where: {username}, relations: ['role']})  // 获取基础信息及角色信息
@@ -174,7 +162,6 @@ export class UserinfoService {
         let res = await this.userinfoRepository.delete(body)
         console.log('🚀 ~ file: userinfo.service.ts:172 ~ UserinfoService ~ remove ~ res:', res)
         if(res.affected == 1) return { msg: `已删除用户: ${body.username}`}
-        // return await this.userinfoRepository.delete(body)
       }
     
     

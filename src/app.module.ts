@@ -1,5 +1,3 @@
-//module相当于某一总逻辑接口的入口
-
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -72,14 +70,15 @@ import { JwtAuthGuard } from './allProcessor/guard/auth.guard';
     provide: APP_GUARD,
     useClass: ThrottlerGuard
   },
-  { //  全局注册RBAC角色守卫
-    provide: APP_GUARD,
-    useClass: RolesGuard
-  },
-  {  //  全局注册 JWT token守卫
+  {  //  全局注册 JWT token守卫    jwt一定要放在角色之前  因为要解析到 用户   才能拿到 角色
     provide: APP_GUARD,
     useClass: JwtAuthGuard,
   },
+  { //  全局注册RBAC角色守卫  
+    provide: APP_GUARD,
+    useClass: RolesGuard
+  },
+  
 ],
 })
 export class AppModule {}

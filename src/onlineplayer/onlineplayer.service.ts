@@ -1,17 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOnlineplayerDto } from './dto/create-onlineplayer.dto';
-import { UpdateOnlineplayerDto } from './dto/update-onlineplayer.dto';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { Between, DataSource, LessThan, MoreThanOrEqual, Repository } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { Between, DataSource, MoreThanOrEqual } from 'typeorm';
 import { Onlineplayer } from './entities/onlineplayer.entity';
 
 @Injectable()
 export class OnlineplayerService {
 
-  // constructor(
-  //   @InjectRepository(LogdataOnlierolecount) private readonly onlineplayerRepository:  //  调用数据库必须进行注入
-  //   Repository<LogdataOnlierolecount>,
-  // ){}
   constructor(
   @InjectDataSource('gamelog')
   private dataSource: DataSource,
