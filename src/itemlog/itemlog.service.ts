@@ -56,7 +56,7 @@ export class ItemlogService {
         buildWhereCondition = {...{[key]:searchParam[key]}, ...buildWhereCondition}
       });
     }
-  console.log('🚀 ~ file: itemlog.service.ts:55 ~ ItemlogService ~ buildWhereCondition:', buildWhereCondition)
+  // console.log('🚀 ~ file: itemlog.service.ts:55 ~ ItemlogService ~ buildWhereCondition:', buildWhereCondition)
     const itemLogRepository = await this.dataSource.getRepository(Itemlog);
     const list =   await itemLogRepository.find({where:buildWhereCondition,take: pageSize, skip: (pageIndex -1)*pageSize })
     const total =  await itemLogRepository.count(buildWhereCondition);
