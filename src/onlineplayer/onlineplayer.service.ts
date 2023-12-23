@@ -13,7 +13,7 @@ export class OnlineplayerService {
   //   Repository<LogdataOnlierolecount>,
   // ){}
   constructor(
-  @InjectDataSource('gamelog2')
+  @InjectDataSource('gamelog')
   private dataSource: DataSource,
   // @InjectRepository(Itemlog) private readonly itemlogRepository:  //  调用数据库必须进行注入
   // Repository<Itemlog>,
