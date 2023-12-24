@@ -80,6 +80,7 @@ require('dotenv').config();
               synchronize: false,  
               timezone: "Z", //  
               // logging: ['error'], 
+              retryAttempts: 3  //  重试连接数据库的次数（默认：10）
               
             } as TypeOrmModuleOptions ),
           }

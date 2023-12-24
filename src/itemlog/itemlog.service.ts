@@ -1,12 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateItemlogDto } from './dto/create-itemlog.dto';
-import { UpdateItemlogDto } from './dto/update-itemlog.dto';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
 import { Itemlog } from './entities/itemlog.entity';
-import { Between, DataSource, Repository } from 'typeorm';
-// import { format } from 'winston';
-import { format } from 'date-fns';
-// import {DataSource2} from '../orm/ormconfig.module';
+import { Between, DataSource } from 'typeorm';
 
 @Injectable()
 export class ItemlogService {
@@ -17,9 +12,6 @@ export class ItemlogService {
     // @InjectRepository(Itemlog) private readonly itemlogRepository:  //  调用数据库必须进行注入
     // Repository<Itemlog>,
   ){}
-  create(createItemlogDto: CreateItemlogDto) {
-    return 'This action adds a new itemlog';
-  }
 
   async findAll(pageSize,currentPage) {
 
@@ -69,15 +61,4 @@ export class ItemlogService {
 
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} itemlog`;
-  }
-
-  update(id: number, updateItemlogDto: UpdateItemlogDto) {
-    return `This action updates a #${id} itemlog`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} itemlog`;
-  }
 }

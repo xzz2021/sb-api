@@ -17,7 +17,7 @@ import { Metas } from 'src/menu/entities/meta.entity';
 
 @Module({
   imports: [ 
-    // 注意子模块被夫模块引用时   如果子模块service有调用数据库表格， 则此处必须进行对数据库表格引入进行枚举， TypeOrmModule.forFeature
+    // 注意子模块被父模块引用时   如果子模块service有调用数据库表格， 则此处必须进行对数据库表格引入进行枚举， TypeOrmModule.forFeature
     TypeOrmModule.forFeature([ Users, Roles, Menus, Departments, Metas ]),
     // TypeOrmModule.forRoot({autoLoadEntities: true,}),
     PassportModule,

@@ -1,13 +1,12 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';  
 import { UpdateUserinfoDto } from './dto/update-userinfo.dto';
 import { JwtService } from '@nestjs/jwt';
-
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './entities/userinfo.entity';
 import { In, Repository } from 'typeorm';
-import { Menus } from 'src/menu/entities/menu.entity';
-import { Departments } from 'src/department/entities/department.entity';
+// import { Menus } from 'src/menu/entities/menu.entity';
+// import { Departments } from 'src/department/entities/department.entity';
 import { RoleService } from 'src/role/role.service';
 import { DepartmentService } from 'src/department/department.service';
 
@@ -19,10 +18,10 @@ export class UserinfoService {
       constructor(
         @InjectRepository(Users) private readonly userinfoRepository:  //  调用数据库必须进行注入
         Repository<Users>,
-        @InjectRepository(Menus) private readonly menuRepository:  //  调用数据库必须进行注入
-        Repository<Menus>,
-        @InjectRepository(Departments) private readonly departmentsRepository:  //  调用数据库必须进行注入
-    Repository<Departments>,
+    //     @InjectRepository(Menus) private readonly menuRepository:  //  调用数据库必须进行注入
+    //     Repository<Menus>,
+    //     @InjectRepository(Departments) private readonly departmentsRepository:  //  调用数据库必须进行注入
+    // Repository<Departments>,
         private jwtService: JwtService,
         private readonly roleService: RoleService,
         private readonly departmentService: DepartmentService
@@ -242,4 +241,6 @@ export class UserinfoService {
       const res = await this.userinfoRepository.delete({id: In(ids)})
       return res
     }
+
+
 }

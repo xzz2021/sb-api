@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { Menus } from './entities/menu.entity';
-import { Metas } from './entities/meta.entity';
 
 @Injectable()
 export class MenuService {
@@ -12,13 +11,12 @@ export class MenuService {
   constructor(
     @InjectRepository(Menus) private readonly menuRepository:  //  调用数据库必须进行注入
     Repository<Menus>,
-    @InjectRepository(Metas) private readonly metaRepository:  //  调用数据库必须进行注入
-    Repository<Metas>,
+    // @InjectRepository(Metas) private readonly metaRepository:  //  调用数据库必须进行注入
+    // Repository<Metas>,
   ){}
 
 
   async getAllMenu(){
-    //  
     const formatToTree = (ary: any[], pid: number | undefined) => {
       return ary
         .filter((item) =>
@@ -137,22 +135,6 @@ export class MenuService {
     return res
   }
 }
-
-  findAll() {
-    return `This action returns all permissions`;
-  }
-
-  create() {
-    return `This action returns all permissions`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} permission`;
-  }
-
-  update(id: number, updateMenuDto: UpdateMenuDto) {
-    return `This action updates a #${id} permission`;
-  }
 
   //删除 菜单
   async removeMenu(id: number) {

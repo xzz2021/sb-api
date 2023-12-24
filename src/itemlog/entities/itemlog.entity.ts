@@ -1,5 +1,5 @@
 
-import { Column, Entity, PrimaryColumn, ViewEntity } from "typeorm";
+import { Column, PrimaryColumn, ViewEntity } from "typeorm";
 
 @ViewEntity('logdata_item')
 export class Itemlog {

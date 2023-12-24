@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEnumitemDto } from './dto/create-enumitem.dto';
-import { UpdateEnumitemDto } from './dto/update-enumitem.dto';
 import { Enumitem } from './entities/enumitem.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -13,9 +11,6 @@ export class EnumitemService {
     Repository<Enumitem>,
     // private readonly userinfoService: UserinfoService,
   ){}
-  create(createEnumitemDto: CreateEnumitemDto) {
-    return 'This action adds a new enumitem';
-  }
 
   // 根据条件 查询 到 对应的 枚举项目   
   async getSingleData(curItem: string){

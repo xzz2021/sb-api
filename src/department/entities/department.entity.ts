@@ -1,23 +1,15 @@
 
-//定义表格的column，表的名称会以class小写命名
-
 //  此处定义完会直接连接数据库生成表， 新增和移除column也能自动完成
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, Generated, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from 'typeorm'
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { Users } from 'src/userinfo/entities/userinfo.entity';
-// import { UsersRole } from './usersrole.entity';
 
 
 @Entity()
 export class Departments {
     @PrimaryGeneratedColumn()
-    // @Exclude()
     id: number;
-
-    // @Column()
-    // @Generated("uuid")  // 因为uuid有-符号  所以必须设定成字符串
-    // id: string;
 
     @ApiProperty()
     @Column()

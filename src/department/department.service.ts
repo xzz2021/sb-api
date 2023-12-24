@@ -4,7 +4,6 @@ import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Departments } from './entities/department.entity';
 import { In, Repository } from 'typeorm';
-import { UserinfoService } from 'src/userinfo/userinfo.service';
 import { Users } from 'src/userinfo/entities/userinfo.entity';
 
 @Injectable()
@@ -14,7 +13,6 @@ export class DepartmentService {
     Repository<Departments>,
     @InjectRepository(Users) private readonly userinfoRepository:  //  调用数据库必须进行注入
         Repository<Users>,
-    // private readonly userinfoService: UserinfoService,
   ){}
 
   // 获取所有部门
@@ -89,27 +87,7 @@ export class DepartmentService {
     return res
   }
 
-  create(createDepartmentDto: CreateDepartmentDto) {
-    return 'This action adds a new department';
-  }
-
-  findAll() {
-    return `This action returns all department`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} department`;
-  }
-
-  update(id: number, updateDepartmentDto: UpdateDepartmentDto) {
-    return `This action updates a #${id} department`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} department`;
-  }
   async tempadd(){
-    
         // 模拟修改
         // const addUser = await this.userinfoRepository.findOne({where: {id: 3}})
         // if(addUser){

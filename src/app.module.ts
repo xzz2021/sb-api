@@ -46,22 +46,12 @@ import { JwtAuthGuard } from './allProcessor/guard/auth.guard';
       ttl: 10,  // 请求限制时间
       limit: 60, // 请求限制次数
     }),
-    // PassportModule,
-    // JwtModule.register({
-    //   secret: 'TEMPsecret',
-    //   signOptions: { expiresIn: '3d' }   //  设定token的有效期
-    // }),
-
-
     UserinfoModule, // 引入用户信息处理模块   链接相关功能
 
     // LoggerModule,   //打印日志模块
      
     OrmConfig, RoleModule, DepartmentModule, MenuModule, ItemlogModule, MoneylogModule, EnumitemModule, OnlineplayerModule // typeorm配置
-  
-    
-    // AuthModule, RolesModule, UsersModule, ProfilesModule, MenusModule,
-    
+
   ],
   controllers: [AppController],
   providers: [AppService,

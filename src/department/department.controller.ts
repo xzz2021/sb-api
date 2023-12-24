@@ -9,7 +9,6 @@ export class DepartmentController {
   // 获取所有角色信息
   @Get('getDepartmentTable')
   getDepartmentTable(){
-
     return this.departmentService.getDepartmentTable(); 
   }
 

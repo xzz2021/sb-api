@@ -40,24 +40,24 @@ export class RoleController {
     return this.roleService.removeRole( id )
   }
 
-  @Post()
-  create(@Body() createRoleDto: CreateRoleDto) {
-    return this.roleService.create(createRoleDto);
-  }
+  // @Post()
+  // create(@Body() createRoleDto: CreateRoleDto) {
+  //   return this.roleService.create(createRoleDto);
+  // }
 
-  @Get()
-  findAll() {
-    return this.roleService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.roleService.findAll();
+  // }
   //  这里是类似通配符匹配 'role/' 后面的所有路径
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.roleService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.roleService.findOne(+id);
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
-    return this.roleService.update(+id, updateRoleDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
+  //   return this.roleService.update(+id, updateRoleDto);
+  // }
 
 }

@@ -1,15 +1,9 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { EnumitemService } from './enumitem.service';
-import { CreateEnumitemDto } from './dto/create-enumitem.dto';
 
 @Controller('enumitem')
 export class EnumitemController {
   constructor(private readonly enumitemService: EnumitemService) {}
-
-  @Post()
-  create(@Body() createEnumitemDto: CreateEnumitemDto) {
-    return this.enumitemService.create(createEnumitemDto);
-  }
 
   @Post('search')
   findByDepartment(@Body() joinQueryParams: string[], ) {
@@ -17,11 +11,9 @@ export class EnumitemController {
     return this.enumitemService.joinQuery(joinQueryParams)
   }
 
-
    //  添加  或者  修改 已有 枚举 项目
    @Post('update')
    updateEnumitem(@Body() updateEnumite: updateEnumitem[]) {
      return this.enumitemService.updateEnumitem(updateEnumite);
    }
-
 }

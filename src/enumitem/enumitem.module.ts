@@ -7,7 +7,6 @@ import { Enumitem } from './entities/enumitem.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Enumitem ]),
-    // forwardRef(() => MenuModule)
   ],
   controllers: [EnumitemController],
   providers: [EnumitemService],

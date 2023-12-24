@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { OnlineplayerService } from './onlineplayer.service';
 import { CreateOnlineplayerDto } from './dto/create-onlineplayer.dto';
-import { Role } from 'src/allProcessor/guard/roles.enum';
-import { Roles } from 'src/allProcessor/guard/roles';
+import { RoleArr } from 'src/allProcessor/guard/roles.enum';
+import { RolesGuard } from 'src/allProcessor/guard/roles';
 
-// @Roles(Role.Admin)  //  注明允许的身份
+@RolesGuard(RoleArr.Admin)  //  注明允许的身份
 @Controller('onlineplayer')
 export class OnlineplayerController {
   constructor(private readonly onlineplayerService: OnlineplayerService) {}
