@@ -49,7 +49,7 @@ import { JwtAuthGuard } from './allProcessor/guard/auth.guard';
     UserinfoModule, // 引入用户信息处理模块   链接相关功能
 
     // LoggerModule,   //打印日志模块
-     
+     // 这里 各个模块都必须导入  不然 无法 请求到 相应模块的  接口
     OrmConfig, RoleModule, DepartmentModule, MenuModule, ItemlogModule, MoneylogModule, EnumitemModule, OnlineplayerModule // typeorm配置
 
   ],

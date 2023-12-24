@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOnlineplayerDto } from './dto/create-onlineplayer.dto';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { Between, DataSource, MoreThanOrEqual } from 'typeorm';
 import { Onlineplayer } from './entities/onlineplayer.entity';
@@ -13,9 +12,6 @@ export class OnlineplayerService {
   // @InjectRepository(Itemlog) private readonly itemlogRepository:  //  调用数据库必须进行注入
   // Repository<Itemlog>,
 ){}
-  create(createOnlineplayerDto: CreateOnlineplayerDto) {
-    return 'This action adds a new onlineplayer';
-  }
 
   async findAll() {
 return 'ooo'

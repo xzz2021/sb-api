@@ -1,6 +1,5 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { OnlineplayerService } from './onlineplayer.service';
-import { CreateOnlineplayerDto } from './dto/create-onlineplayer.dto';
 import { RoleArr } from 'src/allProcessor/guard/roles.enum';
 import { RolesGuard } from 'src/allProcessor/guard/roles';
 
@@ -8,11 +7,6 @@ import { RolesGuard } from 'src/allProcessor/guard/roles';
 @Controller('onlineplayer')
 export class OnlineplayerController {
   constructor(private readonly onlineplayerService: OnlineplayerService) {}
-
-  @Post()
-  create(@Body() createOnlineplayerDto: CreateOnlineplayerDto) {
-    return this.onlineplayerService.create(createOnlineplayerDto);
-  }
 
   @Get()
   findAll() {
