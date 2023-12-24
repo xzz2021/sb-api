@@ -57,7 +57,37 @@ require('dotenv').config();
               // timezone: "08:00", // 纠正时区偏差8小时
               timezone: "Z", //  
               logging: ['error'],  //日志记录类型  数据库操作记录
+              // cache: true,   // 开启 查询缓存
+            //   cache: {   //  可以将缓存记录到  内置的  redis里
+            //     type: "redis",
+            //     options: {
+            //         host: "localhost",
+            //         port: 6379
+            //     }
+            // }
               // dataStrings: ['DATE'], //??? 未知作用 强制日期类型    boolean | string[]-TIMESTAMP, DATETIME, DATE
+              // replication: {   主从  复制
+              //   master: {
+              //     host: "server1",
+              //     port: 3306,
+              //     username: "test",
+              //     password: "test",
+              //     database: "test"
+              //   },
+              //   slaves: [{
+              //     host: "server2",
+              //     port: 3306,
+              //     username: "test",
+              //     password: "test",
+              //     database: "test"
+              //   }, {
+              //     host: "server3",
+              //     port: 3306,
+              //     username: "test",
+              //     password: "test",
+              //     database: "test"
+              //   }]
+              // }
               
             } as TypeOrmModuleOptions ),
           }

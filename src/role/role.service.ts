@@ -16,10 +16,23 @@ export class RoleService {
     private readonly menuService: MenuService
   ){}
   
-
+  rTime(date) {  // 转换日期 时间 格式
+    // var json_date = new Date(date).toJSON();
+    return new Date(+new Date(date) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '') 
+}
   async findAllRoles(){
     const res = await this.rolesRepository.find();
-    return res
+    let newRes = []
+    if (res.length > 0) {
+       newRes = res.map((item) => {
+        item.createTime = this.rTime(item.createTime)
+        return item
+      })
+    } else {
+      return []
+    }
+
+    return newRes
   }
 
   async findRoleById(id: number){

@@ -22,7 +22,7 @@ export class Users {
     @Column( { default: '游客' })  // 设定当前键为唯一值
     nickname: string;
 
-    @Column()
+    @Column({select: false}) // 定义在进行查询时是否默认隐藏此列
     @Exclude()  // 转换数据, 排除此字段  //  结合@UseInterceptors(ClassSerializerInterceptor) 使用
     password: string;
 
@@ -30,8 +30,11 @@ export class Users {
     @Exclude()
     createtime: string;
 
+    // @BeforeInsert()   //   实体监听器   用于 数据库操作时 调用的函数  类似生命周期 钩子
+    // updateDates() {
+    //     this.createdDate = new Date()
+    // }
     @UpdateDateColumn()
-    @Exclude()
     updatetime: string;
 
     @DeleteDateColumn()
@@ -41,6 +44,8 @@ export class Users {
     //   一个用户  对应一个角色
    @ManyToOne(() => Roles, role => role.usersArr, { cascade: true, eager: true})   //关联表单  ???  { eager: true}
    role: Roles; 
+
+   //  casade: ("insert" | "update" | "remove" | "soft-remove" | "recover")[]
 
     //  一个用户 对应 一个  部门
    @ManyToOne(() => Departments, department => department.departmentUsersArr, { cascade: true, eager: true})  

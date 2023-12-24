@@ -51,7 +51,14 @@ export class ItemlogService {
   // console.log('🚀 ~ file: itemlog.service.ts:55 ~ ItemlogService ~ buildWhereCondition:', buildWhereCondition)
     const itemLogRepository = await this.dataSource.getRepository(Itemlog);
     const list =   await itemLogRepository.find({where:buildWhereCondition,take: pageSize, skip: (pageIndex -1)*pageSize })
-    const total =  await itemLogRepository.count(buildWhereCondition);
+    const total =  await itemLogRepository.count({where:buildWhereCondition})
+    // const total =  await itemLogRepository.countBy(buildWhereCondition)   // 也可行
+
+    // const sum = await repository.sum("age", { firstName: "Timber" })  //   返回符合 FindOptionsWhere 的所有实体的某一数字字段的总和
+    //  average - 返回符合 FindOptionsWhere 的所有实体的某一数字字段的平均值
+    //   minimum   maximum  - 返回符合 FindOptionsWhere 的所有实体的某一数字字段的最小值
+    //  query - 执行原始的 SQL 查询
+    //   const rawData = await repository.query(`SELECT * FROM USERS`)
 
     return {
       list,

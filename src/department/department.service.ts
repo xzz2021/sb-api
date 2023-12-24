@@ -15,9 +15,22 @@ export class DepartmentService {
         Repository<Users>,
   ){}
 
+   rTime(date) {  // 转换日期 时间 格式
+    // var json_date = new Date(date).toJSON();
+    return new Date(+new Date(date) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '') 
+}
   // 获取所有部门
   async getDepartmentTable(){
-    const res = await this.departmentsRepository.find();
+    const res = await this.departmentsRepository.find()
+    let newRes = []
+    if (res.length > 0) {
+       newRes = res.map((item) => {
+        item.createTime = this.rTime(item.createTime)
+        return item
+      })
+    } else {
+      return []
+    }
     // 需要嵌套
     const formatToTree = (ary: any[], pid: number | undefined) => {
       return ary
@@ -32,7 +45,7 @@ export class DepartmentService {
           return item
         })
     }
-    const newData = formatToTree(res, undefined)
+    const newData = formatToTree(newRes, undefined)
     // console.log('🚀 ~ file: role.service.ts:52 ~ RoleService ~ findAllRoles ~ res:', res)
     return  newData
   }
@@ -69,17 +82,17 @@ export class DepartmentService {
 
     if(role.roleName === '超级管理员'){  
       // 如果是管理员 直接返回  所有用户  作为初始化 管理使用
-      const res = await this.userinfoRepository.find()
-    return res
+      const list = await this.userinfoRepository.find()
+    return { list, total: list.length }
     }
     if( id == 1){  
       // 如果是管理员 直接返回  所有用户  作为初始化 管理使用
       const res = await this.userinfoRepository.find()
-    return res.slice(1)
+    return { list: res.slice(1), total: res.length - 1 } 
     }
-    if(!id) return []
+    if(!id) return { list: [], total: 0 }
     const res = await this.departmentsRepository.findOne({where: { id }, relations: ['departmentUsersArr']})
-    return res.departmentUsersArr
+    return { list: res.departmentUsersArr || [], total: res.departmentUsersArr ? res.departmentUsersArr.length: 0}
   }
 
   async findDepartmentById(id: number){

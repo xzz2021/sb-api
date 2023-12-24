@@ -9,7 +9,9 @@ export class AppService {
 
 
   async testCreate(body){
-    console.log('🚀 ~ file: app.service.ts:12 ~ AppService ~ testCreate ~ body:', body)
+    // console.log('🚀 ~ file: app.service.ts:12 ~ AppService ~ testCreate ~ body:', body)
+    //   这里 也可以  直接  使用  url 方式连接   有url之后 会 忽略  所有 其他参数
+    // const AppDataSource = new DataSource({url: body.url})
     const { type, host, port, username, password, database } = body
     const AppDataSource = new DataSource({
       type,
@@ -22,7 +24,11 @@ export class AppService {
   try {
     
     await AppDataSource.initialize()
-    
+
+    const user = await AppDataSource.transaction(
+      async () => {}
+    )
+    // return user
   } catch (error) {
     // console.log('🚀 ~ file: app.service.ts:26 ~ AppService ~ testCreate ~ error:', error)
     return error.sqlMessage

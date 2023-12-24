@@ -1,7 +1,7 @@
 
-import { Column, PrimaryColumn, ViewEntity } from "typeorm";
+import { Column, Entity, PrimaryColumn } from "typeorm";
 
-@ViewEntity('logdata_item')
+@Entity('logdata_item')
 export class Itemlog {
     @PrimaryColumn()
     ID: number
