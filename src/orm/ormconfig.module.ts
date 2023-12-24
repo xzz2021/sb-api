@@ -3,13 +3,9 @@
 //  需要把配置信息改造成单独的ts文件进行引用,  见底部模板
 
 import { Module } from '@nestjs/common';
-
 import {  ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-
 import { Users } from '../userinfo/entities/userinfo.entity'
-// import { Profile } from '../profiles/profile.entity';
-// import { Roles } from '../roles/roles.entity';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { Roles } from 'src/role/entities/role.entity';
 import { Departments } from 'src/department/entities/department.entity';
@@ -22,12 +18,9 @@ import { Onlineplayer } from 'src/onlineplayer/entities/onlineplayer.entity';
 
 
 let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem ]
-// let allEntities = [Users, Profile, Roles ]
 
 // 引入.env文件的变量合并到node环境中
-require('dotenv').config();
-
-
+// require('dotenv').config();
 
 @Module({
 
@@ -46,6 +39,7 @@ require('dotenv').config();
               password: configService.get('DBPWD'),
               database: 'shengbai',
               entities: allEntities,
+              // migrations: [/*...*/],    // 迁移选项 列表
               // [  // 定义生成表格
               //   Users,
               //   Profile,
@@ -110,7 +104,7 @@ require('dotenv').config();
               synchronize: false,  
               timezone: "Z", //  
               // logging: ['error'], 
-              retryAttempts: 3  //  重试连接数据库的次数（默认：10）
+              retryAttempts: 5  //  重试连接数据库的次数（默认：10）
               
             } as TypeOrmModuleOptions ),
           }
@@ -152,12 +146,12 @@ export default new DataSource ({
   password: process.env.DBPWD,
   database: 'shengbai',
   entities: allEntities,
-  // migrations: ['src/migrations/*{.ts,.js}'],
-  synchronize: !false,
-  timezone: "Z", //  
-  logging: ['error'], 
+  migrations: ['src/migrations/*{.ts,.js}'],
+  synchronize: false,
+  // timezone: "Z", //  
+  // logging: ['error'], 
 
-} as DataSourceOptions,
+} as DataSourceOptions
 
 )
 

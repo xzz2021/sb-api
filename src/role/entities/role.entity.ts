@@ -1,9 +1,6 @@
 
-//定义表格的column，表的名称会以class小写命名
-
 //  此处定义完会直接连接数据库生成表， 新增和移除column也能自动完成
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
-// import { ApiProperty } from '@nestjs/swagger';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from 'typeorm'
 import { Users } from 'src/userinfo/entities/userinfo.entity';
 import { Exclude } from 'class-transformer';
 
@@ -14,7 +11,6 @@ export class Roles {
     @PrimaryGeneratedColumn()
     id: number;
 
-    // @ApiProperty()
     @Column({ unique: true })
     roleName: string; 
 
@@ -31,7 +27,7 @@ export class Roles {
     //  一个角色 可以对应多个用户
     @OneToMany(() => Users, user => user.role)  
     @JoinColumn()   // 定义了JoinColumn  代表他是关联表的所有者  
-    usersArr: Users[];
+    usersArr: Relation<Users>[];
 
     @CreateDateColumn()  //创建时自动插入日期时间
     createTime: string;

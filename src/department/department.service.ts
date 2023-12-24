@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDepartmentDto } from './dto/create-department.dto';
-import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Departments } from './entities/department.entity';
 import { In, Repository } from 'typeorm';
