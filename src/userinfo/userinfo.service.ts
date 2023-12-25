@@ -152,7 +152,6 @@ export class UserinfoService {
     
       async remove(body) {
         let res = await this.userinfoRepository.delete(body)
-        console.log('🚀 ~ file: userinfo.service.ts:172 ~ UserinfoService ~ remove ~ res:', res)
         if(res.affected == 1) return { msg: `已删除用户: ${body.username}`}
       }
     
@@ -169,7 +168,6 @@ export class UserinfoService {
   async validateUser(username: string, password: string ): Promise<any> {
 
     const user = await this.findByUsername(username)
-    console.log('🚀 ~ file: userinfo.service.ts:172 ~ UserinfoService ~ validateUser ~ user:', user)
 
     if(!user){
       throw new ForbiddenException('用户不存在')

@@ -42,7 +42,7 @@ export class Users {
     deletetime: string;
 
     //   一个用户  对应一个角色
-   @ManyToOne(() => Roles, role => role.usersArr, { cascade: true, eager: true})   //关联表单  ???  { eager: true}
+   @ManyToOne(() => Roles, role => role.usersArr, { cascade: ['insert', 'update'], eager: true})   //关联表单  ???  { eager: true}
    role: Relation<Roles>; 
 
    //  casade: ("insert" | "update" | "remove" | "soft-remove" | "recover")[]

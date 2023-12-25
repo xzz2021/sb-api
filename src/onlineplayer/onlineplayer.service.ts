@@ -16,20 +16,20 @@ export class OnlineplayerService {
   async findAll() {
 return 'ooo'
 // const unixTime = Math.floor((Date.now() - 24 * 60 * 60 * 1000) / 1000)
-// const unixTime = 1703306946 - 28 * 60 * 60
-//     let base = unixTime
-// const fiveMinutes = 300
-// const data = [{SaveTime: base, OnlieRoleCount: Math.floor(Math.random() * 100)}]
-// for (let i = 0; i < 335; i++) {
-//   const now = new Date((base += fiveMinutes))
-//   data.push({SaveTime: +now, OnlieRoleCount: Math.floor(Math.random() * 100)})
-// }
-// const onlineplayerRepository = await this.dataSource.getRepository(Onlineplayer);
+const unixTime = 1703466053 - 28 * 60 * 60
+    let base = unixTime
+const fiveMinutes = 300
+const data = [{SaveTime: base, OnlieRoleCount: Math.floor(Math.random() * 100)}]
+for (let i = 0; i < 335; i++) {
+  const now = new Date((base += fiveMinutes))
+  data.push({SaveTime: +now, OnlieRoleCount: Math.floor(Math.random() * 100)})
+}
+const onlineplayerRepository = await this.dataSource.getRepository(Onlineplayer);
 
-// // const res2 = await onlineplayerRepository.find()
-// // return res2
-// const res = await onlineplayerRepository.insert(data)
-//     return res
+// const res2 = await onlineplayerRepository.find()
+// return res2
+const res = await onlineplayerRepository.insert(data)
+    return res
 
   }
   async find12Hour() {
