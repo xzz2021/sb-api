@@ -9,5 +9,11 @@ import { HttpException, HttpStatus } from "@nestjs/common";
           super('Forbidden', HttpStatus.FORBIDDEN);  
         }
       }  
+
+      export class LoginException extends HttpException {  
+        constructor() {  
+          super('Forbidden', 406);  
+        }
+      }
     
     //   throw new ForbiddenException();

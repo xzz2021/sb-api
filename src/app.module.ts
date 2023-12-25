@@ -15,6 +15,7 @@ import { EnumitemModule } from './enumitem/enumitem.module';
 import { OnlineplayerModule } from './onlineplayer/onlineplayer.module';
 import { RolesGuard } from './allProcessor/guard/role.guard';
 import { JwtAuthGuard } from './allProcessor/guard/auth.guard';
+import { ItemreviewModule } from './itemreview/itemreview.module';
 // import * as Joi from 'joi'  // 引入字段校验,可以检验变量类型是否合法
 
 
@@ -50,7 +51,7 @@ import { JwtAuthGuard } from './allProcessor/guard/auth.guard';
 
     // LoggerModule,   //打印日志模块
      // 这里 各个模块都必须导入  不然 无法 请求到 相应模块的  接口
-    OrmConfig, RoleModule, DepartmentModule, MenuModule, ItemlogModule, MoneylogModule, EnumitemModule, OnlineplayerModule // typeorm配置
+    OrmConfig, RoleModule, DepartmentModule, MenuModule, ItemlogModule, MoneylogModule, EnumitemModule, OnlineplayerModule, ItemreviewModule // typeorm配置
 
   ],
   controllers: [AppController],

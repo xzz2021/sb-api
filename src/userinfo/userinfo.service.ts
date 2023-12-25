@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';  
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';  
 import { UpdateUserinfoDto } from './dto/update-userinfo.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -170,12 +170,12 @@ export class UserinfoService {
     const user = await this.findByUsername(username)
 
     if(!user){
-      throw new ForbiddenException('用户不存在')
+      throw new NotFoundException('用户不存在')
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
-    if(!isMatch) throw new ForbiddenException('用户名或密码错误')
+    if(!isMatch) throw new NotFoundException('用户名或密码错误' )
     
     if (user && isMatch) {
         const { username, password } = user;
@@ -187,10 +187,11 @@ export class UserinfoService {
     async login(userinfo) {
       const user = await this.findOne(userinfo.username)
       // 数据库中用户角色信息是包含多个列信息组成的对象 集合的数组, 所以需要提取出roleName
-      const payload = { username: user.username, role: user.role }
+      // const payload = { username: user.username, role: user.role, nickname: user.nickname}
+      const payload = { username: user.username, roleName: user.role.roleName, nickname: user.nickname}
       return  {
           userInfo: user,
-          tokenKey: this.jwtService.sign(payload),
+          tokenKey: this.jwtService.sign(payload)
         }
     }
 

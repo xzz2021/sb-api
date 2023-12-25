@@ -15,9 +15,10 @@ import { Itemlog } from 'src/itemlog/entities/itemlog.entity';
 import { Moneylog } from 'src/moneylog/entities/moneylog.entity';
 import { Enumitem } from 'src/enumitem/entities/enumitem.entity';
 import { Onlineplayer } from 'src/onlineplayer/entities/onlineplayer.entity';
+import { Itemreview } from 'src/itemreview/entities/itemreview.entity';
 
 
-let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem ]
+let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemreview ]
 
 // 引入.env文件的变量合并到node环境中
 // require('dotenv').config();
@@ -39,12 +40,6 @@ let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem ]
               password: configService.get('DBPWD'),
               database: 'shengbai',
               entities: allEntities,
-              // migrations: [/*...*/],    // 迁移选项 列表
-              // [  // 定义生成表格
-              //   Users,
-              //   Profile,
-              //   Logs,
-              // ],
               //此处定义为是否同步代码,,,,,,生产模式需关闭,  引入迁移模式
               // 千万慎重开启，
               synchronize: !false,  // 同步本地的schema与数据库   自动同步代码和数据库
@@ -137,7 +132,7 @@ let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem ]
 export class OrmConfig {}
 
 
-export default new DataSource ({
+export default new DataSource ({   //  这里 给 typeorm  对 数据库 进行操作???
   // migrationsTableName: 'migrations',
   type: 'mysql',
   host: process.env.DBHOST,
@@ -146,7 +141,7 @@ export default new DataSource ({
   password: process.env.DBPWD,
   database: 'shengbai',
   entities: allEntities,
-  migrations: ['src/migrations/*{.ts,.js}'],
+  // migrations: ['src/migrations/*{.ts,.js}'],
   synchronize: false,
   // timezone: "Z", //  
   // logging: ['error'], 

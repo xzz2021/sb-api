@@ -20,8 +20,9 @@ export class RoleController {
 
   @Get('getMenu') // 根据角色 获取用户的菜单 以及  权限
   getMenuAndPermission(@Req() req: any) {
-    const { role } = req.user;
-    return this.roleService.getMenuByRole(role);
+    // console.log('🚀 ~ file: role.controller.ts:23 ~ RoleController ~ getMenuAndPermission ~ req:', req.user)
+    const { roleName } = req.user;
+    return this.roleService.getMenuByRole(roleName);
   }
   
 

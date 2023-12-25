@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRoleDto } from './dto/create-role.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Roles } from './entities/role.entity';
 import { Repository } from 'typeorm';
@@ -115,9 +113,9 @@ export class RoleService {
   
 
       //  此处即用户菜单  也带权限表  
-   async getMenuByRole(role: CreateRoleDto){
+   async getMenuByRole(roleName: string){
     //  如果是游客
-    if(!role)  return []
+    if(!roleName)  return []
     const formatToTree = (ary: any[], pid: number | undefined) => {
       return ary
         .filter((item) =>
@@ -135,23 +133,25 @@ export class RoleService {
     //  要同时拿到 用户菜单 和 角色菜单
     //  先判断是否是超级管理员
     // const isSuperAdmin = rolesArr.some(item => item.roleName == '超级管理员')
-    if(role.roleName == '超级管理员'){
+    if(roleName == '超级管理员'){
       adminList.map((item) => {
         item['title'] = item.meta ? item.meta?.title || '' : ''
       })
       const allMenuAndPermission = await this.menuService.getAllMenu()
       // console.log('🚀 ~ file: role.service.ts:113 ~ RoleService ~ getMenuByRole ~ allMenuAndPermission:', allMenuAndPermission)
+      //  数据库取出 的  是扁平的  需要转换下????????????????
+      // const databaseMenu = formatToTree(allMenuAndPermission, undefined)
       // // 拿到所有菜单  生成嵌套数据
       let newData = [...allMenuAndPermission, ...adminList]
       return newData
     }
       // 其他角色  直接 拿到角色表对应的  菜单  目前角色  只分配一个
-      const curRole = await this.rolesRepository.findOne({where: {roleName: role.roleName}})
+      const curRole = await this.rolesRepository.findOne({where: {roleName: roleName}})
       // console.log('🚀 ~ file: role.service.ts:100 ~ RoleService ~ getMenuByRole ~ role:', role)
       //  先拿到  角色对应的  菜单
       if(!curRole.menusArr || curRole.menusArr  == '') return '角色关联 菜单 数据异常'
       const roleMenus = JSON.parse(curRole.menusArr)
-      // console.log('🚀 ~ file: role.service.ts:103 ~ RoleService ~ getMenuByRole ~ roleMenus:', roleMenus)
+      console.log('🚀 ~ file: role.service.ts:103 ~ RoleService ~ getMenuByRole ~ roleMenus:', roleMenus)
       //  再拿到  角色对应的  菜单  对应的  按钮
       
       // let nestedMenus = formatToTree(roleMenus, undefined)
