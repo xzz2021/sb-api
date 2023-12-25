@@ -31,10 +31,11 @@ export class UserinfoController {
 
     // -----------------
     // 以下为注册登录认证代码
-  @UseGuards(LocalAuthGuard)
-  @Public()
+    @Public()
+    @UseGuards(LocalAuthGuard)
   @Post('login')
   signIn(@Body() userinfo: any, @Req() req: Request){
+      console.log('🚀 ~ file: userinfo.controller.ts:38 ~ UserinfoController ~ signIn ~ userinfo:', userinfo)
       // 经过守卫返回的信息会自动放在req.user中
       // 如果上面守卫校验通过了,则会执行下面的登录返回token时间
       return this.userinfoService.login(userinfo)

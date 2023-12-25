@@ -5,8 +5,6 @@ import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './entities/userinfo.entity';
 import { In, Repository } from 'typeorm';
-// import { Menus } from 'src/menu/entities/menu.entity';
-// import { Departments } from 'src/department/entities/department.entity';
 import { RoleService } from 'src/role/role.service';
 import { DepartmentService } from 'src/department/department.service';
 
@@ -18,10 +16,6 @@ export class UserinfoService {
       constructor(
         @InjectRepository(Users) private readonly userinfoRepository:  //  调用数据库必须进行注入
         Repository<Users>,
-    //     @InjectRepository(Menus) private readonly menuRepository:  //  调用数据库必须进行注入
-    //     Repository<Menus>,
-    //     @InjectRepository(Departments) private readonly departmentsRepository:  //  调用数据库必须进行注入
-    // Repository<Departments>,
         private jwtService: JwtService,
         private readonly roleService: RoleService,
         private readonly departmentService: DepartmentService
@@ -89,8 +83,7 @@ export class UserinfoService {
         }catch(err) {
           //  错误不用返回  直接抛出异常
         const { code, sqlMessage } = err
-        console.log('🚀 ~ file: userinfo.service.ts:71 ~ UserinfoService ~ create ~ sqlMessage:', sqlMessage)
-        // return  { code, sqlMessage } 
+        return  { code, sqlMessage } 
 
         }
         // return await this.userinfoRepository.insert([userSave1,userSave2,userSave3,userSave4])  //批量存储 插入
@@ -176,6 +169,7 @@ export class UserinfoService {
   async validateUser(username: string, password: string ): Promise<any> {
 
     const user = await this.findByUsername(username)
+    console.log('🚀 ~ file: userinfo.service.ts:172 ~ UserinfoService ~ validateUser ~ user:', user)
 
     if(!user){
       throw new ForbiddenException('用户不存在')

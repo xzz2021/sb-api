@@ -45,7 +45,6 @@ export class DepartmentService {
         })
     }
     const newData = formatToTree(newRes, undefined)
-    // console.log('🚀 ~ file: role.service.ts:52 ~ RoleService ~ findAllRoles ~ res:', res)
     return  newData
   }
   
@@ -54,7 +53,6 @@ export class DepartmentService {
     // createDepartmentDto.parentId === null && (createDepartmentDto.parentId = '1000')
     const departmentSave:any = this.departmentsRepository.create(createDepartmentDto)
     const res = await this.departmentsRepository.save(departmentSave)
-    // console.log('🚀 ~ file: role.service.ts:59 ~ RoleService ~ addRole ~ res:', res)
     return res
   }
 
@@ -67,7 +65,6 @@ export class DepartmentService {
 
   //  批量删除部门
   async batchRemoveDepartment(list: any[]){
-    console.log('🚀 ~ file: department.service.ts:39 ~ DepartmentService ~ batchRemoveDepartment ~ list:', list)
     //  delete 默认以自增id作为参数进行删除操作
     // 指定被删除的列名
     const res = await this.departmentsRepository.delete({ id: In(list) })
