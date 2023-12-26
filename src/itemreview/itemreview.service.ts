@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Not, Repository } from 'typeorm';
+import { Equal, IsNull, Not, Repository } from 'typeorm';
 import { Itemreview } from './entities/itemreview.entity';
 
 @Injectable()
@@ -19,18 +19,17 @@ export class ItemreviewService {
 
 
     async updateApply(updateItem){
-
-        const newItem = await this.itemreviewRepository.insert(updateItem);
+        const newItem = await this.itemreviewRepository.save(updateItem);
         return newItem
     }
 
     async getAllItems(joinQueryParams){
         const {reviewStatus} = joinQueryParams
         if(reviewStatus == 'all') {
-            const allItems = await this.itemreviewRepository.findBy({reviewStatus: Not(null)})
+            const allItems = await this.itemreviewRepository.findBy({reviewStatus: Not(IsNull())})
             return allItems
         }else{
-            const allItems = await this.itemreviewRepository.findBy({reviewStatus: null})
+            const allItems = await this.itemreviewRepository.findBy({reviewStatus: IsNull()})
             return allItems
         }
     }

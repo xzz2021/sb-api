@@ -8,6 +8,7 @@ import { Exclude } from 'class-transformer';
 import { Roles } from 'src/role/entities/role.entity';
 import { Departments } from 'src/department/entities/department.entity';
 
+
 //   如果想在单个数据源中使用多个数据库,直接指定数据库的命名
 //   @Entity({database: 'secondDatabaseName'})
 @Entity()

@@ -23,6 +23,13 @@ async function bootstrap() {
      // 全局注册  正常响应拦截器  同一返回格式
      app.useGlobalInterceptors(new ResponseInterceptor())  //  对全局的接口 响应 进行日志记录
 
+
+       //  全局数据格式校验管道
+  // app.useGlobalPipes(new ValidationPipe(
+  //   // whitelist 功能    保留dto里定义过的数据字段, 去除前端传递过来的其他字段, 防范恶意代码
+  //   // {whitelist: true,   }
+  // ));
+
   await app.listen(3000);
 }
 bootstrap();

@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/commo
 import { UpdateUserinfoDto } from './dto/update-userinfo.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+//   argon2  ?更好的 加密 替代品
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './entities/userinfo.entity';
 import { In, Repository } from 'typeorm';
@@ -164,7 +165,7 @@ export class UserinfoService {
 
 
   //--------------------------------------
-  // 以下为登录注册认证服务相关代码
+  // 以下为登录认证服务相关代码
   async validateUser(username: string, password: string ): Promise<any> {
 
     const user = await this.findByUsername(username)
