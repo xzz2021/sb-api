@@ -41,9 +41,9 @@ export class DepartmentController {
 
   @Get('users')
   findByDepartment(@Query() joinQueryParams: any, @Req() req: any) {
-    const {  role } = req.user;
+    const {  roleName } = req.user;
     // 根据部门id参数 查询关联用户  ?id=6&pageIndex=1&pageSize=10  
-    return this.departmentService.findByDepartment(joinQueryParams, role)
+    return this.departmentService.findByDepartment(joinQueryParams, roleName)
   }
 
 }

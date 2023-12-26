@@ -92,25 +92,25 @@ export class UserinfoService {
       }
 
       // 通过用户名获取用户信息
-      async findOne(username: string) {
-        let res = await this.userinfoRepository.findOne({where: {username}, relations: ['role']})  // 获取基础信息及角色信息
-        return res
-        // let { roleId, roleName } = res.rolesArr
-        // let resInfo = await this.rolesRepository.findOne({where: {roleId},  relations: ['permissions']})  // 根据获取路由权限信息
-        // // let res2 = await this.rolesRepository.createQueryBuilder('roles')
-        // //                   .leftJoinAndMapMany('roles.permissions', Permissions, 'permissions', 'roles.permissions3 = permissions.routeLink ')
-        // //                   .where("roles.roleId = :roleId", { roleId })
-        // //                   .getMany()
-        // // let permissions = resInfo.permissions.map(item => item.routeLink)
+      // async findOne(username: string) {
+      //   let res = await this.userinfoRepository.findOne({where: {username}, relations: ['role']})  // 获取基础信息及角色信息
+      //   return res
+      //   // let { roleId, roleName } = res.rolesArr
+      //   // let resInfo = await this.rolesRepository.findOne({where: {roleId},  relations: ['permissions']})  // 根据获取路由权限信息
+      //   // // let res2 = await this.rolesRepository.createQueryBuilder('roles')
+      //   // //                   .leftJoinAndMapMany('roles.permissions', Permissions, 'permissions', 'roles.permissions3 = permissions.routeLink ')
+      //   // //                   .where("roles.roleId = :roleId", { roleId })
+      //   // //                   .getMany()
+      //   // // let permissions = resInfo.permissions.map(item => item.routeLink)
         
-        // let userinfo= { username: res.username, password: res.password, roleId, roleName }
-        // return { username: 'test', rolesArr: [] }
-        // return userinfo
-      }
+      //   // let userinfo= { username: res.username, password: res.password, roleId, roleName }
+      //   // return { username: 'test', rolesArr: [] }
+      //   // return userinfo
+      // }
     
-       findByID(id: number) {
-        return this.userinfoRepository.findOne({ where: {id} })
-      }
+      //  findByID(id: number) {
+      //   return this.userinfoRepository.findOne({ where: {id} })
+      // }
     
 
     
@@ -158,9 +158,9 @@ export class UserinfoService {
     
     
       // 通过用户名查询用户信息
-      findByUsername(username: string) {
-        return this.userinfoRepository.findOne({ where: {username} })
-      }
+      // findByUsername(username: string) {
+      //   return this.userinfoRepository.findOne({ where: {username} })
+      // }
 
 
 
@@ -168,7 +168,7 @@ export class UserinfoService {
   // 以下为登录认证服务相关代码
   async validateUser(username: string, password: string ): Promise<any> {
 
-    const user = await this.findByUsername(username)
+    const user = await this.userinfoRepository.findOne({ where: {username} })
 
     if(!user){
       throw new NotFoundException('用户不存在')
@@ -186,7 +186,9 @@ export class UserinfoService {
     }
 
     async login(userinfo) {
-      const user = await this.findOne(userinfo.username)
+      
+      // const user = await this.findOne(userinfo.username)
+      const user = await await this.userinfoRepository.findOne({where: {username: userinfo.username}, relations: ['role']})
       // 数据库中用户角色信息是包含多个列信息组成的对象 集合的数组, 所以需要提取出roleName
       // const payload = { username: user.username, role: user.role, nickname: user.nickname}
       const payload = { username: user.username, roleName: user.role.roleName, nickname: user.nickname}
@@ -197,10 +199,10 @@ export class UserinfoService {
     }
 
 
-    async findAllUser() {
-      const res = await this.userinfoRepository.find()
-      return res
-    }
+    // async findAllUser() {
+    //   const res = await this.userinfoRepository.find()
+    //   return res
+    // }
 
     //  管理员 新增   或 修改  用户 信息   同一接口
     async updateUser(createUsersDto) {

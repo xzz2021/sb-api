@@ -16,10 +16,10 @@ export class UserinfoController {
       return 'hello test'
     }
 
-  @Post('findone')
-  findOne(@Body('username') username: string) {
-    return this.userinfoService.findOne(username);
-  }
+  // @Post('findone')
+  // findOne(@Body('username') username: string) {
+  //   return this.userinfoService.findOne(username);
+  // }
   
   @Get('getinfo')
   getInfo(@Req() req: any){
@@ -49,10 +49,10 @@ export class UserinfoController {
       return this.userinfoService.create(createUsersDto);
     }
 
-    @Get('findAll')
-    findAll() {
-      return this.userinfoService.findAllUser();
-    }
+    // @Get('findAll')
+    // findAll() {
+    //   return this.userinfoService.findAllUser();
+    // }
 
 
     @Post('modify')  // 修改用户信息接口

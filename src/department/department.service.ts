@@ -73,22 +73,45 @@ export class DepartmentService {
 
 
   //  根据  条件  查询  获取  符合  的  用户
-  async findByDepartment(joinQueryParams, role){
+  async findByDepartment(joinQueryParams, roleName){
     let  {  id, pageIndex, pageSize } = joinQueryParams
 
-    if(role.roleName === '超级管理员'){  
-      // 如果是管理员 直接返回  所有用户  作为初始化 管理使用
-      const list = await this.userinfoRepository.find()
-    return { list, total: list.length }
-    }
+    // if(roleName === '超级管理员'){  
+    //   // 如果是管理员 直接返回  所有用户  作为初始化 管理使用
+    //   // const list = await this.userinfoRepository.find()
+    //   const list = await this.userinfoRepository
+    //   .createQueryBuilder('users')
+    //   .select(['users', 'department', 'role.id', 'role.roleName'])   //   关联 查询   并返回关联查询 的指定字段
+    //   .leftJoin('users.role', "role")                                 //  关联 查询   一定 要加  leftjoin
+    //   .leftJoin('users.department', "department")
+    //   .getMany()
+    // return { list, total: list.length }
+    // }
     if( id == 1){  
-      // 如果是管理员 直接返回  所有用户  作为初始化 管理使用
-      const res = await this.userinfoRepository.find()
+      // 如果是1 直接返回 除管理员之外的 所有用户  作为初始化 管理使用
+      const res = await this.userinfoRepository
+      .createQueryBuilder('users')
+      .select(['users', 'department', 'role.id', 'role.roleName'])   //   关联 查询   并返回关联查询 的指定字段
+      .leftJoin('users.role', "role")                                 //  关联 查询   一定 要加  leftjoin
+      .leftJoin('users.department', "department")
+      .getMany()
     return { list: res.slice(1), total: res.length - 1 } 
     }
     if(!id) return { list: [], total: 0 }
+    //   这样返回 没有角色信息
     const res = await this.departmentsRepository.findOne({where: { id }, relations: ['departmentUsersArr']})
-    return { list: res.departmentUsersArr || [], total: res.departmentUsersArr ? res.departmentUsersArr.length: 0}
+    const departmentUsersArr = res.departmentUsersArr
+    const newList =  await Promise.all( departmentUsersArr.map(async (item: Users)=> {
+      const  newItem = await this.userinfoRepository
+      .createQueryBuilder('users')
+      .where("users.id = :id", { id: item.id })
+      .select([ 'users', 'department', 'role'])   //   关联 查询   并返回关联查询 的指定字段
+      .leftJoin('users.role', "role")                
+      .leftJoin('users.department', "department")                
+      .getOne()
+      return newItem
+    }))
+    return { list: newList, total:  newList.length}
   }
 
   async findDepartmentById(id: number){
