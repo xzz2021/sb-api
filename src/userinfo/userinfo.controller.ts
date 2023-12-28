@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
 import { UserinfoService } from './userinfo.service';
 import { LocalAuthGuard } from 'src/allProcessor/guard/auth.guard';
 import { Public } from 'src/allProcessor/guard/public';
+// import { getUser } from 'src/allProcessor/decorator';
 
 @Controller('userinfo')
 export class UserinfoController {
@@ -21,12 +22,20 @@ export class UserinfoController {
   //   return this.userinfoService.findOne(username);
   // }
   
-  @Get('getinfo')
-  getInfo(@Req() req: any){
-      // token解析出来的数据会在@Req中返回
-      let userinfo = req.user
-      return userinfo
-    }
+  // @Get('getinfo')
+  // getInfo(@Req() req: any){
+  //     // token解析出来的数据会在@Req中返回
+  //     let userinfo = req.user
+  //     return userinfo
+  //   }
+
+  //   自定义 装饰器  使用 案例
+  //   @Get('getinfo2')
+  //   getInfo2(@getUser() user: any){
+  //       // token解析出来的数据会在@Req中返回
+  //       let userinfo = user
+  //       return userinfo
+  //     }
 
 
     // -----------------

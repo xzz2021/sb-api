@@ -151,7 +151,7 @@ export class RoleService {
       //  先拿到  角色对应的  菜单
       if(!curRole.menusArr || curRole.menusArr  == '') return '角色关联 菜单 数据异常'
       const roleMenus = JSON.parse(curRole.menusArr)
-      console.log('🚀 ~ file: role.service.ts:103 ~ RoleService ~ getMenuByRole ~ roleMenus:', roleMenus)
+      // console.log('🚀 ~ file: role.service.ts:103 ~ RoleService ~ getMenuByRole ~ roleMenus:', roleMenus)
       //  再拿到  角色对应的  菜单  对应的  按钮
       
       // let nestedMenus = formatToTree(roleMenus, undefined)

@@ -189,12 +189,17 @@ export class UserinfoService {
       
       // const user = await this.findOne(userinfo.username)
       const user = await await this.userinfoRepository.findOne({where: {username: userinfo.username}, relations: ['role']})
+
+      delete user.role.menusArr
+
       // 数据库中用户角色信息是包含多个列信息组成的对象 集合的数组, 所以需要提取出roleName
       // const payload = { username: user.username, role: user.role, nickname: user.nickname}
       const payload = { username: user.username, roleName: user.role.roleName, nickname: user.nickname}
+      // const tokenKey = await this.jwtService.signAsync(payload, {expiresIn: '3d', secret: process.env.TOKENSECRET})
       return  {
           userInfo: user,
           tokenKey: this.jwtService.sign(payload)
+          // tokenKey
         }
     }
 
