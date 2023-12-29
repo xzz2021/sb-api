@@ -16,6 +16,9 @@ import { OnlineplayerModule } from './onlineplayer/onlineplayer.module';
 import { RolesGuard } from './allProcessor/guard/role.guard';
 import { JwtAuthGuard } from './allProcessor/guard/auth.guard';
 import { ItemreviewModule } from './itemreview/itemreview.module';
+import { UploadModule } from './upload/upload.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 // import * as Joi from 'joi'  // 引入字段校验,可以检验变量类型是否合法
 
 
@@ -32,15 +35,14 @@ import { ItemreviewModule } from './itemreview/itemreview.module';
     ),
 
     // // 引入静态文件服务
-    // ServeStaticModule.forRoot({
-    //   // 访问路径不需要目录名
-    //   rootPath: join(__dirname, '..', 'static'),
-    //   //  浏览器服务访问的前缀
-    //   serveRoot: '/xzz/',
-    //   //  未知功能
-    //   // renderPath: '/xzz/',
-
-    // }),
+    ServeStaticModule.forRoot({
+      // 访问路径不需要目录名
+      rootPath: join(__dirname, '..', 'public/static'),
+      //  浏览器服务访问的前缀
+      serveRoot: '/xzz/static/',
+      //  未知功能
+      // renderPath: '/xzz/',
+    }),
 
     // 请求限流
     ThrottlerModule.forRoot({
@@ -51,7 +53,7 @@ import { ItemreviewModule } from './itemreview/itemreview.module';
 
     // LoggerModule,   //打印日志模块
      // 这里 各个模块都必须导入  不然 无法 请求到 相应模块的  接口
-    OrmConfig, RoleModule, DepartmentModule, MenuModule, ItemlogModule, MoneylogModule, EnumitemModule, OnlineplayerModule, ItemreviewModule // typeorm配置
+    OrmConfig, RoleModule, DepartmentModule, MenuModule, ItemlogModule, MoneylogModule, EnumitemModule, OnlineplayerModule, ItemreviewModule, UploadModule // typeorm配置
 
   ],
   controllers: [AppController],

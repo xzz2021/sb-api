@@ -1,8 +1,7 @@
-import { Controller, Get, Post, Body, UseGuards, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
 import { UserinfoService } from './userinfo.service';
 import { LocalAuthGuard } from 'src/allProcessor/guard/auth.guard';
 import { Public } from 'src/allProcessor/guard/public';
-import { FileInterceptor } from '@nestjs/platform-express';
 // import { getUser } from 'src/allProcessor/decorator';
 
 @Controller('userinfo')
@@ -83,12 +82,5 @@ export class UserinfoController {
       return this.userinfoService.deleteUser(data.ids);
     }
 
-
-    //  上传文件 接口
-    @Post('upload')
-@UseInterceptors(FileInterceptor('file'))
-uploadFile(@UploadedFile() file: Express.Multer.File) {
-  console.log(file);
-}
 
 }
