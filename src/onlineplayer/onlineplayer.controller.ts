@@ -26,4 +26,13 @@ export class OnlineplayerController {
     return this.onlineplayerService.specifyDate(unixtime);
   }
 
+
+   //  获取指定日期数据
+  //  @Get('specifyDate')
+  //  specifyDate(@Query() params: { unixtime: number } ) {
+  //    const { unixtime }  = params;
+  //    if(!unixtime) return null
+  //    return this.onlineplayerService.specifyDate(unixtime);
+  //  }
+
 }

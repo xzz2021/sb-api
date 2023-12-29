@@ -16,7 +16,7 @@ export class OnlineplayerService {
   async findAll() {
 return 'ooo'
 // const unixTime = Math.floor((Date.now() - 24 * 60 * 60 * 1000) / 1000)
-const unixTime = 1703466053 - 28 * 60 * 60
+const unixTime = Date.parse(new Date()+'') / 1000 - 28 * 60 * 60
     let base = unixTime
 const fiveMinutes = 300
 const data = [{SaveTime: base, OnlieRoleCount: Math.floor(Math.random() * 100)}]

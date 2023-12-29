@@ -23,6 +23,9 @@ export class Users {
     @Column( { default: '游客' })  // 设定当前键为唯一值
     nickname: string;
 
+    @Column( { default: '' })  // 设定当前键为唯一值
+    avator: string;
+
     @Column() // {select: false} 定义在进行查询时是否默认隐藏此列   //  不能隐藏  要校对 密码
     @Exclude()  // 转换数据, 排除此字段  //  结合@UseInterceptors(ClassSerializerInterceptor) 使用
     password: string;

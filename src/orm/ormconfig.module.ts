@@ -93,6 +93,7 @@ let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemrevie
               username: configService.get('DBUSER2'),
               password: configService.get('DBPWD2'),
               database: 'pc_202309171442_log',
+              // entities: [Itemlog, Moneylog, Onlineplayer],
               entities: [Itemlog, Moneylog, Onlineplayer],
               //此处定义为是否同步代码,,,,,,生产模式需关闭,  引入迁移模式
               // 千万慎重开启，
@@ -104,28 +105,28 @@ let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemrevie
             } as TypeOrmModuleOptions ),
           }
           ),
-          // TypeOrmModule.forRootAsync({  
-          //   imports: [ConfigModule],
-          //   inject: [ConfigService],
-          //   name: 'gamelog2',
-          //   useFactory: (configService: ConfigService) =>({
-          //     name: 'gamelog2',
-          //     type: 'mysql',
-          //     host: configService.get('DBHOST2'),
-          //     port: 3306,
-          //     username: configService.get('DBUSER2'),
-          //     password: configService.get('DBPWD2'),
-          //     database: 'pc_202309171442_log',
-          //     entities: [Onlineplayer],
-          //     //此处定义为是否同步代码,,,,,,生产模式需关闭,  引入迁移模式
-          //     // 千万慎重开启，
-          //     synchronize: !false,  
-          //     timezone: "Z", //  
-          //     // logging: ['error'], 
+          TypeOrmModule.forRootAsync({  
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            name: 'gamelog2',
+            useFactory: (configService: ConfigService) =>({
+              name: 'gamelog2',
+              type: 'mysql',
+              host: configService.get('DBHOST2'),
+              port: 3306,
+              username: configService.get('DBUSER2'),
+              password: configService.get('DBPWD2'),
+              database: 'pc_202309171442_log',
+              entities: [Onlineplayer],
+              //此处定义为是否同步代码,,,,,,生产模式需关闭,  引入迁移模式
+              // 千万慎重开启，
+              synchronize: !false,  
+              timezone: "Z", //  
+              // logging: ['error'], 
               
-          //   } as TypeOrmModuleOptions ),
-          // }
-          // )
+            } as TypeOrmModuleOptions ),
+          }
+          )
           // TypeOrmModule.forFeature([Itemlog], 'gamelog')
     ]
 })
