@@ -82,6 +82,12 @@ export class UserinfoController {
       return this.userinfoService.updateSelf(newInfo);
     }
 
+    //  用户修改个人信息
+    @Post('updateAvator')
+    updateAvator(@Body() newInfo: {username: string, avatar: string}) {
+      return this.userinfoService.updateAvator(newInfo);
+    }
+
 
     @Post('delete')  // 修改用户信息接口
     deleteUser(@Body() data: {ids: number[]}) {

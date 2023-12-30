@@ -87,7 +87,7 @@ export class DepartmentService {
     //   .getMany()
     // return { list, total: list.length }
     // }
-    if( id == 1){  
+    if( id == 1 || !id){  
       // 如果是1 直接返回 除管理员之外的 所有用户  作为初始化 管理使用
       const res = await this.userinfoRepository
       .createQueryBuilder('users')

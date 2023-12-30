@@ -276,5 +276,16 @@ export class UserinfoService {
       
     }
 
+    async updateAvator(newInfo){
+    // console.log('🚀 ~ file: userinfo.service.ts:280 ~ UserinfoService ~ updateAvator ~ newInfo:', newInfo)
+    const { avator, username } = newInfo
+    const res = await this.userinfoRepository.update({username}, {avator})
+    if (res.affected == 1) {
+      return res
+    }else{
+      throw new NotFoundException('头像更改失败!')
+      }
+    }
+
 
 }
