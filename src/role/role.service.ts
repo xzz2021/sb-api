@@ -4,6 +4,7 @@ import { Roles } from './entities/role.entity';
 import { Repository } from 'typeorm';
 import { MenuService } from 'src/menu/menu.service';
 import adminList from './list'
+import guestMenu from './guestMenu'
 
 @Injectable()
 export class RoleService {
@@ -114,8 +115,8 @@ export class RoleService {
 
       //  此处即用户菜单  也带权限表  
    async getMenuByRole(roleName: string){
-    //  如果是游客
-    if(!roleName)  return []
+    //  如果是新注册用户 只返回工作台菜单
+    if(!roleName)  return guestMenu
     const formatToTree = (ary: any[], pid: number | undefined) => {
       return ary
         .filter((item) =>

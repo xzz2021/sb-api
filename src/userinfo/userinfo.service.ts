@@ -8,6 +8,7 @@ import { Users } from './entities/userinfo.entity';
 import { In, Repository } from 'typeorm';
 import { RoleService } from 'src/role/role.service';
 import { DepartmentService } from 'src/department/department.service';
+import { throwError } from 'rxjs';
 
 
 
@@ -51,17 +52,17 @@ export class UserinfoService {
         // 然后找到此用户实体
         const currentUser = await this.userinfoRepository.findOne({where: {username}})
         //  如果是新注册用户  必定是游客身份   直接存储此身份
-        if(!createUsersDto.role){
-          createUsersDto.role = {
-            "id": 2,
-            "roleName": "游客",
-            "remark": "",
-            "status": 1,
-            "createTime": "2023-12-14T01:27:25.059Z",
-            "updateTime": "2023-12-14T01:27:25.059Z",
-            "deleteTime": null
-        }
-        }
+        // if(!createUsersDto.role){
+        //   createUsersDto.role = {
+        //     "id": 2,
+        //     "roleName": "游客",
+        //     "remark": "",
+        //     "status": 1,
+        //     "createTime": "2023-12-14T01:27:25.059Z",
+        //     "updateTime": "2023-12-14T01:27:25.059Z",
+        //     "deleteTime": null
+        // }
+        // }
 
         //  超级管理员临时注册-------------------
         //   createUsersDto.rolesArr = [{
@@ -189,12 +190,12 @@ export class UserinfoService {
       
       // const user = await this.findOne(userinfo.username)
       const user = await await this.userinfoRepository.findOne({where: {username: userinfo.username}, relations: ['role']})
-
-      delete user.role.menusArr
+      
+      user.role && delete user.role.menusArr
 
       // 数据库中用户角色信息是包含多个列信息组成的对象 集合的数组, 所以需要提取出roleName
       // const payload = { username: user.username, role: user.role, nickname: user.nickname}
-      const payload = { username: user.username, roleName: user.role.roleName, nickname: user.nickname}
+      const payload = { username: user.username, roleName: user?.role?.roleName || '游客', nickname: user.nickname}
       // const tokenKey = await this.jwtService.signAsync(payload, {expiresIn: '3d', secret: process.env.TOKENSECRET})
       return  {
           userInfo: user,
@@ -241,6 +242,38 @@ export class UserinfoService {
       //  批量删除用户  理论  会自动 删除关联数据
       const res = await this.userinfoRepository.delete({id: In(ids)})
       return res
+    }
+
+    async findWithoutMenu(username){
+      const user = await await this.userinfoRepository.findOne({where: {username}, relations: ['role']})
+      delete user.role.menusArr
+      return user
+    }
+
+    async updateSelf(newInfo){
+      let { password } = newInfo
+      if(password){
+        //  如果有更改密码  则走这里
+        const saltOrRounds = 10; // 数值越大速度越慢
+        newInfo.password = await bcrypt.hash(password, saltOrRounds);
+        const { username, ...updateInfo } = newInfo
+
+        const res = await this.userinfoRepository.update({username}, updateInfo)
+        if (res.affected == 1) {
+        return await this.findWithoutMenu(username)
+      }else{
+        throw new NotFoundException('信息更改失败!')
+        }
+      }else{
+        const { password, username, ...updateInfo } = newInfo
+        const res = await this.userinfoRepository.update({username}, updateInfo)
+        if (res.affected == 1) {
+          return await this.findWithoutMenu(username)
+        }else{
+          throw new NotFoundException('信息更改失败!')
+          }
+      }
+      
     }
 
 
