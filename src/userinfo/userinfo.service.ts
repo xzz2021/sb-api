@@ -211,28 +211,44 @@ export class UserinfoService {
     // }
 
     //  管理员 新增   或 修改  用户 信息   同一接口
-    async updateUser(createUsersDto) {
+    async updateUser(updateInfo) {
+    // console.log('🚀 ~ file: userinfo.service.ts:215 ~ UserinfoService ~ updateUser ~ updateInfo:', updateInfo)
     //  剔除  新 发来 的  角色 和  部门  id 信息   返回  用户 原有对应信息
-    const { roleId, departmentId, ...curUser } = createUsersDto
+    const curUser = await this.userinfoRepository.findOne({where:{id: updateInfo.id}})
+    // console.log('🚀 ~ file: userinfo.service.ts:218 ~ UserinfoService ~ updateUser ~ curUser:', curUser)
+    // return
+    if(!updateInfo.id) throw new NotFoundException('用户信息异常,请稍后再试!')
+
+    const roleId = updateInfo.role.id
+    const departmentId = updateInfo.department?.id || updateInfo.department
+    if(updateInfo.password){
+      curUser.password = await bcrypt.hash(updateInfo.password, 10)
+    }else{
+        delete updateInfo.password
+    }
+    const { username, nickname } = updateInfo
+    curUser.username = username
+    curUser.nickname = nickname
+
+    
       // 先找到对应 id的  角色
       const  curRole = await this.roleService.findRoleById(roleId)
       //  再找到对应的  部门 id
       const  curDepartment = await this.departmentService.findDepartmentById(departmentId)
 
-      curUser.role = curRole
-      curUser.department = curDepartment
+      curRole && (curUser.role = curRole)
+      curDepartment && (curUser.department = curDepartment)
 
-      if(!curUser.id){ //  id不存在  说明是新增
-        //   注意 新增还需要  进行 密码  加密  所以 暂时屏蔽 新增功能
-        const newUserSave =  await this.userinfoRepository.create(curUser)
-        const res =  await this.userinfoRepository.save(newUserSave)
+      const res =  await this.userinfoRepository.save(curUser)
         return res
+
+      // if(!curUser.id){ //  id不存在  说明是新增
+      //   //   注意 新增还需要  进行 密码  加密  所以 暂时屏蔽 新增功能
+      //   const newUserSave =  await this.userinfoRepository.create(curUser)
+      //   const res =  await this.userinfoRepository.save(newUserSave)
+      //   return res
       
-      } else {
-        const res =  await this.userinfoRepository.save(curUser)
-        return res
-
-      }
+      // }
 
       
 

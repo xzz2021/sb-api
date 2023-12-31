@@ -44,6 +44,7 @@ export class DepartmentService {
           return item
         })
     }
+    // return newRes
     const newData = formatToTree(newRes, undefined)
     return  newData
   }

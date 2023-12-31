@@ -72,8 +72,8 @@ export class UserinfoController {
 
     //  管理员 新增   或 修改  用户 信息   同一接口
     @Post('updateUser')
-    updateUser(@Body() createUsersDto: any) {
-      return this.userinfoService.updateUser(createUsersDto);
+    updateUser(@Body() updateInfo: any) {
+      return this.userinfoService.updateUser(updateInfo);
     }
 
     //  用户修改个人信息
