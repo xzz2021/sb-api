@@ -15,7 +15,6 @@ export class MenuService {
     // Repository<Metas>,
   ){}
 
-
    formatToTree (ary: any[], pid: number | undefined) {
     return ary
       .filter((item) =>
@@ -34,113 +33,51 @@ export class MenuService {
     const allMenus = await this.menuRepository.find()
     
     const newMenus= allMenus.map(item => {
-      if(item.permissionList && item.permissionList.length > 0) {
+      if(item.permissionList) {
         item.permissionList = JSON.parse(item.permissionList)
+      }else{
+        delete item.permissionList
       }
-      if(item?.meta && item.meta.permission) {
+      if(item?.meta?.permission) {
         item.meta.permission = JSON.parse(item.meta.permission)
+      }else{
+        delete item.meta.permission
       }
       return item
     })
-      // console.log('🚀 ~ file: menu.service.ts:43 ~ MenuService ~ newMenus ~ newMenus:', newMenus)
       // 拿到所有菜单  生成嵌套数据
       let newData = this.formatToTree(newMenus, undefined)
+      // console.log('🚀 ~ file: menu.service.ts:50 ~ MenuService ~ getAllMenu ~ newData:', newData)
       return newData
   }
 
 
-
-    //  此处只是返回用户菜单  不带权限表  让用户登录时有左侧菜单
-  // async getMenu(rolesArr: any[]) {
-  //   if(rolesArr.length == 1 && rolesArr[0].roleName == '游客') {
-  //     // 如果是游客, 只返回 首页的游客一表
-  //     const guestMenusArr = await this.menuRepository.find({where:{id: In([1, 2])}})
-  //     console.log('🚀 ~ file: menu.service.ts:32 ~ MenuService ~ getMenu ~ guestMenusArr:', guestMenusArr)
-  //     return guestMenusArr
-
-  // }else {
-  //   const supAdminMenusArr = await this.menuRepository.find()
-  //     return supAdminMenusArr
-  //   // return adminList
-      
-  //   }
-  //   };
-
-
-    
-
-
-  async addMenu(menu: CreateMenuDto, rolesArr: any) {
+  async addMenu(menu: CreateMenuDto) {
     // 添加 时传递的 是 带permissionList数组的 数据    需要 转换成json 字符串 存储
     if(menu.permissionList  && menu.permissionList.length > 0 ) {
       menu.permissionList = JSON.stringify(menu.permissionList)
     }
-    // console.log('🚀 ~ file: menu.service.ts:66 ~ MenuService ~ addMenu ~ menu.permissionList:', menu.permissionList)
-  const curMenu: any = await this.menuRepository.findOne({where: { name: menu.name } })
-  // console.log('🚀 ~ file: menu.service.ts:68 ~ MenuService ~ addMenu ~ curMenu:', curMenu)
+    menu.meta && menu.meta.permission && delete menu.meta.permission 
+    menu.children &&  delete menu.children
+  let curMenu: any = await this.menuRepository.findOne({where: { name: menu.name } })
   if(curMenu == null) {   //  如果不存在 说明是新增
-    const newMenuSave = await this.menuRepository.create(menu)
-    const res = await this.menuRepository.save(newMenuSave)
-    return res
-  } else {
-    //  存在  直接存储
-    const modifyMenuSave = await this.menuRepository.create(menu)
-    const res = await this.menuRepository.save(modifyMenuSave)
-    // const res = await this.menuRepository.update(curMenu.id, {permissionList: menu.permissionList})
-    return res
-  }
-}
-
-  //   //  批量插入
-  //   const res = await this.menuRepository.save(menu);
-
-
-  //   return res
-
-  // name 是 唯一值  先 查询是否存在
-//   const curMenu: any = await this.menuRepository.findOne({where: { name: createMenuDto.name } })
-
-//   if(curMenu == null) {   //  如果不存在 说明是新增
-//     // 说明是新增
-//     // 需要先存储好新增的菜单项目  并拿到id
-//     const newMenuSave = await this.menuRepository.create(createMenuDto)
-//     // 进行存储
-//     const res = await this.menuRepository.save(newMenuSave)
-    
-//     if(createMenuDto.permissionList && createMenuDto.permissionList.length > 0) {
-//       const getNewMenu = await this.menuRepository.findOne({where: { name: createMenuDto.name } })
-//       //  手动管理 超级管理员
-//       const permission = createMenuDto.permissionList
-//       permission.map((item: any) => {
-//       item.roleId = 1
-//     })
-//     // 先存储{label,value} 当前菜单id
-//     getNewMenu.permissionList = permission
-//     // const menuSave: any = await this.menuRepository.create(createMenuDto)
-//     const res2 = await this.menuRepository.save(getNewMenu)
-
-//     //  还有存储相关的角色对应关系
-//     return res2
-//     }
-//     return res
-
-//   } else {
-//     // 否则就不是新增  说明是修改  可以直接存储
-//     const res3 = await this.menuRepository.save(createMenuDto)
-//     return res3
-// }
-
-  async modifyMenu(createMenuDto: CreateMenuDto) {
-    // console.log('🚀 ~ file: menu.service.ts:83 ~ MenuService ~ modifyMenu ~ createMenuDto:', createMenuDto)
-    // createMenuDto.parentId = 3
-    const curMenu = await this.menuRepository.findOne({where: {path: createMenuDto.path}})
-    // console.log('🚀 ~ file: menu.service.ts:86 ~ MenuService ~ modifyMenu ~ curMenu:', curMenu)
-    if(createMenuDto.permissionList && createMenuDto.permissionList != '') {
-    curMenu.permissionList = JSON.stringify(createMenuDto.permissionList)
+    curMenu = await this.menuRepository.create(menu)
+  } 
+  curMenu = menu
     const res = await this.menuRepository.save(curMenu)
     return res
-  }
 }
+
+
+//   async modifyMenu(createMenuDto: CreateMenuDto) {
+//     // createMenuDto.parentId = 3
+//     const curMenu = await this.menuRepository.findOne({where: {path: createMenuDto.path}})
+//     if(createMenuDto.permissionList && createMenuDto.permissionList != '') {
+//     curMenu.permissionList = JSON.stringify(createMenuDto.permissionList)
+//     const res = await this.menuRepository.save(curMenu)
+//     return res
+//   }
+// }
 
   //删除 菜单
   async removeMenu(id: number) {

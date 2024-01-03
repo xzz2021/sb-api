@@ -1,6 +1,6 @@
 
 //  此处定义完会直接连接数据库生成表， 新增和移除column也能自动完成
-import { AfterLoad, Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from 'typeorm'
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from 'typeorm'
 import { Users } from 'src/userinfo/entities/userinfo.entity';
 import { Exclude } from 'class-transformer';
 import { Menus } from 'src/menu/entities/menu.entity';

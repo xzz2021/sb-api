@@ -37,26 +37,19 @@ export class RoleService {
   async findAllRoles2(){
     // 查询角色  并获取到所有关联 菜单
     const res = await this.rolesRepository.find({relations: ['menusArr2', 'metaPermission']})
-    //  const { menusArr2, metaPermission } = res
-     const newMenu = res.map((item) => {
-      // delete item.menusArr
-      if(item?.menusArr2.length > 0 && item?.metaPermission.length > 0){
-        item.menusArr2.map(menuItem=> {
-          if(menuItem.permissionList) menuItem.permissionList = JSON.parse(menuItem.permissionList)
-          item.metaPermission.map((permissionItem) => {
-            if(permissionItem.menuId == menuItem.id){
-              menuItem.meta.permission = JSON.parse(permissionItem.permission) || []
-              
-            }
-          })
-        })
-        delete item.metaPermission
-        return item
-      }else{
-        return item
-      }
+    const newMenu = res.map((item) => {
+       const { menusArr2, metaPermission } = item
+       const newMenusArr = menusArr2.map((menu) => {
+        menu.permissionList && (menu.permissionList = JSON.parse(menu.permissionList))
+        const permissionItem = metaPermission.find(item => item.menuId === menu.id)
+        menu.meta.permission =  permissionItem?.permission ? JSON.parse(permissionItem.permission) : []
+        return menu
+       })
+       delete item.metaPermission
+       item.menusArr2 = newMenusArr
+       return item
+      })
 
-     })
      return newMenu
   }
   async findRoleById(id: number){
@@ -142,24 +135,25 @@ export class RoleService {
     if(curRole == null) {   //  如果不存在 说明是新增
       curRole = await this.rolesRepository.create(createRoleDto)
     }
-
-    if(createRoleDto.menusArr2 && createRoleDto.menusArr2.length > 0) {
-      createRoleDto.menusArr2.map((item)=> {
+    //  首先 确定需要存储的 菜单
+    if(createRoleDto.menusArr2) {
+      const newMenusArr2 = createRoleDto.menusArr2.map((item)=> {
         if(item.permissionList){
           item.permissionList = JSON.stringify(item.permissionList)
         }
         if(item.meta && item.meta.permission) {
           delete item.meta.permission
         }
+        return item
       })
-      curRole.menusArr2 = createRoleDto.menusArr2
+      curRole.menusArr2 = createRoleDto.newMenusArr2
     }
-    if(createRoleDto.metaPermission && createRoleDto.metaPermission.length > 0) {
-      const metaPermission = createRoleDto.metaPermission
-      metaPermission.map((item)=>{
-        item.permission = JSON.stringify(metaPermission.permission)
+    if(createRoleDto.metaPermission) {
+      const metaPermissionArr = createRoleDto.metaPermission.map((item)=>{
+        item.permission && (item.permission = JSON.stringify(item.permission))
+        return item
       })
-      curRole.metaPermission = metaPermission
+      curRole.metaPermission = metaPermissionArr
     }
     
       const res = await this.rolesRepository.save(curRole)

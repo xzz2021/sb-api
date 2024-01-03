@@ -15,15 +15,14 @@ export class MenuController {
 
   //  菜单编辑页面  新增 和 修改   同一  接口
   @Post('add')
-  addMenu(@Body() menu: CreateMenuDto, @Req() req: any) {
-    const {  role } = req.user;
-    return this.menuService.addMenu(menu, role);
+  addMenu(@Body() menu: CreateMenuDto, ) {
+    return this.menuService.addMenu(menu);
   }
 
-  @Post('modify')
-  modifyMenu(@Body() createMenuDto: CreateMenuDto) {
-    return this.menuService.modifyMenu(createMenuDto);
-  }
+  // @Post('modify')
+  // modifyMenu(@Body() createMenuDto: CreateMenuDto) {
+  //   return this.menuService.modifyMenu(createMenuDto);
+  // }
 
   @Delete('delete:id')
   remove(@Param('id') id: number) {

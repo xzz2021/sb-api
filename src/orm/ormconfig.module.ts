@@ -6,17 +6,17 @@ import { Module } from '@nestjs/common';
 import {  ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Users } from '../userinfo/entities/userinfo.entity'
+import { Roles } from '../role/entities/role.entity';
+import { Departments } from '../department/entities/department.entity';
+import { Menus } from '../menu/entities/menu.entity';
+import { Metas } from '../menu/entities/meta.entity';
+import { Enumitem } from '../enumitem/entities/enumitem.entity';
+import { Itemreview } from '../itemreview/entities/itemreview.entity';
+import { MetaPermission } from '../role/entities/permission.entity';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { Roles } from 'src/role/entities/role.entity';
-import { Departments } from 'src/department/entities/department.entity';
-import { Menus } from 'src/menu/entities/menu.entity';
-import { Metas } from 'src/menu/entities/meta.entity';
 import { Itemlog } from 'src/itemlog/entities/itemlog.entity';
 import { Moneylog } from 'src/moneylog/entities/moneylog.entity';
-import { Enumitem } from 'src/enumitem/entities/enumitem.entity';
 import { Onlineplayer } from 'src/onlineplayer/entities/onlineplayer.entity';
-import { Itemreview } from 'src/itemreview/entities/itemreview.entity';
-import { MetaPermission } from 'src/role/entities/permission.entity';
 
 
 let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemreview, MetaPermission ]
@@ -41,9 +41,10 @@ let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemrevie
               password: configService.get('DBPWD'),
               database: 'shengbai',
               entities: allEntities,
+              // autoLoadEntities: true,
               //此处定义为是否同步代码,,,,,,生产模式需关闭,  引入迁移模式
               // 千万慎重开启，
-              synchronize: !false,  // 同步本地的schema与数据库   自动同步代码和数据库
+              synchronize: false,  // 同步本地的schema与数据库   自动同步代码和数据库
               // timezone: "08:00", // 纠正时区偏差8小时
               timezone: "Z", //  
               logging: ['error'],  //日志记录类型  数据库操作记录
@@ -106,28 +107,28 @@ let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemrevie
             } as TypeOrmModuleOptions ),
           }
           ),
-          TypeOrmModule.forRootAsync({  
-            imports: [ConfigModule],
-            inject: [ConfigService],
-            name: 'gamelog2',
-            useFactory: (configService: ConfigService) =>({
-              name: 'gamelog2',
-              type: 'mysql',
-              host: configService.get('DBHOST2'),
-              port: 3306,
-              username: configService.get('DBUSER2'),
-              password: configService.get('DBPWD2'),
-              database: 'pc_202309171442_log',
-              entities: [Onlineplayer],
-              //此处定义为是否同步代码,,,,,,生产模式需关闭,  引入迁移模式
-              // 千万慎重开启，
-              synchronize: !false,  
-              timezone: "Z", //  
-              // logging: ['error'], 
+          // TypeOrmModule.forRootAsync({  
+          //   imports: [ConfigModule],
+          //   inject: [ConfigService],
+          //   name: 'gamelog2',
+          //   useFactory: (configService: ConfigService) =>({
+          //     name: 'gamelog2',
+          //     type: 'mysql',
+          //     host: configService.get('DBHOST2'),
+          //     port: 3306,
+          //     username: configService.get('DBUSER2'),
+          //     password: configService.get('DBPWD2'),
+          //     database: 'pc_202309171442_log',
+          //     entities: [Onlineplayer],
+          //     //此处定义为是否同步代码,,,,,,生产模式需关闭,  引入迁移模式
+          //     // 千万慎重开启，
+          //     synchronize: !false,  
+          //     timezone: "Z", //  
+          //     // logging: ['error'], 
               
-            } as TypeOrmModuleOptions ),
-          }
-          )
+          //   } as TypeOrmModuleOptions ),
+          // }
+          // )
           // TypeOrmModule.forFeature([Itemlog], 'gamelog')
     ]
 })
@@ -142,8 +143,10 @@ export default new DataSource ({   //  这里 给 typeorm  对 数据库 进行�
   username: process.env.DBUSER,
   password: process.env.DBPWD,
   database: 'shengbai',
+  // entities: ['dist/**/entities/*.entity{.js,.ts}'],
   entities: allEntities,
-  // migrations: ['src/migrations/*{.ts,.js}'],
+  // autoLoadEntities: true,
+  migrations: ['src/migrations/*{.ts,.js}'],
   synchronize: false,
   // timezone: "Z", //  
   // logging: ['error'], 

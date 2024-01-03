@@ -9,4 +9,5 @@ export class CreateMenuDto {
     status: number 
     meta?: Metas
     permissionList?: string
+    children?: string
 }
