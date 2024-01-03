@@ -1,6 +1,7 @@
 import { Controller, FileTypeValidator, MaxFileSizeValidator, ParseFilePipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { UploadService } from './upload.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { storage } from './interceptor/avator';
 
 @Controller('upload')
 export class UploadController {
@@ -8,7 +9,7 @@ export class UploadController {
 
       //  上传文件 接口
       @Post('avator')
-      @UseInterceptors(FileInterceptor('file'))
+      @UseInterceptors(FileInterceptor('file', { storage }))
       uploadAvator(@UploadedFile( 
     //     new ParseFilePipe({
     //     validators: [
@@ -18,7 +19,7 @@ export class UploadController {
     //   }),
     ) 
     file: Express.Multer.File) {
-        // console.log('----------',file);
+        console.log('----------',file);
         return this.uploadService.uploadAvator(file)
       }
 

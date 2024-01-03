@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';  
+import { Injectable, NotFoundException } from '@nestjs/common';  
 import { UpdateUserinfoDto } from './dto/update-userinfo.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -8,7 +8,6 @@ import { Users } from './entities/userinfo.entity';
 import { In, Repository } from 'typeorm';
 import { RoleService } from 'src/role/role.service';
 import { DepartmentService } from 'src/department/department.service';
-import { throwError } from 'rxjs';
 
 
 
@@ -39,18 +38,18 @@ export class UserinfoService {
         const userSave:any = this.userinfoRepository.create(createUsersDto)
         try{
           // 创建时 要先存储这个新生成的用户到数据库里
-          await this.userinfoRepository.save(userSave)
-          // return res 
+          const newUser = await this.userinfoRepository.save(userSave)
+          return newUser 
         }catch(err) {
           //  错误  抛出异常
         const { code, sqlMessage } = err
         return  { code, message: sqlMessage } 
         }
 
-        const {  username } = createUsersDto
+        // const {  username } = createUsersDto
 
         // 然后找到此用户实体
-        const currentUser = await this.userinfoRepository.findOne({where: {username}})
+        // const currentUser = await this.userinfoRepository.findOne({where: {username}})
         //  如果是新注册用户  必定是游客身份   直接存储此身份
         // if(!createUsersDto.role){
         //   createUsersDto.role = {
@@ -78,16 +77,16 @@ export class UserinfoService {
 
 
 
-            currentUser.role = createUsersDto.role
-        try{
-          const  res =  await this.userinfoRepository.save(currentUser)
-          return res 
-        }catch(err) {
-          //  错误不用返回  直接抛出异常
-        const { code, sqlMessage } = err
-        return  { code, sqlMessage } 
+            // currentUser.role = createUsersDto.role
+        // try{
+        //   const  res =  await this.userinfoRepository.save(currentUser)
+        //   return res 
+        // }catch(err) {
+        //   //  错误不用返回  直接抛出异常
+        // const { code, sqlMessage } = err
+        // return  { code, sqlMessage } 
 
-        }
+        // }
         // return await this.userinfoRepository.insert([userSave1,userSave2,userSave3,userSave4])  //批量存储 插入
     
       }
