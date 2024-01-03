@@ -12,6 +12,7 @@ export class MenuController {
     return this.menuService.getAllMenu();
   }
 
+
   //  菜单编辑页面  新增 和 修改   同一  接口
   @Post('add')
   addMenu(@Body() menu: CreateMenuDto, @Req() req: any) {

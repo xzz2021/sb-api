@@ -21,19 +21,44 @@ export class RoleService {
 }
   async findAllRoles(){
     const res = await this.rolesRepository.find();
-    let newRes = []
-    if (res.length > 0) {
-       newRes = res.map((item) => {
-        item.createTime = this.rTime(item.createTime)
-        return item
-      })
-    } else {
-      return []
-    }
+    // let newRes = []
+    // if (res.length > 0) {
+    //    newRes = res.map((item) => {
+    //     item.createTime = this.rTime(item.createTime)
+    //     return item
+    //   })
+    // } else {
+    //   return []
+    // }
 
-    return newRes
+    return res
   }
 
+  async findAllRoles2(){
+    // 查询角色  并获取到所有关联 菜单
+    const res = await this.rolesRepository.find({relations: ['menusArr2', 'metaPermission']})
+    //  const { menusArr2, metaPermission } = res
+     const newMenu = res.map((item) => {
+      // delete item.menusArr
+      if(item?.menusArr2.length > 0 && item?.metaPermission.length > 0){
+        item.menusArr2.map(menuItem=> {
+          if(menuItem.permissionList) menuItem.permissionList = JSON.parse(menuItem.permissionList)
+          item.metaPermission.map((permissionItem) => {
+            if(permissionItem.menuId == menuItem.id){
+              menuItem.meta.permission = JSON.parse(permissionItem.permission) || []
+              
+            }
+          })
+        })
+        delete item.metaPermission
+        return item
+      }else{
+        return item
+      }
+
+     })
+     return newMenu
+  }
   async findRoleById(id: number){
     const res = await this.rolesRepository.findOne({where: { id }});
     return res
@@ -69,6 +94,9 @@ export class RoleService {
     return res
   }
 
+
+  
+
     // 新增角色时  要考虑 分配菜单  及 权限
     // 000 先拿到当前角色自己所拥有的所有菜单及角色 前端会自动请求menu/list接口
     //  1111 先存菜单   222再存他对应的  关联按钮
@@ -102,6 +130,41 @@ export class RoleService {
 
 
     // return res
+  }
+
+
+    // 添加角色时会添加菜单
+    async addRole2(createRoleDto: any){
+      //  添加  和  修改 会 同时请求  同一个  接口
+      //  先判断  是否存在
+    let curRole: any = await this.rolesRepository.findOne({where: { roleName: createRoleDto.roleName } })
+
+    if(curRole == null) {   //  如果不存在 说明是新增
+      curRole = await this.rolesRepository.create(createRoleDto)
+    }
+
+    if(createRoleDto.menusArr2 && createRoleDto.menusArr2.length > 0) {
+      createRoleDto.menusArr2.map((item)=> {
+        if(item.permissionList){
+          item.permissionList = JSON.stringify(item.permissionList)
+        }
+        if(item.meta && item.meta.permission) {
+          delete item.meta.permission
+        }
+      })
+      curRole.menusArr2 = createRoleDto.menusArr2
+    }
+    if(createRoleDto.metaPermission && createRoleDto.metaPermission.length > 0) {
+      const metaPermission = createRoleDto.metaPermission
+      metaPermission.map((item)=>{
+        item.permission = JSON.stringify(metaPermission.permission)
+      })
+      curRole.metaPermission = metaPermission
+    }
+    
+      const res = await this.rolesRepository.save(curRole)
+      return res
+    
   }
 
   //  删除角色
@@ -147,17 +210,23 @@ export class RoleService {
       return newData
     }
       // 其他角色  直接 拿到角色表对应的  菜单  目前角色  只分配一个
-      const curRole = await this.rolesRepository.findOne({where: {roleName: roleName}})
-      // console.log('🚀 ~ file: role.service.ts:100 ~ RoleService ~ getMenuByRole ~ role:', role)
+      console.log('🚀 ~ file: role.service.ts:214 ~ RoleService ~ getMenuByRole ~ roleName:', roleName)
+      const curRole = await this.rolesRepository.findOne({where: {roleName: roleName}, relations: ['menusArr2']})
       //  先拿到  角色对应的  菜单
-      if(!curRole.menusArr || curRole.menusArr  == '') return '角色关联 菜单 数据异常'
-      const roleMenus = JSON.parse(curRole.menusArr)
-      // console.log('🚀 ~ file: role.service.ts:103 ~ RoleService ~ getMenuByRole ~ roleMenus:', roleMenus)
+      if(!curRole.menusArr2) return '角色关联 菜单 数据异常'
+      const roleMenus = curRole.menusArr2.map(item => {
+        delete item.permissionList
+        if(item.meta && item.meta.permission){
+          item.meta.permission = JSON.parse(item.meta.permission)
+        }
+        return item
+      })
       //  再拿到  角色对应的  菜单  对应的  按钮
       
-      // let nestedMenus = formatToTree(roleMenus, undefined)
+      // return  roleMenus
+      let nestedMenus = formatToTree(roleMenus, undefined)
+      return nestedMenus
 
-      return  roleMenus
     }
 
 

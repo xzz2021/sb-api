@@ -11,7 +11,7 @@ const guestMenu = [
     },
     children: [
       {
-        path: 'workplace-xzz',
+        path: 'workplace',
         component: 'views/Dashboard-xzz/Workplace',
         name: 'Workplace-xzz',
         meta: {

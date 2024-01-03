@@ -190,7 +190,7 @@ export class UserinfoService {
       // const user = await this.findOne(userinfo.username)
       const user = await await this.userinfoRepository.findOne({where: {username: userinfo.username}, relations: ['role']})
       
-      user.role && delete user.role.menusArr
+      // user.role && delete user.role.menusArr2
 
       // 数据库中用户角色信息是包含多个列信息组成的对象 集合的数组, 所以需要提取出roleName
       // const payload = { username: user.username, role: user.role, nickname: user.nickname}
@@ -261,7 +261,7 @@ export class UserinfoService {
 
     async findWithoutMenu(username){
       const user = await await this.userinfoRepository.findOne({where: {username}, relations: ['role']})
-      delete user.role.menusArr
+      delete user.role.menusArr2
       return user
     }
 

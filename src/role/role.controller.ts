@@ -6,10 +6,15 @@ import { CreateRoleDto } from './dto/create-role.dto';
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
-  // 获取所有角色信息
+  // 获取所有角色信息   此处用于获取所有角色  以及角色 关联 的children菜单menusArr 以及meta里的permission  用于回显
   @Get('getRoletable')
   getRoletable(){
     return this.roleService.findAllRoles();
+  }
+
+  @Get('getRoletable2')
+  getRoletable2(){
+    return this.roleService.findAllRoles2();
   }
 
 //  此处 只获取角色 id 及 角色  名称  用于 下拉  并返回  id用于更新用户信息
@@ -31,6 +36,12 @@ export class RoleController {
   @Post('addRole')
   addRole(@Body() createRoleDto: CreateRoleDto) {
     return this.roleService.addRole(createRoleDto);
+  }
+
+
+  @Post('addRole2')
+  addRole2(@Body() createRoleDto: CreateRoleDto) {
+    return this.roleService.addRole2(createRoleDto);
   }
 
 

@@ -16,9 +16,10 @@ import { Moneylog } from 'src/moneylog/entities/moneylog.entity';
 import { Enumitem } from 'src/enumitem/entities/enumitem.entity';
 import { Onlineplayer } from 'src/onlineplayer/entities/onlineplayer.entity';
 import { Itemreview } from 'src/itemreview/entities/itemreview.entity';
+import { MetaPermission } from 'src/role/entities/permission.entity';
 
 
-let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemreview ]
+let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemreview, MetaPermission ]
 
 // 引入.env文件的变量合并到node环境中
 // require('dotenv').config();

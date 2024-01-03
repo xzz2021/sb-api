@@ -16,33 +16,39 @@ export class MenuService {
   ){}
 
 
+   formatToTree (ary: any[], pid: number | undefined) {
+    return ary
+      .filter((item) =>
+        // 如果没有父id（第一次递归的时候）将所有父级查询出来
+        // 这里认为 item.parentId === 1 就是最顶层 需要根据业务调整
+        pid === undefined ? item.parentId === null : item.parentId === pid
+      )
+      .map((item) => {
+        // 通过父节点ID查询所有子节点
+        item.children = this.formatToTree(ary, item.id)
+        return item
+      })
+  }
+
   async getAllMenu(){
-    const formatToTree = (ary: any[], pid: number | undefined) => {
-      return ary
-        .filter((item) =>
-          // 如果没有父id（第一次递归的时候）将所有父级查询出来
-          // 这里认为 item.parentId === 1 就是最顶层 需要根据业务调整
-          pid === undefined ? item.parentId === null : item.parentId === pid
-        )
-        .map((item) => {
-          // 通过父节点ID查询所有子节点
-          item.children = formatToTree(ary, item.id)
-          return item
-        })
-    }
     const allMenus = await this.menuRepository.find()
     
     const newMenus= allMenus.map(item => {
       if(item.permissionList && item.permissionList.length > 0) {
         item.permissionList = JSON.parse(item.permissionList)
       }
+      if(item?.meta && item.meta.permission) {
+        item.meta.permission = JSON.parse(item.meta.permission)
+      }
       return item
     })
       // console.log('🚀 ~ file: menu.service.ts:43 ~ MenuService ~ newMenus ~ newMenus:', newMenus)
       // 拿到所有菜单  生成嵌套数据
-      let newData = formatToTree(newMenus, undefined)
+      let newData = this.formatToTree(newMenus, undefined)
       return newData
   }
+
+
 
     //  此处只是返回用户菜单  不带权限表  让用户登录时有左侧菜单
   // async getMenu(rolesArr: any[]) {

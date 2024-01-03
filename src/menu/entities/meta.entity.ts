@@ -40,4 +40,7 @@ export class Metas {
     @Column()
     title: string;
 
+    @Column({default: '[]'})
+    permission: string;
+
 }
