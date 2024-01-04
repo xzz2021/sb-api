@@ -31,7 +31,8 @@ export class MenuService {
 
   async getAllMenu(){
     const allMenus = await this.menuRepository.find()
-    
+    //  移除 角色中的 第一个 --- 超级管理员
+    // const allMenusWithoutSuper = allMenus.slice(1)
     const newMenus= allMenus.map(item => {
       if(item.permissionList) {
         item.permissionList = JSON.parse(item.permissionList)
@@ -47,16 +48,14 @@ export class MenuService {
     })
       // 拿到所有菜单  生成嵌套数据
       let newData = this.formatToTree(newMenus, undefined)
-      // console.log('🚀 ~ file: menu.service.ts:50 ~ MenuService ~ getAllMenu ~ newData:', newData)
       return newData
   }
 
 
   async addMenu(menu: CreateMenuDto) {
     // 添加 时传递的 是 带permissionList数组的 数据    需要 转换成json 字符串 存储
-    if(menu.permissionList  && menu.permissionList.length > 0 ) {
-      menu.permissionList = JSON.stringify(menu.permissionList)
-    }
+      menu.permissionList && (menu.permissionList = JSON.stringify(menu.permissionList))
+
     menu.meta && menu.meta.permission && delete menu.meta.permission 
     menu.children &&  delete menu.children
   let curMenu: any = await this.menuRepository.findOne({where: { name: menu.name } })

@@ -37,7 +37,8 @@ export class RoleService {
   async findAllRoles2(){
     // 查询角色  并获取到所有关联 菜单
     const res = await this.rolesRepository.find({relations: ['menusArr2', 'metaPermission']})
-    const newMenu = res.map((item) => {
+    const allRolesWithoutSuper = res.slice(1)
+    const newMenu = allRolesWithoutSuper.map((item) => {
        const { menusArr2, metaPermission } = item
        const newMenusArr = menusArr2.map((menu) => {
         menu.permissionList && (menu.permissionList = JSON.parse(menu.permissionList))
@@ -125,7 +126,6 @@ export class RoleService {
     // return res
   }
 
-
     // 添加角色时会添加菜单
     async addRole2(createRoleDto: any){
       //  添加  和  修改 会 同时请求  同一个  接口
@@ -141,9 +141,7 @@ export class RoleService {
         if(item.permissionList){
           item.permissionList = JSON.stringify(item.permissionList)
         }
-        if(item.meta && item.meta.permission) {
-          delete item.meta.permission
-        }
+        item?.meta?.permission && delete item.meta.permission
         return item
       })
       curRole.menusArr2 = createRoleDto.newMenusArr2
@@ -187,7 +185,6 @@ export class RoleService {
           return item2
         })
     }
-
     //  要同时拿到 用户菜单 和 角色菜单
     //  先判断是否是超级管理员
     // const isSuperAdmin = rolesArr.some(item => item.roleName == '超级管理员')
@@ -204,7 +201,6 @@ export class RoleService {
       return newData
     }
       // 其他角色  直接 拿到角色表对应的  菜单  目前角色  只分配一个
-      console.log('🚀 ~ file: role.service.ts:214 ~ RoleService ~ getMenuByRole ~ roleName:', roleName)
       const curRole = await this.rolesRepository.findOne({where: {roleName: roleName}, relations: ['menusArr2']})
       //  先拿到  角色对应的  菜单
       if(!curRole.menusArr2) return '角色关联 菜单 数据异常'
@@ -215,33 +211,8 @@ export class RoleService {
         }
         return item
       })
-      //  再拿到  角色对应的  菜单  对应的  按钮
-      
-      // return  roleMenus
       let nestedMenus = formatToTree(roleMenus, undefined)
       return nestedMenus
-
     }
 
-
-
-  // create(createRoleDto: CreateRoleDto) {
-  //   return 'This action adds a new role';
-  // }
-
-  // findAll() {
-  //   return `This action returns all role`;
-  // }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} role`;
-  // }
-
-  // update(id: number, updateRoleDto: UpdateRoleDto) {
-  //   return `This action updates a #${id} role`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} role`;
-  // }
 }

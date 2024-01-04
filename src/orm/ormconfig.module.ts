@@ -41,6 +41,11 @@ let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemrevie
               password: configService.get('DBPWD'),
               database: 'shengbai',
               entities: allEntities,
+              // entities: ['dist/**/entities/*.entity{.ts,.js}'],
+              // migrations: ['../migrations/*{.ts,.js}'],
+  //             "factories": ["dist/**/database/factories/**/*.js"],
+  // "seeds": ["dist/**/database/seeds/**/*.js"],
+
               // autoLoadEntities: true,
               //此处定义为是否同步代码,,,,,,生产模式需关闭,  引入迁移模式
               // 千万慎重开启，
