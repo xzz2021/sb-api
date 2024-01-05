@@ -39,7 +39,7 @@ import { join } from 'path';
     // // 引入静态文件服务
     ServeStaticModule.forRoot({
       // 访问路径不需要目录名
-      rootPath: join(__dirname, '..', 'public/uploaded'),
+      rootPath: join(__dirname, '../..', 'public/uploaded'),
       //  浏览器服务访问的前缀
       serveRoot: '/public/uploaded',
       //  未知功能

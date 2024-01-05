@@ -19,7 +19,7 @@ export class UploadController {
     //   }),
     ) 
     file: Express.Multer.File) {
-        console.log('----------',file);
+        // console.log('----------',file);
         return this.uploadService.uploadAvator(file)
       }
 

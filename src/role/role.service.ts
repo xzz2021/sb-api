@@ -204,7 +204,6 @@ export class RoleService {
       // const databaseMenu = formatToTree(allMenuAndPermission, undefined)
       // // 拿到所有菜单  生成嵌套数据
       let newData = [...allMenuAndPermission, ...adminList]
-      console.log('🚀 ~ file: role.service.ts:207 ~ RoleService ~ getMenuByRole ~ newData:', newData)
       return newData
     }
       // 其他角色  直接 拿到角色表对应的  菜单  目前角色  只分配一个
