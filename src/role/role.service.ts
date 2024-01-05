@@ -198,11 +198,13 @@ export class RoleService {
         item['title'] = item.meta ? item.meta?.title || '' : ''
       })
       const allMenuAndPermission = await this.menuService.getAllMenu()
+
       // console.log('🚀 ~ file: role.service.ts:113 ~ RoleService ~ getMenuByRole ~ allMenuAndPermission:', allMenuAndPermission)
       //  数据库取出 的  是扁平的  需要转换下????????????????
       // const databaseMenu = formatToTree(allMenuAndPermission, undefined)
       // // 拿到所有菜单  生成嵌套数据
       let newData = [...allMenuAndPermission, ...adminList]
+      console.log('🚀 ~ file: role.service.ts:207 ~ RoleService ~ getMenuByRole ~ newData:', newData)
       return newData
     }
       // 其他角色  直接 拿到角色表对应的  菜单  目前角色  只分配一个
@@ -216,6 +218,7 @@ export class RoleService {
         }
         return item
       })
+      return roleMenus
       let nestedMenus = formatToTree(roleMenus, undefined)
       return nestedMenus
     }

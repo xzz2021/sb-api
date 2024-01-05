@@ -46,6 +46,7 @@ export class MenuService {
       }
       return item
     })
+    // return newMenus
       // 拿到所有菜单  生成嵌套数据
       let newData = this.formatToTree(newMenus, undefined)
       return newData
