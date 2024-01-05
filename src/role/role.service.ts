@@ -59,8 +59,8 @@ export class RoleService {
   }
 
   async findAllRolesId(){
-    // 只返回 角色 id 和 roleName 字段   其他 字段 会 返回默认值
-    const res = await this.rolesRepository.find({ select: ['id', 'roleName']});
+    // 返回 所有 角色信息  供用户管理 模块  进行下拉选择
+    const res = await this.rolesRepository.find();
     return res
   }
 
@@ -130,21 +130,26 @@ export class RoleService {
     async addRole2(createRoleDto: any){
       //  添加  和  修改 会 同时请求  同一个  接口
       //  先判断  是否存在
-    let curRole: any = await this.rolesRepository.findOne({where: { roleName: createRoleDto.roleName } })
-
-    if(curRole == null) {   //  如果不存在 说明是新增
-      curRole = await this.rolesRepository.create(createRoleDto)
+      let curRole: any = await this.rolesRepository.findOne({where: { id: createRoleDto.id || -1 } })
+      
+      if(curRole == null) {   //  如果不存在 说明是新增
+        curRole = await this.rolesRepository.create(createRoleDto)
+      }else{
+      const { remark, status, roleName } = createRoleDto
+      curRole.remark = remark
+      curRole.status = status
+      curRole.roleName = roleName
     }
     //  首先 确定需要存储的 菜单
-    if(createRoleDto.menusArr2) {
-      const newMenusArr2 = createRoleDto.menusArr2.map((item)=> {
+    if(createRoleDto.menusArr) {
+      const newMenusArr = createRoleDto.menusArr.map((item)=> {
         if(item.permissionList){
           item.permissionList = JSON.stringify(item.permissionList)
         }
         item?.meta?.permission && delete item.meta.permission
         return item
       })
-      curRole.menusArr2 = createRoleDto.newMenusArr2
+      curRole.menusArr = newMenusArr
     }
     if(createRoleDto.metaPermission) {
       const metaPermissionArr = createRoleDto.metaPermission.map((item)=>{

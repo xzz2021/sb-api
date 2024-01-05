@@ -92,7 +92,7 @@ export class DepartmentService {
       // 如果是1 直接返回 除管理员之外的 所有用户  作为初始化 管理使用
       const res = await this.userinfoRepository
       .createQueryBuilder('users')
-      .select(['users', 'department', 'role.id', 'role.roleName'])   //   关联 查询   并返回关联查询 的指定字段
+      .select(['users', 'department', 'role'])   //   关联 查询   并返回关联查询 的指定字段
       .leftJoin('users.role', "role")                                 //  关联 查询   一定 要加  leftjoin
       .leftJoin('users.department', "department")
       .getMany()

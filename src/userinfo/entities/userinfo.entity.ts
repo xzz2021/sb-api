@@ -3,7 +3,7 @@
 
 
 //  此处定义完会直接连接数据库生成表， 新增和移除column也能自动完成
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from 'typeorm'
+import { AfterLoad, Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from 'typeorm'
 import { Exclude } from 'class-transformer';
 import { Roles } from 'src/role/entities/role.entity';
 import { Departments } from 'src/department/entities/department.entity';
@@ -13,6 +13,16 @@ import { Departments } from 'src/department/entities/department.entity';
 //   @Entity({database: 'secondDatabaseName'})
 @Entity()
 export class Users {
+    @AfterLoad()
+    changeDateFormate(){
+        const rTime = (date) =>{  // 转换日期 时间 格式
+            // var json_date = new Date(date).toJSON();
+            return new Date(+new Date(date) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '') 
+        }
+        this.createtime = rTime(this.createtime)
+        this.updatetime = rTime(this.updatetime)
+    }
+    
     @PrimaryGeneratedColumn()
     // @Exclude()
     id: number;
