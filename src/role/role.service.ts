@@ -36,18 +36,18 @@ export class RoleService {
 
   async findAllRoles2(){
     // 查询角色  并获取到所有关联 菜单
-    const res = await this.rolesRepository.find({relations: ['menusArr2', 'metaPermission']})
+    const res = await this.rolesRepository.find({relations: ['menusArr', 'metaPermission']})
     const allRolesWithoutSuper = res.slice(1)
     const newMenu = allRolesWithoutSuper.map((item) => {
-       const { menusArr2, metaPermission } = item
-       const newMenusArr = menusArr2.map((menu) => {
+       const { menusArr, metaPermission } = item
+       const newMenusArr = menusArr.map((menu) => {
         menu.permissionList && (menu.permissionList = JSON.parse(menu.permissionList))
         const permissionItem = metaPermission.find(item => item.menuId === menu.id)
         menu.meta.permission =  permissionItem?.permission ? JSON.parse(permissionItem.permission) : []
         return menu
        })
        delete item.metaPermission
-       item.menusArr2 = newMenusArr
+       item.menusArr = newMenusArr
        return item
       })
 
@@ -201,10 +201,10 @@ export class RoleService {
       return newData
     }
       // 其他角色  直接 拿到角色表对应的  菜单  目前角色  只分配一个
-      const curRole = await this.rolesRepository.findOne({where: {roleName: roleName}, relations: ['menusArr2']})
+      const curRole = await this.rolesRepository.findOne({where: {roleName: roleName}, relations: ['menusArr']})
       //  先拿到  角色对应的  菜单
-      if(!curRole.menusArr2) return '角色关联 菜单 数据异常'
-      const roleMenus = curRole.menusArr2.map(item => {
+      if(!curRole.menusArr) return '角色关联 菜单 数据异常'
+      const roleMenus = curRole.menusArr.map(item => {
         delete item.permissionList
         if(item.meta && item.meta.permission){
           item.meta.permission = JSON.parse(item.meta.permission)

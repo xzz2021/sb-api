@@ -19,12 +19,14 @@ import { ItemreviewModule } from './itemreview/itemreview.module';
 import { UploadModule } from './upload/upload.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+// import { TypeOrmModule } from '@nestjs/typeorm';
 // import * as Joi from 'joi'  // 引入字段校验,可以检验变量类型是否合法
-
+// import {AppDataSource} from '../ormconfig';
 
 // @Global()  //  使此app模块引入的依赖能够作为全局依赖应用到所有子模块
 @Module({
   imports: [
+    // TypeOrmModule.forRoot(AppDataSource),
     ConfigModule.forRoot(
       {
         isGlobal: true,   // 全局注入env环境变量

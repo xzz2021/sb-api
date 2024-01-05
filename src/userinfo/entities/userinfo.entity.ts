@@ -53,6 +53,6 @@ export class Users {
 
     //  一个用户 对应 一个  部门
    @ManyToOne(() => Departments, department => department.departmentUsersArr, { cascade: ['insert', 'update']})  
-   department: Departments;
+   department: Relation<Departments>;
 
 }

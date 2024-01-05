@@ -1,6 +1,6 @@
 
 //  此处定义完会直接连接数据库生成表， 新增和移除column也能自动完成
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { Users } from 'src/userinfo/entities/userinfo.entity';
@@ -37,6 +37,6 @@ export class Departments {
 
     //  一个部门  对应 多个  用户
     @OneToMany(() => Users, user => user.department)   //关联表单 
-    departmentUsersArr: Users[]; 
+    departmentUsersArr: Relation<Users[]>; 
 
 }

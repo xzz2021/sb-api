@@ -48,7 +48,7 @@ export class Roles {
     // 一个角色 对应多个菜单   单向 多对多关系
     @ManyToMany(() => Menus, { cascade: true })  
     @JoinTable()   // 定义了JoinTable  代表他是关联表的所有者  
-    menusArr2: Menus[];
+    menusArr: Relation<Menus[]>;
 
     @CreateDateColumn()  //创建时自动插入日期时间
     createTime: string;

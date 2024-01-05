@@ -261,7 +261,7 @@ export class UserinfoService {
 
     async findWithoutMenu(username){
       const user = await await this.userinfoRepository.findOne({where: {username}, relations: ['role']})
-      delete user.role.menusArr2
+      delete user.role.menusArr
       return user
     }
 
