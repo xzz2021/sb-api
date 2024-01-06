@@ -2,9 +2,7 @@ import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LocalAuthGuard } from 'src/allProcessor/guard/auth.guard';
 import { Public } from 'src/allProcessor/guard/public';
-import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
-import { AvatorDto, DeleteIds, RegisterResDto, UpdateDto, UpdateUserDto } from './dto/userinfo.dto';
+import { AvatorDto, DeleteIds, LoginDto, RegisterDto, RegisterResDto, UpdateDto, UpdateUserDto } from './dto/userinfo.dto';
 import { UserinfoService } from './userinfo.service';
 
 @ApiTags('用户相关信息')

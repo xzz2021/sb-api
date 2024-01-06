@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Roles } from './entities/role.entity';
-import { Repository } from 'typeorm';
 import { MenuService } from 'src/menu/menu.service';
-import adminList from './list'
-import guestMenu from './guestMenu'
+import { Repository } from 'typeorm';
+import { Roles } from './entities/role.entity';
+import guestMenu from './guestMenu';
+import adminList from './list';
 
 @Injectable()
 export class RoleService {
@@ -19,22 +19,8 @@ export class RoleService {
     // var json_date = new Date(date).toJSON();
     return new Date(+new Date(date) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '') 
 }
+
   async findAllRoles(){
-    const res = await this.rolesRepository.find();
-    // let newRes = []
-    // if (res.length > 0) {
-    //    newRes = res.map((item) => {
-    //     item.createTime = this.rTime(item.createTime)
-    //     return item
-    //   })
-    // } else {
-    //   return []
-    // }
-
-    return res
-  }
-
-  async findAllRoles2(){
     // 查询角色  并获取到所有关联 菜单
     const res = await this.rolesRepository.find({relations: ['menusArr', 'metaPermission']})
     const allRolesWithoutSuper = res.slice(1)
@@ -66,68 +52,31 @@ export class RoleService {
 
 
   // 添加角色时会添加菜单
-  async addRole(createRoleDto: any){
-    // console.log('🚀 ~ file: role.service.ts:25 ~ RoleService ~ addRole ~ createRoleDto:', createRoleDto)
+  // async addRole(createRoleDto: any){
+  //   // console.log('🚀 ~ file: role.service.ts:25 ~ RoleService ~ addRole ~ createRoleDto:', createRoleDto)
 
-    //  添加  和  修改 会 同时请求  同一个  接口
-    //  先判断  是否存在
-  const curRole: any = await this.rolesRepository.findOne({where: { roleName: createRoleDto.roleName } })
-  if(createRoleDto.menusArr && createRoleDto.menusArr.length > 0 ){
-    createRoleDto.menusArr = JSON.stringify(createRoleDto.menusArr)
-    // createRoleDto.menusArr = createRoleDto.menusArr
-  }
-  // console.log('🚀 ~ file: role.service.ts:34 ~ RoleService ~ addRole ~ createRoleDto:', createRoleDto)
-  if(curRole == null) {   //  如果不存在 说明是新增
-    const newRoleSave = await this.rolesRepository.create(createRoleDto)
-    const res = await this.rolesRepository.save(newRoleSave)
-    return res
-  } else {
-    //  存在  直接存储
-    curRole.menusArr = createRoleDto.menusArr
-    const res = await this.rolesRepository.save(curRole)
-    return res
-  }
-
-
-  
-
-    // 新增角色时  要考虑 分配菜单  及 权限
-    // 000 先拿到当前角色自己所拥有的所有菜单及角色 前端会自动请求menu/list接口
-    //  1111 先存菜单   222再存他对应的  关联按钮
-
-    // return 'yyy'
-    //  角色拥有的菜单会关联存储
-    // const roleSave:any = this.rolesRepository.create(createRoleDto)
-    // const curRole = await this.rolesRepository.save(roleSave)
-    // console.log('🚀 ~ file: role.service.ts:37 ~ RoleService ~ addRole ~ curRole:', curRole)
-
-    // // 遍历每一个菜单数据拿到  角色  权限list
-    // const rolePermissionList = []
-
-    // createRoleDto.menusArr.forEach( (item: any) => {
-    //   if(item.newPermissionList && item.newPermissionList.length > 0){
-    //     item.newPermissionList.map( (btn: any) => {
-    //       //如果是新增  关联菜单  可能无效  //  或者其他人添加 无效
-    //       // btn.menuId = item.id
-    //       rolePermissionList.push(btn)
-    //     })
-    //   }
-    // })
-
-    // console.log('🚀 ~ file: role.service.ts:41 ~ RoleService ~ addRole ~ rolePermissionList:', rolePermissionList)
-    
-
-    // //存储角色对应的permissionList
-    // const  curRoleSave = await this.rolesRepository.find({where: {roleName: createRoleDto.roleName}})
-    // curRoleSave.permissionList = rolePermissionList
-    // const res = await this.rolesRepository.save(roleSave)
-
-
-    // return res
-  }
+  //   //  添加  和  修改 会 同时请求  同一个  接口
+  //   //  先判断  是否存在
+  // const curRole: any = await this.rolesRepository.findOne({where: { roleName: createRoleDto.roleName } })
+  // if(createRoleDto.menusArr && createRoleDto.menusArr.length > 0 ){
+  //   createRoleDto.menusArr = JSON.stringify(createRoleDto.menusArr)
+  //   // createRoleDto.menusArr = createRoleDto.menusArr
+  // }
+  // // console.log('🚀 ~ file: role.service.ts:34 ~ RoleService ~ addRole ~ createRoleDto:', createRoleDto)
+  // if(curRole == null) {   //  如果不存在 说明是新增
+  //   const newRoleSave = await this.rolesRepository.create(createRoleDto)
+  //   const res = await this.rolesRepository.save(newRoleSave)
+  //   return res
+  // } else {
+  //   //  存在  直接存储
+  //   curRole.menusArr = createRoleDto.menusArr
+  //   const res = await this.rolesRepository.save(curRole)
+  //   return res
+  // }
+  // }
 
     // 添加角色时会添加菜单
-    async addRole2(createRoleDto: any){
+    async addRole(createRoleDto: any){
       //  添加  和  修改 会 同时请求  同一个  接口
       //  先判断  是否存在
       let curRole: any = await this.rolesRepository.findOne({where: { id: createRoleDto.id || -1 } })

@@ -1,22 +1,17 @@
 
 //  此处定义完会直接连接数据库生成表， 新增和移除column也能自动完成
-import { AfterLoad, Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from 'typeorm'
-import { Users } from 'src/userinfo/entities/userinfo.entity';
 import { Exclude } from 'class-transformer';
+import { changeDateFormate } from 'src/allProcessor/fn/xzzfn';
 import { Menus } from 'src/menu/entities/menu.entity';
+import { Users } from 'src/userinfo/entities/userinfo.entity';
+import { AfterLoad, Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from 'typeorm';
 import { MetaPermission } from './permission.entity';
-
 
 @Entity()
 export class Roles {
     @AfterLoad()
-    changeDateFormate(){
-        const rTime = (date) =>{  // 转换日期 时间 格式
-            // var json_date = new Date(date).toJSON();
-            return new Date(+new Date(date) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '') 
-        }
-        this.createTime = rTime(this.createTime)
-        this.updateTime = rTime(this.updateTime)
+    ff(){
+        changeDateFormate(this)
     }
 
     @PrimaryGeneratedColumn()

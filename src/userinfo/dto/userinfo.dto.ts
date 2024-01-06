@@ -35,3 +35,15 @@ export class UpdateUserDto {
 }
 
 export class DeleteIds{ids: number[]}
+
+
+export class LoginDto {
+  username: string;
+  password: string;
+}
+
+export class RegisterDto {
+  username: string;
+  password: string;
+  nickname: string;
+}

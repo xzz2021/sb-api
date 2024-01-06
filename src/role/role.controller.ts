@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Req } from '@nestjs/common';
-import { CreateRoleDto } from './dto/create-role.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AddRoleDto } from './dto/role.dto';
 import { RoleService } from './role.service';
-import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('角色相关信息')
 @Controller('role')
@@ -10,67 +10,36 @@ export class RoleController {
 
   // 获取所有角色信息   此处用于获取所有角色  以及角色 关联 的children菜单menusArr 以及meta里的permission  用于回显
   @Get('getRoletable')
-  getRoletable(){
+    @ApiOperation({summary: '获取所有角色', description: '用于获取所有角色及其关联菜单和权限'})
+  getRoletable2(){
     return this.roleService.findAllRoles();
   }
 
-  @Get('getRoletable2')
-  getRoletable2(){
-    return this.roleService.findAllRoles2();
-  }
-
 //  此处 只获取角色 id 及 角色  名称  用于 下拉  并返回  id用于更新用户信息
-  @Get('getRoleListId')
+@Get('getRoleListId')
+    @ApiOperation({summary: '获取角色id和名称', description: '只获取角色id和名称,用于用户管理的信息回显'})
   getRoleListId(){
     return this.roleService.findAllRolesId();
   }
 
   @Get('getMenu') // 根据角色 获取用户的菜单 以及  权限
-  getMenuAndPermission(@Req() req: any) {
-    // console.log('🚀 ~ file: role.controller.ts:23 ~ RoleController ~ getMenuAndPermission ~ req:', req.user)
+    @ApiOperation({summary: '根据角色获取用户菜单', description: '根据角色获取用户菜单及相关权限'})
+    getMenuAndPermission(@Req() req: any) {
     const { roleName } = req.user;
     return this.roleService.getMenuByRole(roleName);
   }
   
-
-
   //  添加角色
   @Post('addRole')
-  addRole(@Body() createRoleDto: CreateRoleDto) {
+  @ApiOperation({summary: '新增角色', description: '用于添加新的角色或者更新已有角色信息'})
+  addRole(@Body() createRoleDto: AddRoleDto) {
     return this.roleService.addRole(createRoleDto);
   }
 
-
-  @Post('addRole2')
-  addRole2(@Body() createRoleDto: CreateRoleDto) {
-    return this.roleService.addRole2(createRoleDto);
-  }
-
-
   //  删除角色
   @Delete(':id')
+  @ApiOperation({summary: '删除角色', description: '用于删除已有角色'})
   removeRole(@Param('id') id: number) {
     return this.roleService.removeRole( id )
   }
-
-  // @Post()
-  // create(@Body() createRoleDto: CreateRoleDto) {
-  //   return this.roleService.create(createRoleDto);
-  // }
-
-  // @Get()
-  // findAll() {
-  //   return this.roleService.findAll();
-  // }
-  //  这里是类似通配符匹配 'role/' 后面的所有路径
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.roleService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
-  //   return this.roleService.update(+id, updateRoleDto);
-  // }
-
 }

@@ -1,13 +1,19 @@
 
 //  此处定义完会直接连接数据库生成表， 新增和移除column也能自动完成
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
+import { changeDateFormate } from 'src/allProcessor/fn/xzzfn';
 import { Users } from 'src/userinfo/entities/userinfo.entity';
+import { AfterLoad, Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from 'typeorm';
 
 
 @Entity()
 export class Departments {
+    @AfterLoad()
+    ff(){
+        changeDateFormate(this)
+    }
+    
     @PrimaryGeneratedColumn()
     id: number;
 

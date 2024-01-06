@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDepartmentDto } from './dto/create-department.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Departments } from './entities/department.entity';
-import { In, Repository } from 'typeorm';
 import { Users } from 'src/userinfo/entities/userinfo.entity';
+import { In, Repository } from 'typeorm';
+import { CreateDepartmentDto } from './dto/create-department.dto';
+import { Departments } from './entities/department.entity';
 
 @Injectable()
 export class DepartmentService {
@@ -21,15 +21,6 @@ export class DepartmentService {
   // 获取所有部门
   async getDepartmentTable(){
     const res = await this.departmentsRepository.find()
-    let newRes = []
-    if (res.length > 0) {
-       newRes = res.map((item) => {
-        item.createTime = this.rTime(item.createTime)
-        return item
-      })
-    } else {
-      return []
-    }
     // 需要嵌套
     const formatToTree = (ary: any[], pid: number | undefined) => {
       return ary
@@ -45,7 +36,7 @@ export class DepartmentService {
         })
     }
     // return newRes
-    const newData = formatToTree(newRes, undefined)
+    const newData = formatToTree(res, undefined)
     return  newData
   }
   
@@ -74,7 +65,7 @@ export class DepartmentService {
 
 
   //  根据  条件  查询  获取  符合  的  用户
-  async findByDepartment(joinQueryParams, roleName){
+  async findByDepartment(joinQueryParams){
     let  {  id, pageIndex, pageSize } = joinQueryParams
 
     // if(roleName === '超级管理员'){  

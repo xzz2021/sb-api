@@ -1,13 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { UpdateUserinfoDto } from './dto/update-userinfo.dto';
 //   argon2  ?更好的 加密 替代品
 import { InjectRepository } from '@nestjs/typeorm';
 import { DepartmentService } from 'src/department/department.service';
 import { RoleService } from 'src/role/role.service';
 import { In, Repository } from 'typeorm';
-import { RegisterDto } from './dto/register.dto';
+import { RegisterDto, UpdateDto } from './dto/userinfo.dto';
 import { Users } from './entities/userinfo.entity';
 
 
@@ -48,7 +47,7 @@ export class UserinfoService {
         }
       }
     
-      async update(id: number, updateUsersDto: UpdateUserinfoDto) {
+      async update(id: number, updateUsersDto: UpdateDto) {
         //  貌似应该先通过token确认用户信息，对比id一致，再进行下一步
         let res = await this.userinfoRepository.update(id, updateUsersDto)
         return  res.affected ? '修改成功': '修改失败'
