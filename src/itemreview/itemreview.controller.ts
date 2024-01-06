@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
 import { ItemreviewService } from './itemreview.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('项目审核信息')
 @Controller('itemreview')
 export class ItemreviewController {
   constructor(private readonly itemreviewService: ItemreviewService) {}

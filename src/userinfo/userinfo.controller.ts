@@ -1,9 +1,14 @@
-import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
-import { UserinfoService } from './userinfo.service';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LocalAuthGuard } from 'src/allProcessor/guard/auth.guard';
 import { Public } from 'src/allProcessor/guard/public';
-// import { getUser } from 'src/allProcessor/decorator';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
+import { AvatorDto, DeleteIds, RegisterResDto, UpdateDto, UpdateUserDto } from './dto/userinfo.dto';
+import { UserinfoService } from './userinfo.service';
 
+@ApiTags('用户相关信息')
+@ApiBearerAuth()
 @Controller('userinfo')
 export class UserinfoController {
    // 通过构造器传入 详细业务处理函数service
@@ -11,12 +16,6 @@ export class UserinfoController {
     private readonly userinfoService: UserinfoService,
     ) {
   }
-
-  @Get('test')
-    gettest(@Req() req: any){
-      return 'hello test'
-    }
-
   // @Post('findone')
   // findOne(@Body('username') username: string) {
   //   return this.userinfoService.findOne(username);
@@ -43,19 +42,31 @@ export class UserinfoController {
     @Public()
     @UseGuards(LocalAuthGuard)
   @Post('login')
-  signIn(@Body() userinfo: any, @Req() req: Request){
+  @ApiCreatedResponse({
+    description: '用户登录',
+    // type: Partial<User>
+    })
+    @ApiOperation({summary: '登录', description: '用户登录接口'})
+    // @ApiBody({type: {username: xzz, password: 123}})
+  signIn(@Body() userinfo: LoginDto){
       // 经过守卫返回的信息会自动放在req.user中
+      
       // 如果上面守卫校验通过了,则会执行下面的登录返回token时间
       return this.userinfoService.login(userinfo)
     }
     
     // 使用nest内置的序列化拦截器,, 可以将返回数据的字段 进行过滤排除等(在数据的entity文件里定义)
     @Public()
+    @ApiResponse({
+      status: 200,
+      type: RegisterResDto
+    })
+    @ApiOperation({summary: '注册', description: '用户注册接口'})
     @Post('register')  // 新增表格数据接口
     //  body后的dto定义传递过来的请求体数据格式
     // 如果前端数据体传递了其他未在dto定义的数据，将会被自动剔除
-    create(@Body() createUsersDto: any) {
-      return this.userinfoService.create(createUsersDto);
+    create(@Body() registerDto: RegisterDto) {
+      return this.userinfoService.create(registerDto);
     }
 
     // @Get('findAll')
@@ -64,33 +75,39 @@ export class UserinfoController {
     // }
 
 
-    @Post('modify')  // 修改用户信息接口
-    modifyUser(@Body() createUsersDto: any) {
-      return this.userinfoService.modifyUser(createUsersDto);
-    }
+    // @Post('modify')  // 修改用户信息接口
+    // modifyUser(@Body() createUsersDto: any) {
+    //   return this.userinfoService.modifyUser(createUsersDto);
+    // }
 
-
-    //  管理员 新增   或 修改  用户 信息   同一接口
     @Post('updateUser')
-    updateUser(@Body() updateInfo: any) {
+    // @ApiParam({name: ''})
+    // @ApiCreatedResponse({status: 200, description: '管理员新增或修改用户信息'})
+    @ApiOperation({summary: '管理员修改信息', description: '管理员新增或修改用户信息'})
+
+    updateUser(@Body() updateInfo: UpdateUserDto) {
       return this.userinfoService.updateUser(updateInfo);
     }
 
-    //  用户修改个人信息
     @Post('update')
-    update(@Body() newInfo: any) {
+    // @ApiCreatedResponse({description: '用户修改个人信息'})
+    @ApiOperation({summary: '修改个人信息', description: '用户修改个人信息'})
+    update(@Body() newInfo: UpdateDto) {
       return this.userinfoService.updateSelf(newInfo);
     }
 
-    //  用户修改个人信息
     @Post('updateAvator')
-    updateAvator(@Body() newInfo: {username: string, avatar: string}) {
+    // @ApiCreatedResponse({description: '用户更新个人头像'})
+    @ApiOperation({summary: '修改头像', description: '用户更新个人头像'})
+    updateAvator(@Body() newInfo: AvatorDto) {
       return this.userinfoService.updateAvator(newInfo);
     }
 
 
-    @Post('delete')  // 修改用户信息接口
-    deleteUser(@Body() data: {ids: number[]}) {
+    @Post('delete') 
+    @ApiOperation({summary: '删除用户', description: '单个或者批量删除用户'})
+    // @ApiCreatedResponse({description: '批量删除用户'})
+    deleteUser(@Body() data: DeleteIds) {
       return this.userinfoService.deleteUser(data.ids);
     }
 

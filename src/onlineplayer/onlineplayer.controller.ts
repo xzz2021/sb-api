@@ -1,9 +1,11 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { OnlineplayerService } from './onlineplayer.service';
-import { RoleArr } from 'src/allProcessor/guard/roles.enum';
 import { RolesGuard } from 'src/allProcessor/guard/roles';
+import { RoleArr } from 'src/allProcessor/guard/roles.enum';
+import { OnlineplayerService } from './onlineplayer.service';
+import { ApiTags } from '@nestjs/swagger';
 
 @RolesGuard(RoleArr.Admin)  //  注明允许的身份
+@ApiTags('在线玩家统计')
 @Controller('onlineplayer')
 export class OnlineplayerController {
   constructor(private readonly onlineplayerService: OnlineplayerService) {}

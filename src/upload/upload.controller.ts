@@ -1,8 +1,10 @@
-import { Controller, FileTypeValidator, MaxFileSizeValidator, ParseFilePipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
-import { UploadService } from './upload.service';
+import { Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { storage } from './interceptor/avator';
+import { UploadService } from './upload.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('文件上传接口')
 @Controller('upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}

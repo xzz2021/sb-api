@@ -4,6 +4,7 @@ import { Roles } from "src/role/entities/role.entity";
 export class CreateUserinfoDto {
     // @IsString()
     username: string;
+    nickname: string;
     // @IsNotEmpty()
     password: string;
     department?: Departments

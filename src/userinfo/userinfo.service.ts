@@ -1,13 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';  
-import { UpdateUserinfoDto } from './dto/update-userinfo.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { UpdateUserinfoDto } from './dto/update-userinfo.dto';
 //   argon2  ?更好的 加密 替代品
 import { InjectRepository } from '@nestjs/typeorm';
-import { Users } from './entities/userinfo.entity';
-import { In, Repository } from 'typeorm';
-import { RoleService } from 'src/role/role.service';
 import { DepartmentService } from 'src/department/department.service';
+import { RoleService } from 'src/role/role.service';
+import { In, Repository } from 'typeorm';
+import { RegisterDto } from './dto/register.dto';
+import { Users } from './entities/userinfo.entity';
 
 
 
@@ -23,11 +24,11 @@ export class UserinfoService {
       ){}
     
       // 创建用户的post请求会走向这里
-      async create(createUsersDto: any) {
+      async create(registerDto: RegisterDto) {
     
         const saltOrRounds = 10; // 数值越大速度越慢
     
-        createUsersDto.password = await bcrypt.hash(createUsersDto.password, saltOrRounds);
+        registerDto.password = await bcrypt.hash(registerDto.password, saltOrRounds);
     
         // const salt = await bcrypt.genSalt() // 用于生成salt
 
@@ -35,7 +36,7 @@ export class UserinfoService {
 
         
         // 创建注册用户信息  存储
-        const userSave:any = this.userinfoRepository.create(createUsersDto)
+        const userSave:any = this.userinfoRepository.create(registerDto)
         try{
           // 创建时 要先存储这个新生成的用户到数据库里
           const newUser = await this.userinfoRepository.save(userSave)
@@ -45,125 +46,19 @@ export class UserinfoService {
         const { code, sqlMessage } = err
         return  { code, message: sqlMessage } 
         }
-
-        // const {  username } = createUsersDto
-
-        // 然后找到此用户实体
-        // const currentUser = await this.userinfoRepository.findOne({where: {username}})
-        //  如果是新注册用户  必定是游客身份   直接存储此身份
-        // if(!createUsersDto.role){
-        //   createUsersDto.role = {
-        //     "id": 2,
-        //     "roleName": "游客",
-        //     "remark": "",
-        //     "status": 1,
-        //     "createTime": "2023-12-14T01:27:25.059Z",
-        //     "updateTime": "2023-12-14T01:27:25.059Z",
-        //     "deleteTime": null
-        // }
-        // }
-
-        //  超级管理员临时注册-------------------
-        //   createUsersDto.rolesArr = [{
-        //     "id": 1,
-        //     "roleName": "超级管理员",
-        //     "remark": "",
-        //     "status": 1,
-        //     "createTime": "2023-12-14T01:27:09.471Z",
-        //     "updateTime": "2023-12-14T01:27:09.471Z",
-        //     "deleteTime": null
-        // }]
-        //--------------------------------------
-
-
-
-            // currentUser.role = createUsersDto.role
-        // try{
-        //   const  res =  await this.userinfoRepository.save(currentUser)
-        //   return res 
-        // }catch(err) {
-        //   //  错误不用返回  直接抛出异常
-        // const { code, sqlMessage } = err
-        // return  { code, sqlMessage } 
-
-        // }
-        // return await this.userinfoRepository.insert([userSave1,userSave2,userSave3,userSave4])  //批量存储 插入
-    
       }
-
-      // 通过用户名获取用户信息
-      // async findOne(username: string) {
-      //   let res = await this.userinfoRepository.findOne({where: {username}, relations: ['role']})  // 获取基础信息及角色信息
-      //   return res
-      //   // let { roleId, roleName } = res.rolesArr
-      //   // let resInfo = await this.rolesRepository.findOne({where: {roleId},  relations: ['permissions']})  // 根据获取路由权限信息
-      //   // // let res2 = await this.rolesRepository.createQueryBuilder('roles')
-      //   // //                   .leftJoinAndMapMany('roles.permissions', Permissions, 'permissions', 'roles.permissions3 = permissions.routeLink ')
-      //   // //                   .where("roles.roleId = :roleId", { roleId })
-      //   // //                   .getMany()
-      //   // // let permissions = resInfo.permissions.map(item => item.routeLink)
-        
-      //   // let userinfo= { username: res.username, password: res.password, roleId, roleName }
-      //   // return { username: 'test', rolesArr: [] }
-      //   // return userinfo
-      // }
-    
-      //  findByID(id: number) {
-      //   return this.userinfoRepository.findOne({ where: {id} })
-      // }
-    
-
     
       async update(id: number, updateUsersDto: UpdateUserinfoDto) {
         //  貌似应该先通过token确认用户信息，对比id一致，再进行下一步
         let res = await this.userinfoRepository.update(id, updateUsersDto)
-        // console.log("🚀 ~ file: demo.service.ts:35 ~ DemoService ~ update ~ res:", res)
         return  res.affected ? '修改成功': '修改失败'
       }
 
-      async modifyUser(createUsersDto){
-        //  修改用户信息
-        // const curUser = await this.userinfoRepository.findOne({where: {id: createUsersDto.id}})
-        // if(curUser == null) {   //  如果不存在 说明是新增
-        //   // 先不处理
-        //   return '暂不处理'
-        //   const newUserSave = await this.menuRepository.create(createUsersDto)
-        //   const res = await this.menuRepository.save(newUserSave)
-        //   return res
-        // } else {
-        //   //  存在  直接存储
-        //   const res = await this.menuRepository.save(curUser)
-        //   return res
-        // }
-
-        //模拟修改
-        // const curUser = await this.userinfoRepository.findOne({where: {id: createUsersDto.id}})
-        // console.log('🚀 ~ file: userinfo.service.ts:157 ~ UserinfoService ~ modifyUser ~ curUser:', curUser)
-        // if(curUser){
-        //   const top = await this.departmentsRepository.findOne({where: {id: 1}})
-        //   console.log('🚀 ~ file: userinfo.service.ts:159 ~ UserinfoService ~ modifyUser ~ top:', top)
-        //   // return ''
-        //   curUser.departmentsArr = [top]
-        //   const res = await this.menuRepository.save(curUser)
-        //   console.log('🚀 ~ file: userinfo.service.ts:169 ~ UserinfoService ~ modifyUser ~ res:', res)
-        //   return res
-        // }
-
-      }
-    
       async remove(body) {
         let res = await this.userinfoRepository.delete(body)
         if(res.affected == 1) return { msg: `已删除用户: ${body.username}`}
       }
     
-    
-      // 通过用户名查询用户信息
-      // findByUsername(username: string) {
-      //   return this.userinfoRepository.findOne({ where: {username} })
-      // }
-
-
-
   //--------------------------------------
   // 以下为登录认证服务相关代码
   async validateUser(username: string, password: string ): Promise<any> {

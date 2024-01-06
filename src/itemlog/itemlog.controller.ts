@@ -1,6 +1,8 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ItemlogService } from './itemlog.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('游戏物品日志')
 @Controller('itemlog')
 export class ItemlogController {
   constructor(private readonly itemlogService: ItemlogService) {}

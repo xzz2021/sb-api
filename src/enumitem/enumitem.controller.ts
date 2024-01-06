@@ -1,6 +1,8 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { EnumitemService } from './enumitem.service';
 
+@ApiTags('游戏枚举项目')
 @Controller('enumitem')
 export class EnumitemController {
   constructor(private readonly enumitemService: EnumitemService) {}

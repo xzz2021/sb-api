@@ -49,7 +49,7 @@ import { join } from 'path';
     // 请求限流
     ThrottlerModule.forRoot({
       ttl: 10,  // 请求限制时间
-      limit: 60, // 请求限制次数
+      limit: 5, // 请求限制次数
     }),
     UserinfoModule, // 引入用户信息处理模块   链接相关功能
 
