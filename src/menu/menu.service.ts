@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdateMenuDto } from './dto/update-menu.dto';
@@ -84,4 +84,20 @@ export class MenuService {
     const res = await this.menuRepository.delete(id)
     return res;
   }
+
+  // 用于 更新 父级菜单的顺序
+  async updateSort(sortMenu){
+    const l = sortMenu.length
+    let affected = 0
+     await Promise.all(sortMenu.map(async (item)=> {
+      const { id, sort } = item
+      const res = await this.menuRepository.update(id, {sort})
+      res.affected && affected++
+    }))
+    if(affected == l) {
+      return { affected: affected}
+  }else{
+    throw new BadRequestException('信息更改失败!')
+  }
+}
 }

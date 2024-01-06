@@ -28,4 +28,10 @@ export class MenuController {
   remove(@Param('id') id: number) {
     return this.menuService.removeMenu(id);
   }
+
+  @Post('updateSort')
+  updateSort(@Body() sortMenu: {id: number, title: string, sort: number}[], ) {
+    return this.menuService.updateSort(sortMenu);
+  }
+
 }

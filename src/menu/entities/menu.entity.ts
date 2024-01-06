@@ -36,6 +36,9 @@ export class Menus {
     @Column({default: ''})
     value: string;
 
+    @Column({nullable: true}) // 用于顶级父菜单的排序
+    sort: number;
+
     @Column({default: ''})  // 以json字符串数组形式存储  因为是唯一的
     permissionList: string;
 
