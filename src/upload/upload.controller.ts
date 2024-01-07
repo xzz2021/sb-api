@@ -1,8 +1,8 @@
 import { Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { storage } from './interceptor/avator';
 import { UploadService } from './upload.service';
-import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('文件上传接口')
 @Controller('upload')
@@ -12,7 +12,8 @@ export class UploadController {
       //  上传文件 接口
       @Post('avator')
       @UseInterceptors(FileInterceptor('file', { storage }))
-      uploadAvator(@UploadedFile( 
+  @ApiOperation({summary: '头像上传', description: '只处理头像上传图片'})
+  uploadAvator(@UploadedFile( 
     //     new ParseFilePipe({
     //     validators: [
     //       new MaxFileSizeValidator({ maxSize: 1000 }),
