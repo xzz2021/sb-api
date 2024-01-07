@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+// import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
@@ -27,15 +27,15 @@ import { UserinfoModule } from './userinfo/userinfo.module';
 @Module({
   imports: [
     // TypeOrmModule.forRoot(AppDataSource),
-    ConfigModule.forRoot(
-      {
-        cache: true,
-        isGlobal: true,   // 全局注入env环境变量
-        // envFilePath: '',  // 设置env文件路径
-        // load ; [] //  加载额外导入的env文件或变量，低优先级
-        // validationSchema: Joi.object({ TESTPWD: Joi.string().default('defff')}),  //检验导入的ConfigModule全局变量类型是否合法
-      }  
-    ),
+    // ConfigModule.forRoot(
+    //   {
+    //     cache: true,
+    //     isGlobal: true,   // 全局注入env环境变量
+    //     // envFilePath: '',  // 设置env文件路径
+    //     // load ; [] //  加载额外导入的env文件或变量，低优先级
+    //     // validationSchema: Joi.object({ TESTPWD: Joi.string().default('defff')}),  //检验导入的ConfigModule全局变量类型是否合法
+    //   }  
+    // ),
 
     // // 引入静态文件服务
     ServeStaticModule.forRoot({

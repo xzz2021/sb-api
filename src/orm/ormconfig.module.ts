@@ -3,7 +3,7 @@
 //  需要把配置信息改造成单独的ts文件进行引用,  见底部模板
 
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+// import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Itemlog } from 'src/itemlog/entities/itemlog.entity';
 import { Moneylog } from 'src/moneylog/entities/moneylog.entity';
@@ -18,7 +18,9 @@ import { MetaPermission } from '../role/entities/permission.entity';
 import { Roles } from '../role/entities/role.entity';
 import { Users } from '../userinfo/entities/userinfo.entity';
 
-// import * as config from 'config'
+import * as config from 'config';
+const db1 = config.get('db1')
+const  db2  = config.get('db2')
 let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemreview, MetaPermission ]
 
 // 引入.env文件的变量合并到node环境中
@@ -29,16 +31,16 @@ let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemrevie
     imports: [
 
         TypeOrmModule.forRootAsync({  
-            imports: [ConfigModule],
-            inject: [ConfigService],
+            // imports: [ConfigModule],
+            // inject: [ConfigService],
             name: 'default',
-            useFactory: (configService: ConfigService) =>({
+            useFactory: () =>({
               name: 'default',
               type: 'mysql',
-              host: configService.get('DBHOST'),
-              port: 3306,
-              username: configService.get('DBUSER'),
-              password: configService.get('DBPWD'),
+              host: db1.host,
+              port: db1.post,
+              username: db1.user,
+              password: db1.pwd,
               database: 'shengbai',
               entities: allEntities,
               // entities: ['dist/**/entities/*.entity{.ts,.js}'],
@@ -89,17 +91,17 @@ let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemrevie
           }
           ),
           TypeOrmModule.forRootAsync({  
-            imports: [ConfigModule],
-            inject: [ConfigService],
+            // imports: [ConfigModule],
+            // inject: [ConfigService],
             name: 'gamelog',
-            useFactory: (configService: ConfigService) =>({
+            useFactory: () =>({
               name: 'gamelog',
               type: 'mysql',
-              host: configService.get('DBHOST2'),
-              port: 3306,
-              username: configService.get('DBUSER2'),
-              password: configService.get('DBPWD2'),
-              database: 'pc_202309171442_log',
+              host: db2.host,
+              port: db2.post,
+              username: db2.user,
+              password: db2.pwd,
+              database: 'pc_202309171442',
               // entities: [Itemlog, Moneylog, Onlineplayer],
               entities: [Itemlog, Moneylog, Onlineplayer],
               //此处定义为是否同步代码,,,,,,生产模式需关闭,  引入迁移模式
