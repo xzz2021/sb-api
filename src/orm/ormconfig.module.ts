@@ -3,22 +3,22 @@
 //  需要把配置信息改造成单独的ts文件进行引用,  见底部模板
 
 import { Module } from '@nestjs/common';
-import {  ConfigModule, ConfigService } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { Users } from '../userinfo/entities/userinfo.entity'
-import { Roles } from '../role/entities/role.entity';
-import { Departments } from '../department/entities/department.entity';
-import { Menus } from '../menu/entities/menu.entity';
-import { Metas } from '../menu/entities/meta.entity';
-import { Enumitem } from '../enumitem/entities/enumitem.entity';
-import { Itemreview } from '../itemreview/entities/itemreview.entity';
-import { MetaPermission } from '../role/entities/permission.entity';
-import { DataSource, DataSourceOptions } from 'typeorm';
 import { Itemlog } from 'src/itemlog/entities/itemlog.entity';
 import { Moneylog } from 'src/moneylog/entities/moneylog.entity';
 import { Onlineplayer } from 'src/onlineplayer/entities/onlineplayer.entity';
+import { DataSource, DataSourceOptions } from 'typeorm';
+import { Departments } from '../department/entities/department.entity';
+import { Enumitem } from '../enumitem/entities/enumitem.entity';
+import { Itemreview } from '../itemreview/entities/itemreview.entity';
+import { Menus } from '../menu/entities/menu.entity';
+import { Metas } from '../menu/entities/meta.entity';
+import { MetaPermission } from '../role/entities/permission.entity';
+import { Roles } from '../role/entities/role.entity';
+import { Users } from '../userinfo/entities/userinfo.entity';
 
-
+// import * as config from 'config'
 let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemreview, MetaPermission ]
 
 // 引入.env文件的变量合并到node环境中

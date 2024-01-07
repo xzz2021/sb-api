@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { Itemlog } from './entities/itemlog.entity';
 import { Between, DataSource } from 'typeorm';
+import { Itemlog } from './entities/itemlog.entity';
 
 @Injectable()
 export class ItemlogService {
@@ -14,8 +14,8 @@ export class ItemlogService {
   ){}
 
   async findAll(pageSize,currentPage) {
-
     const itemLogRepository = await this.dataSource.getRepository(Itemlog);
+    // const [timbers, timbersCount] = await manager.findAndCount(User, { firstName: "Timber" });
     const list =   await itemLogRepository.find({take: pageSize, skip: (currentPage -1)*pageSize });
     const total =  await itemLogRepository.count();
     return {
@@ -25,7 +25,6 @@ export class ItemlogService {
   }
 
   async findByCondition(pageSize,pageIndex, searchParam){
-    // console.log('🚀 ~ file: itemlog.service.ts:36 ~ ItemlogService ~ findByCondition ~ searchParam:', searchParam)
     const keyArr = Object.keys(searchParam)
     if(keyArr.length == 0){
       return await this.findAll(pageSize,pageIndex);
@@ -48,7 +47,6 @@ export class ItemlogService {
         buildWhereCondition = {...{[key]:searchParam[key]}, ...buildWhereCondition}
       });
     }
-  // console.log('🚀 ~ file: itemlog.service.ts:55 ~ ItemlogService ~ buildWhereCondition:', buildWhereCondition)
     const itemLogRepository = await this.dataSource.getRepository(Itemlog);
     const list =   await itemLogRepository.find({where:buildWhereCondition,take: pageSize, skip: (pageIndex -1)*pageSize })
     const total =  await itemLogRepository.count({where:buildWhereCondition})

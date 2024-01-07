@@ -1,24 +1,24 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { join } from 'path';
+import { JwtAuthGuard } from './allProcessor/guard/auth.guard';
+import { RolesGuard } from './allProcessor/guard/role.guard';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config'
-import { OrmConfig } from './orm/ormconfig.module';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { APP_GUARD } from '@nestjs/core';
-import { UserinfoModule } from './userinfo/userinfo.module';
-import { RoleModule } from './role/role.module';
 import { DepartmentModule } from './department/department.module';
-import { MenuModule } from './menu/menu.module';
-import { ItemlogModule } from './itemlog/itemlog.module';
-import { MoneylogModule } from './moneylog/moneylog.module';
 import { EnumitemModule } from './enumitem/enumitem.module';
-import { OnlineplayerModule } from './onlineplayer/onlineplayer.module';
-import { RolesGuard } from './allProcessor/guard/role.guard';
-import { JwtAuthGuard } from './allProcessor/guard/auth.guard';
+import { ItemlogModule } from './itemlog/itemlog.module';
 import { ItemreviewModule } from './itemreview/itemreview.module';
+import { MenuModule } from './menu/menu.module';
+import { MoneylogModule } from './moneylog/moneylog.module';
+import { OnlineplayerModule } from './onlineplayer/onlineplayer.module';
+import { OrmConfig } from './orm/ormconfig.module';
+import { RoleModule } from './role/role.module';
 import { UploadModule } from './upload/upload.module';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
+import { UserinfoModule } from './userinfo/userinfo.module';
 // import { TypeOrmModule } from '@nestjs/typeorm';
 // import * as Joi from 'joi'  // 引入字段校验,可以检验变量类型是否合法
 // import {AppDataSource} from '../ormconfig';
@@ -29,6 +29,7 @@ import { join } from 'path';
     // TypeOrmModule.forRoot(AppDataSource),
     ConfigModule.forRoot(
       {
+        cache: true,
         isGlobal: true,   // 全局注入env环境变量
         // envFilePath: '',  // 设置env文件路径
         // load ; [] //  加载额外导入的env文件或变量，低优先级

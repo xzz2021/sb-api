@@ -1,7 +1,6 @@
 
 //  此处定义完会直接连接数据库生成表， 新增和移除column也能自动完成
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude } from 'class-transformer';
 import { changeDateFormate } from 'src/allProcessor/fn/xzzfn';
 import { Users } from 'src/userinfo/entities/userinfo.entity';
 import { AfterLoad, Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from 'typeorm';
@@ -34,11 +33,9 @@ export class Departments {
     createTime: string;
 
     @UpdateDateColumn()
-    @Exclude()
     updateTime: string;
 
     @DeleteDateColumn()
-    @Exclude()
     deleteTime: string;
 
     //  一个部门  对应 多个  用户

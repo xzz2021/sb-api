@@ -4,6 +4,9 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "plugins": ["@nestjs/swagger/plugin"]
+    "plugins": ["@nestjs/swagger/plugin"],
+    "assets": [
+      { "include": "./README.md", "exclude": "./ormconfig copy.ts", "watchAssets": true }
+    ]
   }
 }
