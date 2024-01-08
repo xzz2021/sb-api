@@ -16,7 +16,7 @@ import { Users } from '../userinfo/entities/userinfo.entity';
 
 import * as config from 'config';
 const db1 = config.get('db1')
-const  db2  = config.get('db2')
+// const  db2  = config.get('db2')
 let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemreview, MetaPermission ]
 
 

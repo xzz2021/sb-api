@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { EnumitemService } from './enumitem.service';
 
-@ApiTags('游戏枚举项目')
+@ApiTags('日志枚举')
 @Controller('enumitem')
 export class EnumitemController {
   constructor(private readonly enumitemService: EnumitemService) {}

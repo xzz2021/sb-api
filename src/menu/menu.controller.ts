@@ -5,7 +5,7 @@ import { sortMenuType } from './dto/menu.dto';
 import { MenuService } from './menu.service';
 
   //  注明允许的身份
-@ApiTags('菜单相关信息')
+@ApiTags('菜单信息')
 @Controller('menu')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}

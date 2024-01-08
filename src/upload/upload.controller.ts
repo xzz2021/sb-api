@@ -4,7 +4,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { storage } from './interceptor/avator';
 import { UploadService } from './upload.service';
 
-@ApiTags('文件上传接口')
+@ApiTags('文件上传')
 @Controller('upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}

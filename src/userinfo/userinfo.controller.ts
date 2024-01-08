@@ -5,7 +5,7 @@ import { Public } from 'src/allProcessor/guard/public';
 import { AvatorDto, DeleteIds, LoginDto, RegisterDto, RegisterResDto, UpdateDto, UpdateUserDto } from './dto/userinfo.dto';
 import { UserinfoService } from './userinfo.service';
 
-@ApiTags('用户相关信息')
+@ApiTags('用户信息')
 @ApiBearerAuth()
 @Controller('userinfo')
 export class UserinfoController {
