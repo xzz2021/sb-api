@@ -3,24 +3,19 @@
 
 
 //  此处定义完会直接连接数据库生成表， 新增和移除column也能自动完成
-import { AfterLoad, Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from 'typeorm'
 import { Exclude } from 'class-transformer';
-import { Roles } from 'src/role/entities/role.entity';
+import { changeDateFormate } from 'src/allProcessor/fn/xzzfn';
 import { Departments } from 'src/department/entities/department.entity';
-import { ApiProperty } from '@nestjs/swagger';
+import { Roles } from 'src/role/entities/role.entity';
+import { AfterLoad, Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from 'typeorm';
 
 //   如果想在单个数据源中使用多个数据库,直接指定数据库的命名
 //   @Entity({database: 'secondDatabaseName'})
 @Entity()
 export class Users {
     @AfterLoad()
-    changeDateFormate(){
-        const rTime = (date) =>{  // 转换日期 时间 格式
-            // var json_date = new Date(date).toJSON();
-            return new Date(+new Date(date) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '') 
-        }
-        this.createtime = rTime(this.createtime)
-        this.updatetime = rTime(this.updatetime)
+    ff(){
+        changeDateFormate(this)
     }
     
     @PrimaryGeneratedColumn()
@@ -42,18 +37,18 @@ export class Users {
 
     @CreateDateColumn()  //创建时自动插入日期时间
     @Exclude()
-    createtime: string;
+    createTime: string;
 
     // @BeforeInsert()   //   实体监听器   用于 数据库操作时 调用的函数  类似生命周期 钩子
     // updateDates() {
     //     this.createdDate = new Date()
     // }
     @UpdateDateColumn()
-    updatetime: string;
+    updateTime: string;
 
     @DeleteDateColumn()
     @Exclude()
-    deletetime: string;
+    deleteTime: string;
 
     //   一个用户  对应一个角色
    @ManyToOne(() => Roles, role => role.usersArr, { cascade: ['insert', 'update']})   //关联表单  ???  { eager: true}
@@ -63,6 +58,6 @@ export class Users {
 
     //  一个用户 对应 一个  部门
    @ManyToOne(() => Departments, department => department.departmentUsersArr, { cascade: ['insert', 'update']})  
-   department: Relation<Departments>;
+   department: Departments;
 
 }
