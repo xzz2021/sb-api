@@ -24,7 +24,7 @@ export class AppService {
   try {
     
     await AppDataSource.initialize()
-
+    //  const user = await AppDataSource.manage.find(User)
     const user = await AppDataSource.transaction(
       async () => {}
     )

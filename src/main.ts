@@ -3,16 +3,9 @@ import { AppModule } from './app.module';
 
 // 添加全局响应数据拦截器   定义统一返回数据的格式
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ResponseInterceptor } from './allProcessor/interceptor/response';
-import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
-
 //  使用winston替代nest自带日志系统
-// import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
-// import { RequestInterceptor } from './allProcessor/interceptor/request';
-// import { ResponseInterceptor } from './allProcessor/interceptor/response';
-// import { AllExceptionFilter } from './allProcessor/filter/all-exception';
-// import { ValidationPipe } from '@nestjs/common';
-// import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { ResponseInterceptor } from './allProcessor/interceptor/response';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -47,5 +40,6 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   await app.listen(3000);
+  console.log('项目启动:端口: 3000' )
 }
 bootstrap();

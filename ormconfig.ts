@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-//  0.4.0之后可能只支持json配置文件
+//  0.4.0之后可能只支持json配置文件????  或是只支持datasource导出
 import * as config from 'config';
 import { Departments } from 'src/department/entities/department.entity';
 import { Enumitem } from 'src/enumitem/entities/enumitem.entity';
