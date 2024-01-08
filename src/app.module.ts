@@ -9,17 +9,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DepartmentModule } from './department/department.module';
 import { EnumitemModule } from './enumitem/enumitem.module';
-import { ItemlogModule } from './itemlog/itemlog.module';
 import { ItemreviewModule } from './itemreview/itemreview.module';
 import { MenuModule } from './menu/menu.module';
-import { MoneylogModule } from './moneylog/moneylog.module';
-import { OnlineplayerModule } from './onlineplayer/onlineplayer.module';
 import { OrmConfig } from './orm/ormconfig.module';
 import { RoleModule } from './role/role.module';
 import { UploadModule } from './upload/upload.module';
 import { UserinfoModule } from './userinfo/userinfo.module';
 // import * as Joi from 'joi'  // 引入字段校验,可以检验变量类型是否合法
 // import {AppDataSource} from '../ormconfig';
+import { GamelogModule } from './gamelog/gamelog.module';
 
 // @Global()  //  使此app模块引入的依赖能够作为全局依赖应用到所有子模块
 @Module({
@@ -43,7 +41,7 @@ import { UserinfoModule } from './userinfo/userinfo.module';
 
     // LoggerModule,   //打印日志模块
      // 这里 各个模块都必须导入  不然 无法 请求到 相应模块的  接口
-    OrmConfig, RoleModule, DepartmentModule, MenuModule, ItemlogModule, MoneylogModule, EnumitemModule, OnlineplayerModule, ItemreviewModule, UploadModule // typeorm配置
+    OrmConfig, RoleModule, DepartmentModule, MenuModule, EnumitemModule,  ItemreviewModule, UploadModule, GamelogModule // typeorm配置
 
   ],
   controllers: [AppController],

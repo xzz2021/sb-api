@@ -1,7 +1,7 @@
 
 import { Column, Entity, PrimaryColumn } from "typeorm";
 
-@Entity('logdata_item')
+@Entity('friend')
 export class Itemlog {
     @PrimaryColumn()
     ID: number

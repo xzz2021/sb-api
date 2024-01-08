@@ -4,9 +4,6 @@
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { Itemlog } from 'src/itemlog/entities/itemlog.entity';
-import { Moneylog } from 'src/moneylog/entities/moneylog.entity';
-import { Onlineplayer } from 'src/onlineplayer/entities/onlineplayer.entity';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { Departments } from '../department/entities/department.entity';
 import { Enumitem } from '../enumitem/entities/enumitem.entity';
@@ -85,28 +82,7 @@ let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemrevie
             } as TypeOrmModuleOptions ),
           }
           ),
-          TypeOrmModule.forRootAsync({
-            name: 'gamelog',
-            useFactory: () =>({
-              name: 'gamelog',
-              type: 'mysql',
-              host: db2.host,
-              port: db2.post,
-              username: db2.user,
-              password: db2.pwd,
-              database: 'pc_202309171442',
-              // entities: [Itemlog, Moneylog, Onlineplayer],
-              entities: [Itemlog, Moneylog, Onlineplayer],
-              //此处定义为是否同步代码,,,,,,生产模式需关闭,  引入迁移模式
-              // 千万慎重开启，
-              synchronize: false,  
-              timezone: "Z", //  
-              // logging: ['error'], 
-              retryAttempts: 5  //  重试连接数据库的次数（默认：10）
-              
-            } as TypeOrmModuleOptions ),
-          }
-          )
+          
     ]
 })
 export class OrmConfig {}
