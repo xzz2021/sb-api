@@ -9,16 +9,21 @@ import { Request, Response } from 'express';
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {
   
-  constructor(private readonly httpAdapterHost: HttpAdapterHost) {}  // 此处用于拿到所有意外信息
+  constructor(private readonly httpAdapterHost: HttpAdapterHost,
+    // @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: LoggerService
+    ) {}  // 此处用于拿到所有意外信息
     
   // catch(exception: HttpException, host: ArgumentsHost) {
     catch(exception: any, host: ArgumentsHost) {
-    
+      // console.log('🚀 ~ file: all-exception.ts:18 ~ exception:', exception)
+      // const { errno, sqlState, sqlMessage } = exception
+      // super.catch(exception, host)
     // 使用httpAdapter 拿到所有请求及响应数据， 并进行过滤处理
     const { httpAdapter } = this.httpAdapterHost
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
+    const response = ctx.getResponse<Response>();
+    // const {rawHeaders, user } = response
     const httpStatus = exception instanceof HttpException  ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
     let  errMsg = exception?.message || HttpException.name
     // console.log("🚀 ~ file: all-exception.ts:23 ~ exception:", exception)
@@ -42,7 +47,9 @@ export class AllExceptionFilter implements ExceptionFilter {
       path: request.url,
       error: errMsg
     }
-    Logger.error(`请求响应数据出现意外错误, 错误信息: ${JSON.stringify(resData) }`)
+    // console.log('🚀 ~ file: all-exception.ts:47 ~ resData:', resData)
+    //  因为已经 全局 替换了 logger?????
+    Logger.error(`请求出现意外错误, 错误信息: ${JSON.stringify(resData) }`)
 
     httpAdapter.reply(response, resData, httpStatus);
     // response

@@ -21,6 +21,7 @@ import { typeormConfig } from 'ormconfig';
 import { GamelogModule } from './gamelog/gamelog.module';
 import { LoggerModule } from './logger/logger.module';
 
+console.log('🚀 ~ file: app.module.ts:25 ~ process.env.NODE_ENV:', process.env)
 // @Global()  //  使此app模块引入的依赖能够作为全局依赖应用到所有子模块
 @Module({
   imports: [
@@ -28,7 +29,11 @@ import { LoggerModule } from './logger/logger.module';
     // // 引入静态文件服务
     ServeStaticModule.forRoot({
       // 访问路径不需要目录名
-      rootPath: join(__dirname, '../..', 'public/uploaded'),
+      rootPath: join(__dirname, `${process.env?.NODE_ENV == 'production' ? '...':'../..'}`,
+       `${process.env?.NODE_ENV == 'production' ? 'src/public/uploaded':'public/uploaded'}`),
+      //  打包后的 根目录  需根据路径调整
+      // rootPath: (0, path_1.join)(__dirname, '..', 'src/public/uploaded'),
+      
       //  浏览器服务访问的前缀
       serveRoot: '/public/uploaded',
       //  未知功能
@@ -44,7 +49,8 @@ import { LoggerModule } from './logger/logger.module';
 
     LoggerModule,   //打印日志模块
      // 这里 各个模块都必须导入  不然 无法 请求到 相应模块的  接口
-     RoleModule, DepartmentModule, MenuModule, EnumitemModule,  ItemreviewModule, UploadModule, GamelogModule // typeorm配置
+     RoleModule, DepartmentModule, MenuModule, EnumitemModule,  
+     ItemreviewModule, UploadModule, GamelogModule // typeorm配置
 
   ],
   controllers: [AppController],
