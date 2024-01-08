@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as config from 'config';
 import { Itemlog } from './entities/itemlog.entity';
-import { GamelogController } from './gamelog.controller';
-import { GamelogService } from './gamelog.service';
 import { Moneylog } from './entities/moneylog.entity';
 import { Onlineplayer } from './entities/onlineplayer.entity';
+import { GamelogController } from './gamelog.controller';
+import { GamelogService } from './gamelog.service';
 
 const  db2  = config.get('db2')
 

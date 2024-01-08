@@ -18,6 +18,7 @@ import * as config from 'config';
 const db1 = config.get('db1')
 // const  db2  = config.get('db2')
 let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemreview, MetaPermission ]
+const  dev  = config.get('dev')
 
 
 @Module({
@@ -46,7 +47,7 @@ let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemrevie
               synchronize: !false,  // 同步本地的schema与数据库   自动同步代码和数据库
               // timezone: "08:00", // 纠正时区偏差8小时
               timezone: "Z", //  
-              logging: ['error'],  //日志记录类型  数据库操作记录
+              logging: dev,  //日志记录类型  数据库操作记录
               // cache: true,   // 开启 查询缓存
             //   cache: {   //  可以将缓存记录到  内置的  redis里
             //     type: "redis",

@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 // 添加全局响应数据拦截器   定义统一返回数据的格式
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ResponseInterceptor } from './allProcessor/interceptor/response';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 //  使用winston替代nest自带日志系统
 // import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
@@ -19,7 +20,7 @@ async function bootstrap() {
   app.enableCors();
 
   // app.setGlobalPrefix('全局接口前缀')
-  // app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER))  //  全局替换日志系统
+  app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER))  //  全局替换日志系统
   
      // 全局注册  正常响应拦截器  同一返回格式
      app.useGlobalInterceptors(new ResponseInterceptor())  //  对全局的接口 响应 进行日志记录

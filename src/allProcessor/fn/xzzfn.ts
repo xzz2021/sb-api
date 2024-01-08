@@ -1,14 +1,13 @@
 
 //  转换时间格式
-export const changeDateFormate = function (thisrr: any) {
-
-    if(thisrr){
+export const changeDateFormate = function (that: any) {
+    if(that){
         const rTime = (date) =>{  // 转换日期 时间 格式
             // var json_date = new Date(date).toJSON();
             return new Date(+new Date(date) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '') 
         }
-        thisrr.createTime = rTime(thisrr.createTime)
-        thisrr.updateTime = rTime(thisrr.updateTime)
+        that.createTime = rTime(that.createTime)
+        that.updateTime = rTime(that.updateTime)
     }
 }
 

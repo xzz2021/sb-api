@@ -4,7 +4,7 @@ import { DepartmentService } from './department.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { JoinQueryParamsDto } from './dto/department';
 
-@ApiTags('部门相关信息')
+@ApiTags('部门信息')
 @Controller('department')
 export class DepartmentController {
   constructor(private readonly departmentService: DepartmentService) {}

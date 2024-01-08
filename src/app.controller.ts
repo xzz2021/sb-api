@@ -1,13 +1,17 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Inject, LoggerService } from '@nestjs/common';
 import { ApiForbiddenResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Public } from './allProcessor/guard/public';
 import { AppService } from './app.service';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 
 @ApiTags('首页')
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService,
+    
+    @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: LoggerService
+    ) {}
 
   @Get()
     @ApiOperation({summary: '全平台服务入口', description: '此接口仅用于测试服务连通性'})

@@ -3,16 +3,12 @@
 //  未  使用
 //  此处定义请求时，抛出的意外错误  格式处理 
 
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException, Logger } from '@nestjs/common';
-import { HttpAdapterHost } from '@nestjs/core';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, Logger } from '@nestjs/common';
 import { Request, Response } from 'express';
 
 @Catch(HttpException)
-// @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
-  
-    
-  // }
+  // constructor(private logger: Logger){}
   catch(exception: HttpException, host: ArgumentsHost) {
 
     const ctx = host.switchToHttp();

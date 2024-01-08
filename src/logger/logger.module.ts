@@ -4,9 +4,8 @@
 import { Module } from '@nestjs/common';
 import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
-import  'winston-daily-rotate-file';
 import { format } from 'winston';
-
+import 'winston-daily-rotate-file';
 
 const { combine, timestamp, label, prettyPrint } = format;
 
@@ -34,7 +33,7 @@ const { combine, timestamp, label, prettyPrint } = format;
                 // label({ label: '测试' }),
                 timestamp(),
                 // winston.format.ms(), // 日期不补零
-                nestWinstonModuleUtilities.format.nestLike('MyApp', {
+                nestWinstonModuleUtilities.format.nestLike('XzzApp', {
                   colors: true,
                   // prettyPrint: true,
                 }),
