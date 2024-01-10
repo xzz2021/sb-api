@@ -11,7 +11,7 @@
         .handle()
         .pipe(
           catchError( err =>  {
-          // console.log("🚀 ~ file: error.ts:14 ~ ErrorsInterceptor ~ intercept ~ err:", err)
+          console.log("🚀 ~ file: error.ts:14 ~ ErrorsInterceptor ~ intercept ~ err:", err)
 
             return throwError(() => new BadGatewayException())
           }

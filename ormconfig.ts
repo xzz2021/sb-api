@@ -10,9 +10,10 @@ import { MetaPermission } from 'src/role/entities/permission.entity';
 import { Roles } from 'src/role/entities/role.entity';
 import { Users } from 'src/userinfo/entities/userinfo.entity';
 import { DataSource, DataSourceOptions } from 'typeorm';
+import { Logs } from 'src/logger/entities/log.entity';
 
 const db1 = config.get('db1')
-let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemreview, MetaPermission ]
+let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemreview, MetaPermission, Logs]
 //  公共配置, 导出给appmodule使用
 export const typeormConfig: DataSourceOptions = 
   {

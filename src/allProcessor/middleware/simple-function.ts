@@ -1,9 +1,13 @@
 //  有时候业务处理很简单 不需要复杂需求   可以使用函数  中间件
 
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 export function simpleFunction(req: Request, res: Response, next: NextFunction) {
-  console.log(`Request...`);
+  // console.log('🚀 ~ file: simple-function.ts:6 ~ simpleFunction ~ res:', res)
+  // // 不管路由请求成功 或 失败 都会走这里
+  // console.log('🚀 ~ file: simple-function.ts:7 ~ simpleFunction ~ req:', req)
+
+
   next();
 };
 

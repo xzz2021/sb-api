@@ -66,14 +66,14 @@ const { combine, timestamp, label, prettyPrint } = format;
             maxSize: '10m',
             maxFiles: '14d',
           }),
-          new winston.transports.DailyRotateFile({
-            level: 'warn',
-            filename: 'logFile/warn-%DATE%.log',
-            datePattern: 'YYYY-MM-DD-HH',
-            zippedArchive: true,
-            maxSize: '10m',
-            maxFiles: '30d'
-          }),
+          // new winston.transports.DailyRotateFile({
+          //   level: 'warn',
+          //   filename: 'logFile/warn-%DATE%.log',
+          //   datePattern: 'YYYY-MM-DD-HH',
+          //   zippedArchive: true,
+          //   maxSize: '10m',
+          //   maxFiles: '30d'
+          // }),
           new winston.transports.DailyRotateFile({
             level: 'error',
             filename: 'logFile/error-%DATE%.log',

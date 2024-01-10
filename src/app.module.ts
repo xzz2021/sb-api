@@ -18,10 +18,9 @@ import { UserinfoModule } from './userinfo/userinfo.module';
 // import {AppDataSource} from '../ormconfig';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeormConfig } from 'ormconfig';
-import { GamelogModule } from './gamelog/gamelog.module';
 import { LoggerModule } from './logger/logger.module';
 
-console.log('🚀 ~ file: app.module.ts:25 ~ process.env.NODE_ENV:', process.env)
+// console.log('🚀 ~ file: app.module.ts:25 ~ process.env.NODE_ENV:', process.env)
 // @Global()  //  使此app模块引入的依赖能够作为全局依赖应用到所有子模块
 @Module({
   imports: [
@@ -50,7 +49,8 @@ console.log('🚀 ~ file: app.module.ts:25 ~ process.env.NODE_ENV:', process.env
     LoggerModule,   //打印日志模块
      // 这里 各个模块都必须导入  不然 无法 请求到 相应模块的  接口
      RoleModule, DepartmentModule, MenuModule, EnumitemModule,  
-     ItemreviewModule, UploadModule, GamelogModule // typeorm配置
+     ItemreviewModule, UploadModule,
+      // GamelogModule 
 
   ],
   controllers: [AppController],
