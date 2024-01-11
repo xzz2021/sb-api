@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, LoggerService } from '@nestjs/common';
+import { Body, Controller, Get, Inject, LoggerService, Post } from '@nestjs/common';
 import { ApiForbiddenResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Public } from './allProcessor/guard/public';
 import { AppService } from './app.service';
@@ -25,6 +25,12 @@ export class AppController {
     // @ApiResponse()
   getHello(): string {
     return this.appService.getHello();
+  }
+
+
+  @Post('yy')
+  testCreate(@Body() database: any){
+    return this.appService.testCreate(database)
   }
 
 }

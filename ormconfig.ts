@@ -13,7 +13,7 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import { Logs } from 'src/logger/entities/log.entity';
 
 const db1 = config.get('db1')
-let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemreview, MetaPermission, Logs]
+export let allEntities = [ Users, Roles, Menus, Departments, Metas, Enumitem, Itemreview, MetaPermission, Logs]
 //  公共配置, 导出给appmodule使用
 export const typeormConfig: DataSourceOptions = 
   {
@@ -23,6 +23,7 @@ export const typeormConfig: DataSourceOptions =
     username: db1.user,
     password: db1.pwd,
     entities: allEntities,
+    // autoLoadEntities: true,
     database: db1.db,
     synchronize: false,
     timezone: "Z", 
@@ -57,7 +58,7 @@ export const typeormConfig: DataSourceOptions =
               //     database: "test"
               //   }]
               // }
-  }
+  } as DataSourceOptions
 
 
   //  此DataSource用于 typeorm  进行迁移  读取

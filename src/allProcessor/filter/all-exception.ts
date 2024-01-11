@@ -42,20 +42,19 @@ export class AllExceptionFilter implements ExceptionFilter {
     let resData = {
       statusCode: httpStatus,
       timestamp: new Date().toLocaleString(), // 转成本地时区时间
-      path: request.url,
-      ip: clientIp,
       error: errMsg
     }
     // console.log('🚀 ~ file: all-exception.ts:47 ~ resData:', resData)
     //  因为已经 全局 替换了 logger?????
-    const logService = new LogService()  // 获得log服务 进行 新增 日志
+    // const logService = new LogService()  // 获得log服务 进行 新增 日志
     // const { username, nickname } = request['user']
-    const jkhj = request['user']
-    console.log('🚀 ~ file: all-exception.ts:54 ~ jkhj:', jkhj)
+    // const jkhj = request['user']
+    // console.log('🚀 ~ file: all-exception.ts:54 ~ jkhj:', jkhj)
 
 
     // logService.addLog({path: request.url, ip: clientIp, username, nickname})
-    Logger.error(`请求出现意外错误, 错误信息: ${JSON.stringify(resData) }`)
+    Logger.error(`请求出现意外错误, 错误信息: ${JSON.stringify({...resData, path: request.url,
+      ip: clientIp}) }`)
 
     httpAdapter.reply(response, resData, httpStatus);
     // response
