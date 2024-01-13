@@ -18,8 +18,6 @@ export class RoleService {
 async findAllItem(condition) {
   const [list, total] =   await this.rolesRepository.findAndCount(condition);
   if(total > 0){
-    // const newList = list[0]?.roleName == '超级管理员'? list.slice(1) : list
-    // const newTotal = list[0]?.roleName == '超级管理员'? total - 1 : total
     return {
       list: this.filterJson(list),
       total
