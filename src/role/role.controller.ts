@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AddRoleDto } from './dto/role.dto';
 import { RoleService } from './role.service';
@@ -11,8 +11,9 @@ export class RoleController {
   // 获取所有角色信息   此处用于获取所有角色  以及角色 关联 的children菜单menusArr 以及meta里的permission  用于回显
   @Get('getRoletable')
     @ApiOperation({summary: '获取所有角色', description: '用于获取所有角色及其关联菜单和权限'})
-  getRoletable2(){
-    return this.roleService.findAllRoles();
+  getRoletable2(@Query() joinQueryParams: {[string: string]: any}){
+    const { pageSize = 10, pageIndex = 1, ...searchParam } = joinQueryParams
+    return this.roleService.findAllRoles(pageSize,pageIndex, searchParam);
   }
 
 //  此处 只获取角色 id 及 角色  名称  用于 下拉  并返回  id用于更新用户信息

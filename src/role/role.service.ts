@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MenuService } from 'src/menu/menu.service';
-import { Repository } from 'typeorm';
+import { Between, ILike, Like, Not, Repository } from 'typeorm';
 import { Roles } from './entities/role.entity';
 import guestMenu from './guestMenu';
 import adminList from './list';
@@ -15,30 +15,53 @@ export class RoleService {
     private readonly menuService: MenuService
   ){}
   
-  rTime(date) {  // 转换日期 时间 格式
-    // var json_date = new Date(date).toJSON();
-    return new Date(+new Date(date) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '') 
+async findAllItem(condition) {
+  const [list, total] =   await this.rolesRepository.findAndCount(condition);
+  if(total > 0){
+    // const newList = list[0]?.roleName == '超级管理员'? list.slice(1) : list
+    // const newTotal = list[0]?.roleName == '超级管理员'? total - 1 : total
+    return {
+      list: this.filterJson(list),
+      total
+    }
+  }
+  return {list: [], total: 0}
+}
+async findAllRoles(pageSize,pageIndex, searchParam){
+  const keyArr = Object.keys(searchParam)
+  let condition = {where: {id: Not(1)}, take: pageSize, skip: (pageIndex -1)*pageSize, relations: ['menusArr', 'metaPermission'] }
+  if(keyArr.length == 0){
+    return await this.findAllItem(condition)
+  }else {
+    //  构造查询条件
+    let buildWhereCondition = {}
+    Object.keys(searchParam).forEach(function (key) {
+      buildWhereCondition = {...{[key]:ILike(`%${searchParam[key]}%`)}, ...buildWhereCondition}
+    })
+    condition.where = {...condition.where, ...buildWhereCondition}
+    return await this.findAllItem(condition) 
+  }
 }
 
-  async findAllRoles(){
-    // 查询角色  并获取到所有关联 菜单
-    const res = await this.rolesRepository.find({relations: ['menusArr', 'metaPermission']})
-    const allRolesWithoutSuper = res.slice(1)
-    const newMenu = allRolesWithoutSuper.map((item) => {
-       const { menusArr, metaPermission } = item
-       const newMenusArr = menusArr.map((menu) => {
-        menu.permissionList && (menu.permissionList = JSON.parse(menu.permissionList))
-        const permissionItem = metaPermission.find(item => item.menuId === menu.id)
-        menu.meta.permission =  permissionItem?.permission ? JSON.parse(permissionItem.permission) : []
-        return menu
-       })
-       delete item.metaPermission
-       item.menusArr = newMenusArr
-       return item
-      })
+  filterJson(rawRes){
+  const newMenu = rawRes.map((item) => {
+     const { menusArr, metaPermission } = item
+     const newMenusArr = menusArr.map((menu) => {
+      menu.permissionList && (menu.permissionList = JSON.parse(menu.permissionList))
+      const permissionItem = metaPermission.find(item => item.menuId === menu.id)
+      menu.meta.permission =  permissionItem?.permission ? JSON.parse(permissionItem.permission) : []
+      return menu
+     })
+     delete item.metaPermission
+     item.menusArr = newMenusArr
+     return item
+    })
 
-     return newMenu
+   return newMenu
+
   }
+
+
   async findRoleById(id: number){
     const res = await this.rolesRepository.findOne({where: { id }});
     return res
