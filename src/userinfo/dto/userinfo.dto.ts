@@ -1,3 +1,6 @@
+import { Departments } from "src/department/entities/department.entity";
+import { Roles } from "src/role/entities/role.entity";
+
 export class AvatorDto {
     username: string;
     avator: string;
@@ -46,4 +49,13 @@ export class RegisterDto {
   username: string;
   password: string;
   nickname: string;
+}
+
+
+export class NewUser {
+  username: string;
+  password: string;
+  nickname?: string;
+  department?: Departments
+  role?: Roles; 
 }

@@ -110,4 +110,10 @@ export class UserinfoController {
     }
 
 
+    @Post('addUser')  // 新增表格数据接口
+    @ApiOperation({summary: '新增用户', description: '管理员新增用户接口'})
+    createUser(@Body() newUser: RegisterDto) {
+      return this.userinfoService.createUser(newUser);
+    }
+
 }

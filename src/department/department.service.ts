@@ -64,10 +64,27 @@ export class DepartmentService {
   }
 
 
+async findAllUser(id) {
+  console.log('🚀 ~ file: department.service.ts:68 ~ DepartmentService ~ findAllUser ~ id:', id)
+  // const [list, total] =   await this.rolesRepository.findAndCount(condition);
+      //  先获取 部门 所属 的用户
+      const res = await this.departmentsRepository.findOne({where: { id }, relations: ['departmentUsersArr']})
+      const departmentUsersArr = res.departmentUsersArr
+      const newList =  await Promise.all( departmentUsersArr.map(async (item: Users)=> {
+        const  newItem = await this.userinfoRepository
+        .createQueryBuilder('users')
+        .where("users.id = :id", { id: item.id })
+        .select([ 'users', 'department', 'role'])   //   关联 查询   并返回关联查询 的指定字段
+        .leftJoin('users.role', "role")                
+        .leftJoin('users.department', "department")                
+        .getOne()
+        return newItem
+      }))
+      return newList
+}
   //  根据  条件  查询  获取  符合  的  用户
-  async findByDepartment(joinQueryParams){
-    let  {  id, pageIndex, pageSize } = joinQueryParams
-
+  async findByDepartment(pageSize,pageIndex, id){
+// return 'oo'
     // if(roleName === '超级管理员'){  
     //   // 如果是管理员 直接返回  所有用户  作为初始化 管理使用
     //   // const list = await this.userinfoRepository.find()
@@ -79,31 +96,40 @@ export class DepartmentService {
     //   .getMany()
     // return { list, total: list.length }
     // }
-    if( id == 1 || !id){  
-      // 如果是1 直接返回 除管理员之外的 所有用户  作为初始化 管理使用
+    const exitId = id || 1
+    if( exitId == 1 ){  
+      // 如果部门id是1 直接返回 除管理员之外的 所有用户  作为初始化 管理使用
       const res = await this.userinfoRepository
       .createQueryBuilder('users')
       .select(['users', 'department', 'role'])   //   关联 查询   并返回关联查询 的指定字段
       .leftJoin('users.role', "role")                                 //  关联 查询   一定 要加  leftjoin
       .leftJoin('users.department', "department")
       .getMany()
-    return { list: res.slice(1), total: res.length - 1 } 
+      const rawList = res.slice(1)
+    const newList = rawList.slice((pageIndex -1)*pageSize, pageIndex*pageSize)
+    return { list: newList, total: rawList.length} 
     }
-    if(!id) return { list: [], total: 0 }
-    //   这样返回 没有角色信息
-    const res = await this.departmentsRepository.findOne({where: { id }, relations: ['departmentUsersArr']})
-    const departmentUsersArr = res.departmentUsersArr
-    const newList =  await Promise.all( departmentUsersArr.map(async (item: Users)=> {
-      const  newItem = await this.userinfoRepository
-      .createQueryBuilder('users')
-      .where("users.id = :id", { id: item.id })
-      .select([ 'users', 'department', 'role'])   //   关联 查询   并返回关联查询 的指定字段
-      .leftJoin('users.role', "role")                
-      .leftJoin('users.department', "department")                
-      .getOne()
-      return newItem
-    }))
-    return { list: newList, total:  newList.length}
+    //  暂时 只 根据部门查询 用户
+    const rawList = await this.findAllUser(exitId)
+    const total = rawList.length
+    const newList = rawList.slice((pageIndex -1)*pageSize, pageIndex*pageSize)
+    return { list: newList, total }
+
+    // const keyArr = Object.keys(otherParams)
+    // let condition = {take: pageSize, skip: (pageIndex -1)*pageSize, relations: ['menusArr', 'metaPermission'] }
+    // if(keyArr.length == 0){
+    //   return await this.findAllItem(condition)
+    // }else {
+    //   //  构造查询条件
+    //   let buildWhereCondition = {}
+    //   Object.keys(searchParam).forEach(function (key) {
+    //     buildWhereCondition = {...{[key]:ILike(`%${searchParam[key]}%`)}, ...buildWhereCondition}
+    //   })
+    //   condition.where = {...condition.where, ...buildWhereCondition}
+    //   return await this.findAllItem(condition) 
+    // }
+
+
   }
 
   async findDepartmentById(id: number){

@@ -39,9 +39,10 @@ export class DepartmentController {
 
   @Get('users')
   @ApiOperation({summary: '条件查询部门', description: '用于条件筛选查询部门信息'})
-  findByDepartment(@Query() joinQueryParams: JoinQueryParamsDto) {
-    // 根据部门id参数 查询关联用户  ?id=6&pageIndex=1&pageSize=10  
-    return this.departmentService.findByDepartment(joinQueryParams)
+  findByDepartment(@Query() joinQueryParams: {[string: string]: any}) {
+    const { pageSize = 10, pageIndex = 1, id = 1, ...searchParam } = joinQueryParams
+    return this.departmentService.findByDepartment(pageSize,pageIndex, id)
   }
+
 
 }

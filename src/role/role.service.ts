@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MenuService } from 'src/menu/menu.service';
-import { Between, ILike, Like, Not, Repository } from 'typeorm';
+import { ILike, Not, Repository } from 'typeorm';
 import { Roles } from './entities/role.entity';
 import guestMenu from './guestMenu';
 import adminList from './list';
@@ -70,31 +70,6 @@ async findAllRoles(pageSize,pageIndex, searchParam){
     const res = await this.rolesRepository.find();
     return res
   }
-
-
-  // 添加角色时会添加菜单
-  // async addRole(createRoleDto: any){
-  //   // console.log('🚀 ~ file: role.service.ts:25 ~ RoleService ~ addRole ~ createRoleDto:', createRoleDto)
-
-  //   //  添加  和  修改 会 同时请求  同一个  接口
-  //   //  先判断  是否存在
-  // const curRole: any = await this.rolesRepository.findOne({where: { roleName: createRoleDto.roleName } })
-  // if(createRoleDto.menusArr && createRoleDto.menusArr.length > 0 ){
-  //   createRoleDto.menusArr = JSON.stringify(createRoleDto.menusArr)
-  //   // createRoleDto.menusArr = createRoleDto.menusArr
-  // }
-  // // console.log('🚀 ~ file: role.service.ts:34 ~ RoleService ~ addRole ~ createRoleDto:', createRoleDto)
-  // if(curRole == null) {   //  如果不存在 说明是新增
-  //   const newRoleSave = await this.rolesRepository.create(createRoleDto)
-  //   const res = await this.rolesRepository.save(newRoleSave)
-  //   return res
-  // } else {
-  //   //  存在  直接存储
-  //   curRole.menusArr = createRoleDto.menusArr
-  //   const res = await this.rolesRepository.save(curRole)
-  //   return res
-  // }
-  // }
 
     // 添加角色时会添加菜单
     async addRole(createRoleDto: any){

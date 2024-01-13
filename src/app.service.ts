@@ -36,7 +36,6 @@ export class AppService {
 
       const usersRepository =  AppDataSource.getRepository(Users)
   const allUsers = await usersRepository.find()
-  console.log('🚀 ~ file: app.service.ts:39 ~ AppService ~ testCreate ~ allUsers:', allUsers)
 
     // ① 原始查询 整个已连接的database
     //  只能执行原始查询  因为没有动态导入nest模块

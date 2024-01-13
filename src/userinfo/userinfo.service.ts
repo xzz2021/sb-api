@@ -6,7 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DepartmentService } from 'src/department/department.service';
 import { RoleService } from 'src/role/role.service';
 import { In, Repository } from 'typeorm';
-import { RegisterDto, UpdateDto } from './dto/userinfo.dto';
+import { NewUser, RegisterDto, UpdateDto } from './dto/userinfo.dto';
 import { Users } from './entities/userinfo.entity';
 
 
@@ -105,12 +105,12 @@ export class UserinfoService {
 
     //  管理员 新增   或 修改  用户 信息   同一接口
     async updateUser(updateInfo) {
+      if(!updateInfo.id) throw new NotFoundException('用户信息异常,请稍后再试!')
     // console.log('🚀 ~ file: userinfo.service.ts:215 ~ UserinfoService ~ updateUser ~ updateInfo:', updateInfo)
     //  剔除  新 发来 的  角色 和  部门  id 信息   返回  用户 原有对应信息
     const curUser = await this.userinfoRepository.findOne({where:{id: updateInfo.id}})
     // console.log('🚀 ~ file: userinfo.service.ts:218 ~ UserinfoService ~ updateUser ~ curUser:', curUser)
     // return
-    if(!updateInfo.id) throw new NotFoundException('用户信息异常,请稍后再试!')
 
     const roleId = updateInfo.role.id
     const departmentId = updateInfo.department?.id || updateInfo.department
@@ -194,6 +194,32 @@ export class UserinfoService {
     }else{
       throw new NotFoundException('头像更改失败!')
       }
+    }
+
+    //  管理员新增用户
+    async createUser(newUser){
+      // const curUser: NewUser = {username: '', password: '', nickname: '', role: {}, department: {}}
+      const curUser = {username: '', password: '', nickname: '', role: {}, department: {}}
+
+        const roleId = newUser.role.id
+        const departmentId = newUser.department?.id || newUser.department
+        curUser.password = await bcrypt.hash(newUser.password, 10)
+        const { username, nickname } = newUser
+        curUser.username = username
+        curUser.nickname = nickname
+    
+          // 先找到对应 id的  角色
+          const  curRole = await this.roleService.findRoleById(roleId)
+          //  再找到对应的  部门 id
+          const  curDepartment = await this.departmentService.findDepartmentById(departmentId)
+    
+          curUser.role = curRole
+          curUser.department = curDepartment
+          const newUserSave =  await this.userinfoRepository.create(curUser)
+
+          const res =  await this.userinfoRepository.save(newUserSave)
+            return res
+    
     }
 
 
