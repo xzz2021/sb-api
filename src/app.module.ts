@@ -51,8 +51,11 @@ import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
     // // 引入静态文件服务
     ServeStaticModule.forRoot({
       // 访问路径不需要目录名
-      rootPath: join(__dirname, `${process.env?.NODE_ENV == 'production' ? '...':'../..'}`,
-       `${process.env?.NODE_ENV == 'production' ? 'src/public/uploaded':'public/uploaded'}`),
+      // rootPath: join(__dirname, `${process.env?.NODE_ENV == 'production' ? '...':'../..'}`,
+      //  `${process.env?.NODE_ENV == 'production' ? '../public/uploaded':'public/uploaded'}`),
+      rootPath: join(__dirname, `${process.env?.NODE_ENV == 'production' ? '..':'../..'}`,
+      'public/uploaded'),
+
       //  打包后的 根目录  需根据路径调整
       // rootPath: (0, path_1.join)(__dirname, '..', 'src/public/uploaded'),
       

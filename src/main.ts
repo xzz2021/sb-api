@@ -15,7 +15,10 @@ async function bootstrap() {
   // 设置允许跨域
   app.enableCors();
 
-  // app.setGlobalPrefix('全局接口前缀')
+  //  全局接口前缀
+  app.setGlobalPrefix('api')
+
+
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER))  //  全局替换日志系统
   
   // app.useGlobalInterceptors(new TransformInterceptor())  // 全局 数据 转换  拦截器
@@ -52,7 +55,7 @@ async function bootstrap() {
     // .addTag('design by xzz')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('apidoc', app, document);
 
   await app.listen(3000)
 }
