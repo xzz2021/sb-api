@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { join } from 'path';
@@ -21,6 +21,7 @@ import { typeormConfig } from 'ormconfig';
 import { LoggerModule } from './logger/logger.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DynamicdbModule } from './dynamicdb/dynamicdb.module';
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 // import { DynamicdbModule } from './dynamicdb/dynamicdb.module';
 // console.log('🚀 ~ file: app.module.ts:25 ~ process.env.NODE_ENV:', process.env)
 // @Global()  //  使此app模块引入的依赖能够作为全局依赖应用到所有子模块
@@ -61,6 +62,8 @@ import { DynamicdbModule } from './dynamicdb/dynamicdb.module';
       // renderPath: '/xzz/',
     }),
 
+    CacheModule.register({ttl: 15 * 1000,   max: 100 }), // 引入缓存模块
+
     // 请求限流
     ThrottlerModule.forRoot({
       ttl: 10,  // 请求限制时间
@@ -80,6 +83,11 @@ import { DynamicdbModule } from './dynamicdb/dynamicdb.module';
   // providers 里的内容 用于 提供 给  controller 使用
   providers: [
     AppService,
+    // 全局启用缓存模块
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
     //上面 等同于  简化写法
     // {
     //   provide: CatsService,

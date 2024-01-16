@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseInterceptors } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DepartmentService } from './department.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { JoinQueryParamsDto } from './dto/department';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @ApiTags('部门信息')
 @Controller('department')
@@ -11,6 +12,7 @@ export class DepartmentController {
 
 
   @Get('getDepartmentTable')
+  // @UseInterceptors(CacheInterceptor)
     @ApiOperation({summary: '获取所有部门信息', description: '返回嵌套树结构,用于部门管理'})
   getDepartmentTable(){
     return this.departmentService.getDepartmentTable(); 

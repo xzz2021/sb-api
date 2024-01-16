@@ -27,7 +27,7 @@ export const typeormConfig: DataSourceOptions =
     database: db1.db,
     synchronize: false,
     timezone: "Z", 
-    logging: false,
+    logging: !false,
       // cache: true,   // 开启 查询缓存
             //   cache: {   //  可以将缓存记录到  内置的  redis里
             //     type: "redis",
