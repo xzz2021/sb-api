@@ -16,12 +16,10 @@ import { UploadModule } from './upload/upload.module';
 import { UserinfoModule } from './userinfo/userinfo.module';
 // import * as Joi from 'joi'  // 引入字段校验,可以检验变量类型是否合法
 // import {AppDataSource} from '../ormconfig';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeormConfig } from 'ormconfig';
 import { LoggerModule } from './logger/logger.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { DynamicdbModule } from './dynamicdb/dynamicdb.module';
-import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 // import { DynamicdbModule } from './dynamicdb/dynamicdb.module';
 // console.log('🚀 ~ file: app.module.ts:25 ~ process.env.NODE_ENV:', process.env)
 // @Global()  //  使此app模块引入的依赖能够作为全局依赖应用到所有子模块
@@ -53,8 +51,8 @@ import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
       // 访问路径不需要目录名
       // rootPath: join(__dirname, `${process.env?.NODE_ENV == 'production' ? '...':'../..'}`,
       //  `${process.env?.NODE_ENV == 'production' ? '../public/uploaded':'public/uploaded'}`),
-      rootPath: join(__dirname, `${process.env?.NODE_ENV == 'production' ? '..':'../..'}`,
-      'public/uploaded'),
+      rootPath: join(__dirname, `${process.env?.NODE_ENV == 'production' ? '..':'../..'}`, 'public/uploaded'),
+      // rootPath: join(__dirname, '..', 'public/uploaded'),
 
       //  打包后的 根目录  需根据路径调整
       // rootPath: (0, path_1.join)(__dirname, '..', 'src/public/uploaded'),

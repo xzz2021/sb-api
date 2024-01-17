@@ -8,7 +8,7 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { AllExceptionFilter } from './allProcessor/filter/all-exception';
 import { ResponseInterceptor } from './allProcessor/interceptor/response';
 import { simpleFunction } from './allProcessor/middleware/simple-function';
-import { TransformInterceptor } from './allProcessor/interceptor/transform';
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
