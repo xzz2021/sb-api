@@ -672,51 +672,6 @@ const adminList = [
         }
       }
     ]
-  },
-  {
-    path: '/authorization',
-    component: '#',
-    redirect: '/authorization/user',
-    name: 'Authorization',
-    meta: {
-      title: 'router.authorization',
-      icon: 'eos-icons:role-binding',
-      alwaysShow: true
-    },
-    children: [
-      {
-        path: 'department',
-        component: 'views/Authorization/Department/Department',
-        name: 'Department',
-        meta: {
-          title: 'router.department'
-        }
-      },
-      {
-        path: 'user',
-        component: 'views/Authorization/User/User',
-        name: 'User',
-        meta: {
-          title: 'router.user'
-        }
-      },
-      {
-        path: 'menu',
-        component: 'views/Authorization/Menu/Menu',
-        name: 'Menu',
-        meta: {
-          title: 'router.menuManagement'
-        }
-      },
-      {
-        path: 'role',
-        component: 'views/Authorization/Role/Role',
-        name: 'Role',
-        meta: {
-          title: 'router.role'
-        }
-      }
-    ]
   }
 ]
 
