@@ -57,8 +57,11 @@ dependencies:
     specifier: ^0.14.0
     version: 0.14.0
   config:
-    specifier: ^3.3.9
-    version: 3.3.9
+    specifier: ^3.3.11
+    version: 3.3.11
+  cross-env:
+    specifier: ^7.0.3
+    version: 7.0.3
   joi:
     specifier: ^17.9.2
     version: 17.11.0
@@ -136,9 +139,6 @@ devDependencies:
   '@typescript-eslint/parser':
     specifier: ^6.0.0
     version: 6.18.0(eslint@8.56.0)(typescript@5.3.3)
-  cross-env:
-    specifier: ^7.0.3
-    version: 7.0.3
   eslint:
     specifier: ^8.42.0
     version: 8.56.0
@@ -2511,8 +2511,8 @@ packages:
       readable-stream: 2.3.8
       typedarray: 0.0.6
 
-  /config@3.3.9:
-    resolution: {integrity: sha512-G17nfe+cY7kR0wVpc49NCYvNtelm/pPy8czHoFkAgtV1lkmcp7DHtWCdDu+C9Z7gb2WVqa9Tm3uF9aKaPbCfhg==}
+  /config@3.3.11:
+    resolution: {integrity: sha512-Dhn63ZoWCW5EMg4P0Sl/XNsj/7RLiUIA1x1npCy+m2cRwRHzLnt3UtYtxRDMZW/6oOMdWhCzaGYkOcajGgrAOA==}
     engines: {node: '>= 10.0.0'}
     dependencies:
       json5: 2.2.3
@@ -2604,7 +2604,7 @@ packages:
     hasBin: true
     dependencies:
       cross-spawn: 7.0.3
-    dev: true
+    dev: false
 
   /cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
