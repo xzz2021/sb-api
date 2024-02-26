@@ -8,6 +8,7 @@ import { WINSTON_MODULE_NEST_PROVIDER } from "nest-winston";
 import { AllExceptionFilter } from "./allProcessor/filter/all-exception";
 import { ResponseInterceptor } from "./allProcessor/interceptor/response";
 import { simpleFunction } from "./allProcessor/middleware/simple-function";
+import { LogService } from "./logger/logger.service";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,7 +23,7 @@ async function bootstrap() {
   // app.useGlobalInterceptors(new TransformInterceptor())  // 全局 数据 转换  拦截器
   // 全局filter只能有一个
   const httpAdapter = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new AllExceptionFilter(httpAdapter)); // 对全局请求异常错误的过滤器，排除网关根目录请求
+  app.useGlobalFilters(new AllExceptionFilter(httpAdapter, new LogService())); // 对全局请求异常错误的过滤器，排除网关根目录请求
 
   // 全局注册  正常响应拦截器  同一返回格式
   //  app.useGlobalInterceptors(new RequestInterceptor())  //  对全局的接口 响应 进行日志记录

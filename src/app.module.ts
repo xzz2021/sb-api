@@ -53,7 +53,7 @@ import { LoggerModule } from "./logger/logger.module";
       //  `${process.env?.NODE_ENV == 'production' ? '../public/uploaded':'public/uploaded'}`),
       rootPath: join(
         __dirname,
-        `${process.env?.NODE_ENV == "production" ? ".." : "../.."}`,
+        `${process.env?.NODE_ENV == "production" ? ".." : ".."}`, // 此处定义静态文件目录入口 相对于  此 app 入口文件的位置
         "public/uploaded",
       ),
       // rootPath: join(__dirname, '..', 'public/uploaded'),

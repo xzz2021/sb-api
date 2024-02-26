@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { LogService } from './menu.service';
+import { LogService } from './logger.service';
 
   //  注明允许的身份
 @ApiTags('操作日志')
