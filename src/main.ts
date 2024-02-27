@@ -27,7 +27,7 @@ async function bootstrap() {
 
   // 全局注册  正常响应拦截器  同一返回格式
   //  app.useGlobalInterceptors(new RequestInterceptor())  //  对全局的接口 响应 进行日志记录
-  app.useGlobalInterceptors(new ResponseInterceptor()); //  对全局的接口 响应 进行日志记录
+  app.useGlobalInterceptors(new ResponseInterceptor(new LogService())); //  对全局的接口 响应 进行日志记录
 
   //  全局数据格式校验管道
   // app.useGlobalPipes(new ValidationPipe(

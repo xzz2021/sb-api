@@ -9,6 +9,7 @@ https://docs.nestjs.com/interceptors#interceptors
 import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
+import { LogService } from "src/logger/logger.service";
 
 import * as requestIp from "request-ip";
 
@@ -20,6 +21,10 @@ export interface Response<T> {
 
 @Injectable()
 export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
+  constructor(
+    // 尝试引入 service 以调用数据库
+    private readonly logService: LogService,
+  ) {}
   intercept(context: ExecutionContext, next: CallHandler): Observable<Response<T>> {
     // const start = Date.now(); // 请求开始时间
     const host = context.switchToHttp();
@@ -44,7 +49,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
           data,
         };
         if (data) {
-          const { username, nickname } = request["user"];
+          const { username = "temp", nickname = "游客" } = request["user"] || {};
           const dd = {
             statusCode,
             timestamp: new Date().toLocaleString(),
@@ -55,6 +60,8 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
             status: 1,
           };
           Logger.log(`请求成功, 详细信息: ${JSON.stringify(dd)}`);
+          // 调用service 以进行数据库操作
+          this.logService.addLog(dd);
         }
         return resData;
       }),
